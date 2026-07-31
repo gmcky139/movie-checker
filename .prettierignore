@@ -1,0 +1,7 @@
+dist
+coverage
+node_modules
+src/data/generated.json
+package-lock.json
+AGENTS.md
+docs/

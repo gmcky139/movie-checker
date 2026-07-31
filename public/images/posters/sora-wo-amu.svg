@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 720" role="img" aria-labelledby="t">
+  <title id="t">空を編む デモポスター</title>
+  <defs><linearGradient id="g" y2="1"><stop stop-color="#78b7ce"/><stop offset=".7" stop-color="#d5e9df"/><stop offset="1" stop-color="#dfb58d"/></linearGradient></defs><rect width="480" height="720" fill="url(#g)"/><path d="m240 120 105 130-105 110-105-110z" fill="#f6d66e"/><path d="m240 360-20 100 55 70-45 90" fill="none" stroke="#fff" stroke-width="5"/><g fill="#fff" opacity=".75"><ellipse cx="100" cy="150" rx="85" ry="22"/><ellipse cx="390" cy="410" rx="100" ry="25"/></g>
+  <text x="50" y="585" fill="#173d4b" font-size="58" font-family="sans-serif" font-weight="700">空を編む</text><text x="53" y="632" fill="#fff" font-size="18" font-family="sans-serif" letter-spacing="6">WEAVING THE SKY</text><text x="53" y="678" fill="#173d4b" font-size="16" font-family="sans-serif">DEMO POSTER</text>
+</svg>

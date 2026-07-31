@@ -1,0 +1,1903 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-31T04:36:09.986Z",
+  "timezone": "Asia/Tokyo",
+  "sourceMode": "sample",
+  "dates": [
+    "2026-07-31",
+    "2026-08-01",
+    "2026-08-02",
+    "2026-08-03"
+  ],
+  "movies": [
+    {
+      "id": "hoshi-no-kouro",
+      "title": "星の航路",
+      "originalTitle": "Voyage of Stars",
+      "synopsis": "故郷を離れた若い航海士が、星図にない光を追って宇宙の海を旅する物語。",
+      "durationMinutes": 118,
+      "releaseDate": "2026-04-18",
+      "genres": [
+        "SF",
+        "ドラマ"
+      ],
+      "posterPath": "images/posters/hoshi-no-kouro.svg"
+    },
+    {
+      "id": "ameagari-no-tegami",
+      "title": "雨上がりの手紙",
+      "synopsis": "古い郵便局で見つかった一通の手紙が、町の人々の止まっていた時間を動かす。",
+      "durationMinutes": 104,
+      "releaseDate": "2026-05-09",
+      "genres": [
+        "ドラマ",
+        "ヒューマン"
+      ],
+      "posterPath": "images/posters/ameagari-no-tegami.svg"
+    },
+    {
+      "id": "midori-no-tokeitou",
+      "title": "緑の時計塔",
+      "originalTitle": "The Verdant Clock",
+      "synopsis": "時間が逆さに流れる時計塔を舞台に、姉弟が町の秘密を解き明かす冒険譚。",
+      "durationMinutes": 126,
+      "releaseDate": "2026-03-21",
+      "genres": [
+        "ファンタジー",
+        "アドベンチャー"
+      ],
+      "posterPath": "images/posters/midori-no-tokeitou.svg"
+    },
+    {
+      "id": "sora-wo-amu",
+      "title": "空を編む",
+      "synopsis": "海辺の工房で凧を作る職人と、空を撮り続ける写真家の静かな交流を描く。",
+      "durationMinutes": 97,
+      "releaseDate": "2026-06-06",
+      "genres": [
+        "恋愛",
+        "ドラマ"
+      ],
+      "posterPath": "images/posters/sora-wo-amu.svg"
+    },
+    {
+      "id": "yoru-no-toshokan",
+      "title": "夜の図書館",
+      "originalTitle": "Library After Dark",
+      "synopsis": "閉館後に本の登場人物が歩き出す図書館で、新人司書が失われた結末を探す。",
+      "durationMinutes": 111,
+      "releaseDate": "2026-02-14",
+      "genres": [
+        "ミステリー",
+        "ファンタジー"
+      ],
+      "posterPath": "images/posters/yoru-no-toshokan.svg"
+    },
+    {
+      "id": "natsu-no-kiroku",
+      "title": "夏の記録",
+      "synopsis": "高校最後の夏、映像部の四人が町の小さな祭りを記録する青春群像劇。",
+      "durationMinutes": 102,
+      "releaseDate": "2026-07-11",
+      "genres": [
+        "青春",
+        "ドラマ"
+      ],
+      "posterPath": "images/posters/natsu-no-kiroku.svg"
+    },
+    {
+      "id": "shiroi-hamon",
+      "title": "白い波紋",
+      "originalTitle": "White Ripples",
+      "synopsis": "雪深い湖畔の村で起きた失踪事件を、帰郷した記者が追うサスペンス。",
+      "durationMinutes": 129,
+      "releaseDate": "2026-01-24",
+      "genres": [
+        "サスペンス",
+        "ミステリー"
+      ],
+      "posterPath": "images/posters/shiroi-hamon.svg"
+    },
+    {
+      "id": "robot-to-asa",
+      "title": "ロボットと朝",
+      "synopsis": "一日の記憶しか持てないロボットとパン職人が、毎朝新しい友情を始める。",
+      "durationMinutes": 93,
+      "releaseDate": "2026-05-30",
+      "genres": [
+        "アニメーション",
+        "コメディ"
+      ],
+      "posterPath": "images/posters/robot-to-asa.svg"
+    },
+    {
+      "id": "kaze-no-restaurant",
+      "title": "風のレストラン",
+      "synopsis": "旅する料理人が一夜だけ開くレストランで、客たちの思い出の味を再現する。",
+      "durationMinutes": 108,
+      "releaseDate": "2026-06-20",
+      "genres": [
+        "ドラマ",
+        "グルメ"
+      ],
+      "posterPath": "images/posters/kaze-no-restaurant.svg"
+    },
+    {
+      "id": "ao-no-kakera",
+      "title": "青のかけら",
+      "originalTitle": "Fragments in Blue",
+      "synopsis": "幻の青い鉱石を探す研究者と山岳ガイドが、自然と向き合うロードムービー。",
+      "durationMinutes": 115,
+      "releaseDate": "2026-04-04",
+      "genres": [
+        "アドベンチャー",
+        "ドラマ"
+      ],
+      "posterPath": "images/posters/ao-no-kakera.svg"
+    }
+  ],
+  "theaters": [
+    {
+      "id": "theater-shibuya",
+      "name": "シネマ渋谷セントラル",
+      "area": "渋谷",
+      "description": "駅から徒歩5分。幅広いジャンルを上映するデモ映画館です。",
+      "officialUrl": "https://example.com/theaters/shibuya",
+      "ticketUrl": "https://example.com/tickets/shibuya"
+    },
+    {
+      "id": "theater-shinjuku",
+      "name": "新宿ムーンライトシネマ",
+      "area": "新宿",
+      "description": "ゆったりした座席と夜の上映が特徴のデモ映画館です。",
+      "officialUrl": "https://example.com/theaters/shinjuku",
+      "ticketUrl": "https://example.com/tickets/shinjuku"
+    },
+    {
+      "id": "theater-kichijoji",
+      "name": "吉祥寺フォレストシアター",
+      "area": "吉祥寺",
+      "description": "商店街の先にある、地域密着型のデモ映画館です。",
+      "officialUrl": "https://example.com/theaters/kichijoji",
+      "ticketUrl": "https://example.com/tickets/kichijoji"
+    },
+    {
+      "id": "theater-odaiba",
+      "name": "お台場ベイシネマ",
+      "area": "お台場",
+      "description": "海辺の景色と大きなスクリーンを楽しめるデモ映画館です。",
+      "officialUrl": "https://example.com/theaters/odaiba",
+      "ticketUrl": "https://example.com/tickets/odaiba"
+    }
+  ],
+  "screenings": [
+    {
+      "id": "screening-20260731-theater-shibuya-hoshi-no-kouro-0900",
+      "movieId": "hoshi-no-kouro",
+      "theaterId": "theater-shibuya",
+      "date": "2026-07-31",
+      "startTime": "09:00",
+      "endTime": "11:13",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=hoshi-no-kouro&date=2026-07-31&time=09:00"
+    },
+    {
+      "id": "screening-20260731-theater-shibuya-hoshi-no-kouro-1300",
+      "movieId": "hoshi-no-kouro",
+      "theaterId": "theater-shibuya",
+      "date": "2026-07-31",
+      "startTime": "13:00",
+      "endTime": "15:13",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=hoshi-no-kouro&date=2026-07-31&time=13:00"
+    },
+    {
+      "id": "screening-20260731-theater-shibuya-hoshi-no-kouro-1700",
+      "movieId": "hoshi-no-kouro",
+      "theaterId": "theater-shibuya",
+      "date": "2026-07-31",
+      "startTime": "17:00",
+      "endTime": "19:13",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=hoshi-no-kouro&date=2026-07-31&time=17:00"
+    },
+    {
+      "id": "screening-20260731-theater-shibuya-ameagari-no-tegami-0900",
+      "movieId": "ameagari-no-tegami",
+      "theaterId": "theater-shibuya",
+      "date": "2026-07-31",
+      "startTime": "09:00",
+      "endTime": "10:59",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=ameagari-no-tegami&date=2026-07-31&time=09:00"
+    },
+    {
+      "id": "screening-20260731-theater-shibuya-ameagari-no-tegami-1302",
+      "movieId": "ameagari-no-tegami",
+      "theaterId": "theater-shibuya",
+      "date": "2026-07-31",
+      "startTime": "13:02",
+      "endTime": "15:01",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=ameagari-no-tegami&date=2026-07-31&time=13:02"
+    },
+    {
+      "id": "screening-20260731-theater-shibuya-ameagari-no-tegami-1703",
+      "movieId": "ameagari-no-tegami",
+      "theaterId": "theater-shibuya",
+      "date": "2026-07-31",
+      "startTime": "17:03",
+      "endTime": "19:02",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=ameagari-no-tegami&date=2026-07-31&time=17:03"
+    },
+    {
+      "id": "screening-20260731-theater-shibuya-midori-no-tokeitou-0900",
+      "movieId": "midori-no-tokeitou",
+      "theaterId": "theater-shibuya",
+      "date": "2026-07-31",
+      "startTime": "09:00",
+      "endTime": "11:21",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=midori-no-tokeitou&date=2026-07-31&time=09:00"
+    },
+    {
+      "id": "screening-20260731-theater-shibuya-midori-no-tokeitou-1304",
+      "movieId": "midori-no-tokeitou",
+      "theaterId": "theater-shibuya",
+      "date": "2026-07-31",
+      "startTime": "13:04",
+      "endTime": "15:25",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=midori-no-tokeitou&date=2026-07-31&time=13:04"
+    },
+    {
+      "id": "screening-20260731-theater-shibuya-midori-no-tokeitou-1706",
+      "movieId": "midori-no-tokeitou",
+      "theaterId": "theater-shibuya",
+      "date": "2026-07-31",
+      "startTime": "17:06",
+      "endTime": "19:27",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=midori-no-tokeitou&date=2026-07-31&time=17:06"
+    },
+    {
+      "id": "screening-20260731-theater-shibuya-sora-wo-amu-0900",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shibuya",
+      "date": "2026-07-31",
+      "startTime": "09:00",
+      "endTime": "10:52",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=sora-wo-amu&date=2026-07-31&time=09:00"
+    },
+    {
+      "id": "screening-20260731-theater-shibuya-sora-wo-amu-1306",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shibuya",
+      "date": "2026-07-31",
+      "startTime": "13:06",
+      "endTime": "14:58",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=sora-wo-amu&date=2026-07-31&time=13:06"
+    },
+    {
+      "id": "screening-20260731-theater-shibuya-sora-wo-amu-1709",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shibuya",
+      "date": "2026-07-31",
+      "startTime": "17:09",
+      "endTime": "19:01",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=sora-wo-amu&date=2026-07-31&time=17:09"
+    },
+    {
+      "id": "screening-20260731-theater-shinjuku-midori-no-tokeitou-0905",
+      "movieId": "midori-no-tokeitou",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-07-31",
+      "startTime": "09:05",
+      "endTime": "11:26",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=midori-no-tokeitou&date=2026-07-31&time=09:05"
+    },
+    {
+      "id": "screening-20260731-theater-shinjuku-midori-no-tokeitou-1305",
+      "movieId": "midori-no-tokeitou",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-07-31",
+      "startTime": "13:05",
+      "endTime": "15:26",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=midori-no-tokeitou&date=2026-07-31&time=13:05"
+    },
+    {
+      "id": "screening-20260731-theater-shinjuku-midori-no-tokeitou-1705",
+      "movieId": "midori-no-tokeitou",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-07-31",
+      "startTime": "17:05",
+      "endTime": "19:26",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=midori-no-tokeitou&date=2026-07-31&time=17:05"
+    },
+    {
+      "id": "screening-20260731-theater-shinjuku-sora-wo-amu-0905",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-07-31",
+      "startTime": "09:05",
+      "endTime": "10:57",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=sora-wo-amu&date=2026-07-31&time=09:05"
+    },
+    {
+      "id": "screening-20260731-theater-shinjuku-sora-wo-amu-1307",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-07-31",
+      "startTime": "13:07",
+      "endTime": "14:59",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=sora-wo-amu&date=2026-07-31&time=13:07"
+    },
+    {
+      "id": "screening-20260731-theater-shinjuku-sora-wo-amu-1708",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-07-31",
+      "startTime": "17:08",
+      "endTime": "19:00",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=sora-wo-amu&date=2026-07-31&time=17:08"
+    },
+    {
+      "id": "screening-20260731-theater-shinjuku-yoru-no-toshokan-0905",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-07-31",
+      "startTime": "09:05",
+      "endTime": "11:11",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=yoru-no-toshokan&date=2026-07-31&time=09:05"
+    },
+    {
+      "id": "screening-20260731-theater-shinjuku-yoru-no-toshokan-1309",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-07-31",
+      "startTime": "13:09",
+      "endTime": "15:15",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=yoru-no-toshokan&date=2026-07-31&time=13:09"
+    },
+    {
+      "id": "screening-20260731-theater-shinjuku-yoru-no-toshokan-1711",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-07-31",
+      "startTime": "17:11",
+      "endTime": "19:17",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=yoru-no-toshokan&date=2026-07-31&time=17:11"
+    },
+    {
+      "id": "screening-20260731-theater-shinjuku-natsu-no-kiroku-0905",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-07-31",
+      "startTime": "09:05",
+      "endTime": "11:02",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=natsu-no-kiroku&date=2026-07-31&time=09:05"
+    },
+    {
+      "id": "screening-20260731-theater-shinjuku-natsu-no-kiroku-1311",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-07-31",
+      "startTime": "13:11",
+      "endTime": "15:08",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=natsu-no-kiroku&date=2026-07-31&time=13:11"
+    },
+    {
+      "id": "screening-20260731-theater-shinjuku-natsu-no-kiroku-1714",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-07-31",
+      "startTime": "17:14",
+      "endTime": "19:11",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=natsu-no-kiroku&date=2026-07-31&time=17:14"
+    },
+    {
+      "id": "screening-20260731-theater-kichijoji-yoru-no-toshokan-0910",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-07-31",
+      "startTime": "09:10",
+      "endTime": "11:16",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=yoru-no-toshokan&date=2026-07-31&time=09:10"
+    },
+    {
+      "id": "screening-20260731-theater-kichijoji-yoru-no-toshokan-1310",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-07-31",
+      "startTime": "13:10",
+      "endTime": "15:16",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=yoru-no-toshokan&date=2026-07-31&time=13:10"
+    },
+    {
+      "id": "screening-20260731-theater-kichijoji-yoru-no-toshokan-1710",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-07-31",
+      "startTime": "17:10",
+      "endTime": "19:16",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=yoru-no-toshokan&date=2026-07-31&time=17:10"
+    },
+    {
+      "id": "screening-20260731-theater-kichijoji-natsu-no-kiroku-0910",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-07-31",
+      "startTime": "09:10",
+      "endTime": "11:07",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=natsu-no-kiroku&date=2026-07-31&time=09:10"
+    },
+    {
+      "id": "screening-20260731-theater-kichijoji-natsu-no-kiroku-1312",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-07-31",
+      "startTime": "13:12",
+      "endTime": "15:09",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=natsu-no-kiroku&date=2026-07-31&time=13:12"
+    },
+    {
+      "id": "screening-20260731-theater-kichijoji-natsu-no-kiroku-1713",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-07-31",
+      "startTime": "17:13",
+      "endTime": "19:10",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=natsu-no-kiroku&date=2026-07-31&time=17:13"
+    },
+    {
+      "id": "screening-20260731-theater-kichijoji-shiroi-hamon-0910",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-07-31",
+      "startTime": "09:10",
+      "endTime": "11:34",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=shiroi-hamon&date=2026-07-31&time=09:10"
+    },
+    {
+      "id": "screening-20260731-theater-kichijoji-shiroi-hamon-1314",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-07-31",
+      "startTime": "13:14",
+      "endTime": "15:38",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=shiroi-hamon&date=2026-07-31&time=13:14"
+    },
+    {
+      "id": "screening-20260731-theater-kichijoji-shiroi-hamon-1716",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-07-31",
+      "startTime": "17:16",
+      "endTime": "19:40",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=shiroi-hamon&date=2026-07-31&time=17:16"
+    },
+    {
+      "id": "screening-20260731-theater-kichijoji-robot-to-asa-0910",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-07-31",
+      "startTime": "09:10",
+      "endTime": "10:58",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=robot-to-asa&date=2026-07-31&time=09:10"
+    },
+    {
+      "id": "screening-20260731-theater-kichijoji-robot-to-asa-1316",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-07-31",
+      "startTime": "13:16",
+      "endTime": "15:04",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=robot-to-asa&date=2026-07-31&time=13:16"
+    },
+    {
+      "id": "screening-20260731-theater-kichijoji-robot-to-asa-1719",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-07-31",
+      "startTime": "17:19",
+      "endTime": "19:07",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=robot-to-asa&date=2026-07-31&time=17:19"
+    },
+    {
+      "id": "screening-20260731-theater-odaiba-shiroi-hamon-0915",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-odaiba",
+      "date": "2026-07-31",
+      "startTime": "09:15",
+      "endTime": "11:39",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=shiroi-hamon&date=2026-07-31&time=09:15"
+    },
+    {
+      "id": "screening-20260731-theater-odaiba-shiroi-hamon-1315",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-odaiba",
+      "date": "2026-07-31",
+      "startTime": "13:15",
+      "endTime": "15:39",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=shiroi-hamon&date=2026-07-31&time=13:15"
+    },
+    {
+      "id": "screening-20260731-theater-odaiba-shiroi-hamon-1715",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-odaiba",
+      "date": "2026-07-31",
+      "startTime": "17:15",
+      "endTime": "19:39",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=shiroi-hamon&date=2026-07-31&time=17:15"
+    },
+    {
+      "id": "screening-20260731-theater-odaiba-robot-to-asa-0915",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-odaiba",
+      "date": "2026-07-31",
+      "startTime": "09:15",
+      "endTime": "11:03",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=robot-to-asa&date=2026-07-31&time=09:15"
+    },
+    {
+      "id": "screening-20260731-theater-odaiba-robot-to-asa-1317",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-odaiba",
+      "date": "2026-07-31",
+      "startTime": "13:17",
+      "endTime": "15:05",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=robot-to-asa&date=2026-07-31&time=13:17"
+    },
+    {
+      "id": "screening-20260731-theater-odaiba-robot-to-asa-1718",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-odaiba",
+      "date": "2026-07-31",
+      "startTime": "17:18",
+      "endTime": "19:06",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=robot-to-asa&date=2026-07-31&time=17:18"
+    },
+    {
+      "id": "screening-20260731-theater-odaiba-kaze-no-restaurant-0915",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-odaiba",
+      "date": "2026-07-31",
+      "startTime": "09:15",
+      "endTime": "11:18",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=kaze-no-restaurant&date=2026-07-31&time=09:15"
+    },
+    {
+      "id": "screening-20260731-theater-odaiba-kaze-no-restaurant-1319",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-odaiba",
+      "date": "2026-07-31",
+      "startTime": "13:19",
+      "endTime": "15:22",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=kaze-no-restaurant&date=2026-07-31&time=13:19"
+    },
+    {
+      "id": "screening-20260731-theater-odaiba-kaze-no-restaurant-1721",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-odaiba",
+      "date": "2026-07-31",
+      "startTime": "17:21",
+      "endTime": "19:24",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=kaze-no-restaurant&date=2026-07-31&time=17:21"
+    },
+    {
+      "id": "screening-20260731-theater-odaiba-ao-no-kakera-0915",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-odaiba",
+      "date": "2026-07-31",
+      "startTime": "09:15",
+      "endTime": "11:25",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ao-no-kakera&date=2026-07-31&time=09:15"
+    },
+    {
+      "id": "screening-20260731-theater-odaiba-ao-no-kakera-1321",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-odaiba",
+      "date": "2026-07-31",
+      "startTime": "13:21",
+      "endTime": "15:31",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ao-no-kakera&date=2026-07-31&time=13:21"
+    },
+    {
+      "id": "screening-20260731-theater-odaiba-ao-no-kakera-1724",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-odaiba",
+      "date": "2026-07-31",
+      "startTime": "17:24",
+      "endTime": "19:34",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ao-no-kakera&date=2026-07-31&time=17:24"
+    },
+    {
+      "id": "screening-20260801-theater-shibuya-ameagari-no-tegami-0905",
+      "movieId": "ameagari-no-tegami",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-01",
+      "startTime": "09:05",
+      "endTime": "11:04",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=ameagari-no-tegami&date=2026-08-01&time=09:05"
+    },
+    {
+      "id": "screening-20260801-theater-shibuya-ameagari-no-tegami-1305",
+      "movieId": "ameagari-no-tegami",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-01",
+      "startTime": "13:05",
+      "endTime": "15:04",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=ameagari-no-tegami&date=2026-08-01&time=13:05"
+    },
+    {
+      "id": "screening-20260801-theater-shibuya-ameagari-no-tegami-1705",
+      "movieId": "ameagari-no-tegami",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-01",
+      "startTime": "17:05",
+      "endTime": "19:04",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=ameagari-no-tegami&date=2026-08-01&time=17:05"
+    },
+    {
+      "id": "screening-20260801-theater-shibuya-midori-no-tokeitou-0905",
+      "movieId": "midori-no-tokeitou",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-01",
+      "startTime": "09:05",
+      "endTime": "11:26",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=midori-no-tokeitou&date=2026-08-01&time=09:05"
+    },
+    {
+      "id": "screening-20260801-theater-shibuya-midori-no-tokeitou-1307",
+      "movieId": "midori-no-tokeitou",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-01",
+      "startTime": "13:07",
+      "endTime": "15:28",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=midori-no-tokeitou&date=2026-08-01&time=13:07"
+    },
+    {
+      "id": "screening-20260801-theater-shibuya-midori-no-tokeitou-1708",
+      "movieId": "midori-no-tokeitou",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-01",
+      "startTime": "17:08",
+      "endTime": "19:29",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=midori-no-tokeitou&date=2026-08-01&time=17:08"
+    },
+    {
+      "id": "screening-20260801-theater-shibuya-sora-wo-amu-0905",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-01",
+      "startTime": "09:05",
+      "endTime": "10:57",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=sora-wo-amu&date=2026-08-01&time=09:05"
+    },
+    {
+      "id": "screening-20260801-theater-shibuya-sora-wo-amu-1309",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-01",
+      "startTime": "13:09",
+      "endTime": "15:01",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=sora-wo-amu&date=2026-08-01&time=13:09"
+    },
+    {
+      "id": "screening-20260801-theater-shibuya-sora-wo-amu-1711",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-01",
+      "startTime": "17:11",
+      "endTime": "19:03",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=sora-wo-amu&date=2026-08-01&time=17:11"
+    },
+    {
+      "id": "screening-20260801-theater-shibuya-yoru-no-toshokan-0905",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-01",
+      "startTime": "09:05",
+      "endTime": "11:11",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=yoru-no-toshokan&date=2026-08-01&time=09:05"
+    },
+    {
+      "id": "screening-20260801-theater-shibuya-yoru-no-toshokan-1311",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-01",
+      "startTime": "13:11",
+      "endTime": "15:17",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=yoru-no-toshokan&date=2026-08-01&time=13:11"
+    },
+    {
+      "id": "screening-20260801-theater-shibuya-yoru-no-toshokan-1714",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-01",
+      "startTime": "17:14",
+      "endTime": "19:20",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=yoru-no-toshokan&date=2026-08-01&time=17:14"
+    },
+    {
+      "id": "screening-20260801-theater-shinjuku-sora-wo-amu-0910",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-01",
+      "startTime": "09:10",
+      "endTime": "11:02",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=sora-wo-amu&date=2026-08-01&time=09:10"
+    },
+    {
+      "id": "screening-20260801-theater-shinjuku-sora-wo-amu-1310",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-01",
+      "startTime": "13:10",
+      "endTime": "15:02",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=sora-wo-amu&date=2026-08-01&time=13:10"
+    },
+    {
+      "id": "screening-20260801-theater-shinjuku-sora-wo-amu-1710",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-01",
+      "startTime": "17:10",
+      "endTime": "19:02",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=sora-wo-amu&date=2026-08-01&time=17:10"
+    },
+    {
+      "id": "screening-20260801-theater-shinjuku-yoru-no-toshokan-0910",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-01",
+      "startTime": "09:10",
+      "endTime": "11:16",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=yoru-no-toshokan&date=2026-08-01&time=09:10"
+    },
+    {
+      "id": "screening-20260801-theater-shinjuku-yoru-no-toshokan-1312",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-01",
+      "startTime": "13:12",
+      "endTime": "15:18",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=yoru-no-toshokan&date=2026-08-01&time=13:12"
+    },
+    {
+      "id": "screening-20260801-theater-shinjuku-yoru-no-toshokan-1713",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-01",
+      "startTime": "17:13",
+      "endTime": "19:19",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=yoru-no-toshokan&date=2026-08-01&time=17:13"
+    },
+    {
+      "id": "screening-20260801-theater-shinjuku-natsu-no-kiroku-0910",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-01",
+      "startTime": "09:10",
+      "endTime": "11:07",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=natsu-no-kiroku&date=2026-08-01&time=09:10"
+    },
+    {
+      "id": "screening-20260801-theater-shinjuku-natsu-no-kiroku-1314",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-01",
+      "startTime": "13:14",
+      "endTime": "15:11",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=natsu-no-kiroku&date=2026-08-01&time=13:14"
+    },
+    {
+      "id": "screening-20260801-theater-shinjuku-natsu-no-kiroku-1716",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-01",
+      "startTime": "17:16",
+      "endTime": "19:13",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=natsu-no-kiroku&date=2026-08-01&time=17:16"
+    },
+    {
+      "id": "screening-20260801-theater-shinjuku-shiroi-hamon-0910",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-01",
+      "startTime": "09:10",
+      "endTime": "11:34",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=shiroi-hamon&date=2026-08-01&time=09:10"
+    },
+    {
+      "id": "screening-20260801-theater-shinjuku-shiroi-hamon-1316",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-01",
+      "startTime": "13:16",
+      "endTime": "15:40",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=shiroi-hamon&date=2026-08-01&time=13:16"
+    },
+    {
+      "id": "screening-20260801-theater-shinjuku-shiroi-hamon-1719",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-01",
+      "startTime": "17:19",
+      "endTime": "19:43",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=shiroi-hamon&date=2026-08-01&time=17:19"
+    },
+    {
+      "id": "screening-20260801-theater-kichijoji-natsu-no-kiroku-0915",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-01",
+      "startTime": "09:15",
+      "endTime": "11:12",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=natsu-no-kiroku&date=2026-08-01&time=09:15"
+    },
+    {
+      "id": "screening-20260801-theater-kichijoji-natsu-no-kiroku-1315",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-01",
+      "startTime": "13:15",
+      "endTime": "15:12",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=natsu-no-kiroku&date=2026-08-01&time=13:15"
+    },
+    {
+      "id": "screening-20260801-theater-kichijoji-natsu-no-kiroku-1715",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-01",
+      "startTime": "17:15",
+      "endTime": "19:12",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=natsu-no-kiroku&date=2026-08-01&time=17:15"
+    },
+    {
+      "id": "screening-20260801-theater-kichijoji-shiroi-hamon-0915",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-01",
+      "startTime": "09:15",
+      "endTime": "11:39",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=shiroi-hamon&date=2026-08-01&time=09:15"
+    },
+    {
+      "id": "screening-20260801-theater-kichijoji-shiroi-hamon-1317",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-01",
+      "startTime": "13:17",
+      "endTime": "15:41",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=shiroi-hamon&date=2026-08-01&time=13:17"
+    },
+    {
+      "id": "screening-20260801-theater-kichijoji-shiroi-hamon-1718",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-01",
+      "startTime": "17:18",
+      "endTime": "19:42",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=shiroi-hamon&date=2026-08-01&time=17:18"
+    },
+    {
+      "id": "screening-20260801-theater-kichijoji-robot-to-asa-0915",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-01",
+      "startTime": "09:15",
+      "endTime": "11:03",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=robot-to-asa&date=2026-08-01&time=09:15"
+    },
+    {
+      "id": "screening-20260801-theater-kichijoji-robot-to-asa-1319",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-01",
+      "startTime": "13:19",
+      "endTime": "15:07",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=robot-to-asa&date=2026-08-01&time=13:19"
+    },
+    {
+      "id": "screening-20260801-theater-kichijoji-robot-to-asa-1721",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-01",
+      "startTime": "17:21",
+      "endTime": "19:09",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=robot-to-asa&date=2026-08-01&time=17:21"
+    },
+    {
+      "id": "screening-20260801-theater-kichijoji-kaze-no-restaurant-0915",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-01",
+      "startTime": "09:15",
+      "endTime": "11:18",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=kaze-no-restaurant&date=2026-08-01&time=09:15"
+    },
+    {
+      "id": "screening-20260801-theater-kichijoji-kaze-no-restaurant-1321",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-01",
+      "startTime": "13:21",
+      "endTime": "15:24",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=kaze-no-restaurant&date=2026-08-01&time=13:21"
+    },
+    {
+      "id": "screening-20260801-theater-kichijoji-kaze-no-restaurant-1724",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-01",
+      "startTime": "17:24",
+      "endTime": "19:27",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=kaze-no-restaurant&date=2026-08-01&time=17:24"
+    },
+    {
+      "id": "screening-20260801-theater-odaiba-robot-to-asa-0920",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-01",
+      "startTime": "09:20",
+      "endTime": "11:08",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=robot-to-asa&date=2026-08-01&time=09:20"
+    },
+    {
+      "id": "screening-20260801-theater-odaiba-robot-to-asa-1320",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-01",
+      "startTime": "13:20",
+      "endTime": "15:08",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=robot-to-asa&date=2026-08-01&time=13:20"
+    },
+    {
+      "id": "screening-20260801-theater-odaiba-robot-to-asa-1720",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-01",
+      "startTime": "17:20",
+      "endTime": "19:08",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=robot-to-asa&date=2026-08-01&time=17:20"
+    },
+    {
+      "id": "screening-20260801-theater-odaiba-kaze-no-restaurant-0920",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-01",
+      "startTime": "09:20",
+      "endTime": "11:23",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=kaze-no-restaurant&date=2026-08-01&time=09:20"
+    },
+    {
+      "id": "screening-20260801-theater-odaiba-kaze-no-restaurant-1322",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-01",
+      "startTime": "13:22",
+      "endTime": "15:25",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=kaze-no-restaurant&date=2026-08-01&time=13:22"
+    },
+    {
+      "id": "screening-20260801-theater-odaiba-kaze-no-restaurant-1723",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-01",
+      "startTime": "17:23",
+      "endTime": "19:26",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=kaze-no-restaurant&date=2026-08-01&time=17:23"
+    },
+    {
+      "id": "screening-20260801-theater-odaiba-ao-no-kakera-0920",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-01",
+      "startTime": "09:20",
+      "endTime": "11:30",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ao-no-kakera&date=2026-08-01&time=09:20"
+    },
+    {
+      "id": "screening-20260801-theater-odaiba-ao-no-kakera-1324",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-01",
+      "startTime": "13:24",
+      "endTime": "15:34",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ao-no-kakera&date=2026-08-01&time=13:24"
+    },
+    {
+      "id": "screening-20260801-theater-odaiba-ao-no-kakera-1726",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-01",
+      "startTime": "17:26",
+      "endTime": "19:36",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ao-no-kakera&date=2026-08-01&time=17:26"
+    },
+    {
+      "id": "screening-20260801-theater-odaiba-hoshi-no-kouro-0920",
+      "movieId": "hoshi-no-kouro",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-01",
+      "startTime": "09:20",
+      "endTime": "11:33",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=hoshi-no-kouro&date=2026-08-01&time=09:20"
+    },
+    {
+      "id": "screening-20260801-theater-odaiba-hoshi-no-kouro-1326",
+      "movieId": "hoshi-no-kouro",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-01",
+      "startTime": "13:26",
+      "endTime": "15:39",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=hoshi-no-kouro&date=2026-08-01&time=13:26"
+    },
+    {
+      "id": "screening-20260801-theater-odaiba-hoshi-no-kouro-1729",
+      "movieId": "hoshi-no-kouro",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-01",
+      "startTime": "17:29",
+      "endTime": "19:42",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=hoshi-no-kouro&date=2026-08-01&time=17:29"
+    },
+    {
+      "id": "screening-20260802-theater-shibuya-midori-no-tokeitou-0900",
+      "movieId": "midori-no-tokeitou",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-02",
+      "startTime": "09:00",
+      "endTime": "11:21",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=midori-no-tokeitou&date=2026-08-02&time=09:00"
+    },
+    {
+      "id": "screening-20260802-theater-shibuya-midori-no-tokeitou-1300",
+      "movieId": "midori-no-tokeitou",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-02",
+      "startTime": "13:00",
+      "endTime": "15:21",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=midori-no-tokeitou&date=2026-08-02&time=13:00"
+    },
+    {
+      "id": "screening-20260802-theater-shibuya-midori-no-tokeitou-1700",
+      "movieId": "midori-no-tokeitou",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-02",
+      "startTime": "17:00",
+      "endTime": "19:21",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=midori-no-tokeitou&date=2026-08-02&time=17:00"
+    },
+    {
+      "id": "screening-20260802-theater-shibuya-sora-wo-amu-0900",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-02",
+      "startTime": "09:00",
+      "endTime": "10:52",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=sora-wo-amu&date=2026-08-02&time=09:00"
+    },
+    {
+      "id": "screening-20260802-theater-shibuya-sora-wo-amu-1302",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-02",
+      "startTime": "13:02",
+      "endTime": "14:54",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=sora-wo-amu&date=2026-08-02&time=13:02"
+    },
+    {
+      "id": "screening-20260802-theater-shibuya-sora-wo-amu-1703",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-02",
+      "startTime": "17:03",
+      "endTime": "18:55",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=sora-wo-amu&date=2026-08-02&time=17:03"
+    },
+    {
+      "id": "screening-20260802-theater-shibuya-yoru-no-toshokan-0900",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-02",
+      "startTime": "09:00",
+      "endTime": "11:06",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=yoru-no-toshokan&date=2026-08-02&time=09:00"
+    },
+    {
+      "id": "screening-20260802-theater-shibuya-yoru-no-toshokan-1304",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-02",
+      "startTime": "13:04",
+      "endTime": "15:10",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=yoru-no-toshokan&date=2026-08-02&time=13:04"
+    },
+    {
+      "id": "screening-20260802-theater-shibuya-yoru-no-toshokan-1706",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-02",
+      "startTime": "17:06",
+      "endTime": "19:12",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=yoru-no-toshokan&date=2026-08-02&time=17:06"
+    },
+    {
+      "id": "screening-20260802-theater-shibuya-natsu-no-kiroku-0900",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-02",
+      "startTime": "09:00",
+      "endTime": "10:57",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=natsu-no-kiroku&date=2026-08-02&time=09:00"
+    },
+    {
+      "id": "screening-20260802-theater-shibuya-natsu-no-kiroku-1306",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-02",
+      "startTime": "13:06",
+      "endTime": "15:03",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=natsu-no-kiroku&date=2026-08-02&time=13:06"
+    },
+    {
+      "id": "screening-20260802-theater-shibuya-natsu-no-kiroku-1709",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-02",
+      "startTime": "17:09",
+      "endTime": "19:06",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=natsu-no-kiroku&date=2026-08-02&time=17:09"
+    },
+    {
+      "id": "screening-20260802-theater-shinjuku-yoru-no-toshokan-0905",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-02",
+      "startTime": "09:05",
+      "endTime": "11:11",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=yoru-no-toshokan&date=2026-08-02&time=09:05"
+    },
+    {
+      "id": "screening-20260802-theater-shinjuku-yoru-no-toshokan-1305",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-02",
+      "startTime": "13:05",
+      "endTime": "15:11",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=yoru-no-toshokan&date=2026-08-02&time=13:05"
+    },
+    {
+      "id": "screening-20260802-theater-shinjuku-yoru-no-toshokan-1705",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-02",
+      "startTime": "17:05",
+      "endTime": "19:11",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=yoru-no-toshokan&date=2026-08-02&time=17:05"
+    },
+    {
+      "id": "screening-20260802-theater-shinjuku-natsu-no-kiroku-0905",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-02",
+      "startTime": "09:05",
+      "endTime": "11:02",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=natsu-no-kiroku&date=2026-08-02&time=09:05"
+    },
+    {
+      "id": "screening-20260802-theater-shinjuku-natsu-no-kiroku-1307",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-02",
+      "startTime": "13:07",
+      "endTime": "15:04",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=natsu-no-kiroku&date=2026-08-02&time=13:07"
+    },
+    {
+      "id": "screening-20260802-theater-shinjuku-natsu-no-kiroku-1708",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-02",
+      "startTime": "17:08",
+      "endTime": "19:05",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=natsu-no-kiroku&date=2026-08-02&time=17:08"
+    },
+    {
+      "id": "screening-20260802-theater-shinjuku-shiroi-hamon-0905",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-02",
+      "startTime": "09:05",
+      "endTime": "11:29",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=shiroi-hamon&date=2026-08-02&time=09:05"
+    },
+    {
+      "id": "screening-20260802-theater-shinjuku-shiroi-hamon-1309",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-02",
+      "startTime": "13:09",
+      "endTime": "15:33",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=shiroi-hamon&date=2026-08-02&time=13:09"
+    },
+    {
+      "id": "screening-20260802-theater-shinjuku-shiroi-hamon-1711",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-02",
+      "startTime": "17:11",
+      "endTime": "19:35",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=shiroi-hamon&date=2026-08-02&time=17:11"
+    },
+    {
+      "id": "screening-20260802-theater-shinjuku-robot-to-asa-0905",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-02",
+      "startTime": "09:05",
+      "endTime": "10:53",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=robot-to-asa&date=2026-08-02&time=09:05"
+    },
+    {
+      "id": "screening-20260802-theater-shinjuku-robot-to-asa-1311",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-02",
+      "startTime": "13:11",
+      "endTime": "14:59",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=robot-to-asa&date=2026-08-02&time=13:11"
+    },
+    {
+      "id": "screening-20260802-theater-shinjuku-robot-to-asa-1714",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-02",
+      "startTime": "17:14",
+      "endTime": "19:02",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=robot-to-asa&date=2026-08-02&time=17:14"
+    },
+    {
+      "id": "screening-20260802-theater-kichijoji-shiroi-hamon-0910",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-02",
+      "startTime": "09:10",
+      "endTime": "11:34",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=shiroi-hamon&date=2026-08-02&time=09:10"
+    },
+    {
+      "id": "screening-20260802-theater-kichijoji-shiroi-hamon-1310",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-02",
+      "startTime": "13:10",
+      "endTime": "15:34",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=shiroi-hamon&date=2026-08-02&time=13:10"
+    },
+    {
+      "id": "screening-20260802-theater-kichijoji-shiroi-hamon-1710",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-02",
+      "startTime": "17:10",
+      "endTime": "19:34",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=shiroi-hamon&date=2026-08-02&time=17:10"
+    },
+    {
+      "id": "screening-20260802-theater-kichijoji-robot-to-asa-0910",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-02",
+      "startTime": "09:10",
+      "endTime": "10:58",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=robot-to-asa&date=2026-08-02&time=09:10"
+    },
+    {
+      "id": "screening-20260802-theater-kichijoji-robot-to-asa-1312",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-02",
+      "startTime": "13:12",
+      "endTime": "15:00",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=robot-to-asa&date=2026-08-02&time=13:12"
+    },
+    {
+      "id": "screening-20260802-theater-kichijoji-robot-to-asa-1713",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-02",
+      "startTime": "17:13",
+      "endTime": "19:01",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=robot-to-asa&date=2026-08-02&time=17:13"
+    },
+    {
+      "id": "screening-20260802-theater-kichijoji-kaze-no-restaurant-0910",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-02",
+      "startTime": "09:10",
+      "endTime": "11:13",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=kaze-no-restaurant&date=2026-08-02&time=09:10"
+    },
+    {
+      "id": "screening-20260802-theater-kichijoji-kaze-no-restaurant-1314",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-02",
+      "startTime": "13:14",
+      "endTime": "15:17",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=kaze-no-restaurant&date=2026-08-02&time=13:14"
+    },
+    {
+      "id": "screening-20260802-theater-kichijoji-kaze-no-restaurant-1716",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-02",
+      "startTime": "17:16",
+      "endTime": "19:19",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=kaze-no-restaurant&date=2026-08-02&time=17:16"
+    },
+    {
+      "id": "screening-20260802-theater-kichijoji-ao-no-kakera-0910",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-02",
+      "startTime": "09:10",
+      "endTime": "11:20",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=ao-no-kakera&date=2026-08-02&time=09:10"
+    },
+    {
+      "id": "screening-20260802-theater-kichijoji-ao-no-kakera-1316",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-02",
+      "startTime": "13:16",
+      "endTime": "15:26",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=ao-no-kakera&date=2026-08-02&time=13:16"
+    },
+    {
+      "id": "screening-20260802-theater-kichijoji-ao-no-kakera-1719",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-02",
+      "startTime": "17:19",
+      "endTime": "19:29",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=ao-no-kakera&date=2026-08-02&time=17:19"
+    },
+    {
+      "id": "screening-20260802-theater-odaiba-kaze-no-restaurant-0915",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-02",
+      "startTime": "09:15",
+      "endTime": "11:18",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=kaze-no-restaurant&date=2026-08-02&time=09:15"
+    },
+    {
+      "id": "screening-20260802-theater-odaiba-kaze-no-restaurant-1315",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-02",
+      "startTime": "13:15",
+      "endTime": "15:18",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=kaze-no-restaurant&date=2026-08-02&time=13:15"
+    },
+    {
+      "id": "screening-20260802-theater-odaiba-kaze-no-restaurant-1715",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-02",
+      "startTime": "17:15",
+      "endTime": "19:18",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=kaze-no-restaurant&date=2026-08-02&time=17:15"
+    },
+    {
+      "id": "screening-20260802-theater-odaiba-ao-no-kakera-0915",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-02",
+      "startTime": "09:15",
+      "endTime": "11:25",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ao-no-kakera&date=2026-08-02&time=09:15"
+    },
+    {
+      "id": "screening-20260802-theater-odaiba-ao-no-kakera-1317",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-02",
+      "startTime": "13:17",
+      "endTime": "15:27",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ao-no-kakera&date=2026-08-02&time=13:17"
+    },
+    {
+      "id": "screening-20260802-theater-odaiba-ao-no-kakera-1718",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-02",
+      "startTime": "17:18",
+      "endTime": "19:28",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ao-no-kakera&date=2026-08-02&time=17:18"
+    },
+    {
+      "id": "screening-20260802-theater-odaiba-hoshi-no-kouro-0915",
+      "movieId": "hoshi-no-kouro",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-02",
+      "startTime": "09:15",
+      "endTime": "11:28",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=hoshi-no-kouro&date=2026-08-02&time=09:15"
+    },
+    {
+      "id": "screening-20260802-theater-odaiba-hoshi-no-kouro-1319",
+      "movieId": "hoshi-no-kouro",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-02",
+      "startTime": "13:19",
+      "endTime": "15:32",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=hoshi-no-kouro&date=2026-08-02&time=13:19"
+    },
+    {
+      "id": "screening-20260802-theater-odaiba-hoshi-no-kouro-1721",
+      "movieId": "hoshi-no-kouro",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-02",
+      "startTime": "17:21",
+      "endTime": "19:34",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=hoshi-no-kouro&date=2026-08-02&time=17:21"
+    },
+    {
+      "id": "screening-20260802-theater-odaiba-ameagari-no-tegami-0915",
+      "movieId": "ameagari-no-tegami",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-02",
+      "startTime": "09:15",
+      "endTime": "11:14",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ameagari-no-tegami&date=2026-08-02&time=09:15"
+    },
+    {
+      "id": "screening-20260802-theater-odaiba-ameagari-no-tegami-1321",
+      "movieId": "ameagari-no-tegami",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-02",
+      "startTime": "13:21",
+      "endTime": "15:20",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ameagari-no-tegami&date=2026-08-02&time=13:21"
+    },
+    {
+      "id": "screening-20260802-theater-odaiba-ameagari-no-tegami-1724",
+      "movieId": "ameagari-no-tegami",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-02",
+      "startTime": "17:24",
+      "endTime": "19:23",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ameagari-no-tegami&date=2026-08-02&time=17:24"
+    },
+    {
+      "id": "screening-20260803-theater-shibuya-sora-wo-amu-0905",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-03",
+      "startTime": "09:05",
+      "endTime": "10:57",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=sora-wo-amu&date=2026-08-03&time=09:05"
+    },
+    {
+      "id": "screening-20260803-theater-shibuya-sora-wo-amu-1305",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-03",
+      "startTime": "13:05",
+      "endTime": "14:57",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=sora-wo-amu&date=2026-08-03&time=13:05"
+    },
+    {
+      "id": "screening-20260803-theater-shibuya-sora-wo-amu-1705",
+      "movieId": "sora-wo-amu",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-03",
+      "startTime": "17:05",
+      "endTime": "18:57",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=sora-wo-amu&date=2026-08-03&time=17:05"
+    },
+    {
+      "id": "screening-20260803-theater-shibuya-yoru-no-toshokan-0905",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-03",
+      "startTime": "09:05",
+      "endTime": "11:11",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=yoru-no-toshokan&date=2026-08-03&time=09:05"
+    },
+    {
+      "id": "screening-20260803-theater-shibuya-yoru-no-toshokan-1307",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-03",
+      "startTime": "13:07",
+      "endTime": "15:13",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=yoru-no-toshokan&date=2026-08-03&time=13:07"
+    },
+    {
+      "id": "screening-20260803-theater-shibuya-yoru-no-toshokan-1708",
+      "movieId": "yoru-no-toshokan",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-03",
+      "startTime": "17:08",
+      "endTime": "19:14",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=yoru-no-toshokan&date=2026-08-03&time=17:08"
+    },
+    {
+      "id": "screening-20260803-theater-shibuya-natsu-no-kiroku-0905",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-03",
+      "startTime": "09:05",
+      "endTime": "11:02",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=natsu-no-kiroku&date=2026-08-03&time=09:05"
+    },
+    {
+      "id": "screening-20260803-theater-shibuya-natsu-no-kiroku-1309",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-03",
+      "startTime": "13:09",
+      "endTime": "15:06",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=natsu-no-kiroku&date=2026-08-03&time=13:09"
+    },
+    {
+      "id": "screening-20260803-theater-shibuya-natsu-no-kiroku-1711",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-03",
+      "startTime": "17:11",
+      "endTime": "19:08",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=natsu-no-kiroku&date=2026-08-03&time=17:11"
+    },
+    {
+      "id": "screening-20260803-theater-shibuya-shiroi-hamon-0905",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-03",
+      "startTime": "09:05",
+      "endTime": "11:29",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=shiroi-hamon&date=2026-08-03&time=09:05"
+    },
+    {
+      "id": "screening-20260803-theater-shibuya-shiroi-hamon-1311",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-03",
+      "startTime": "13:11",
+      "endTime": "15:35",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=shiroi-hamon&date=2026-08-03&time=13:11"
+    },
+    {
+      "id": "screening-20260803-theater-shibuya-shiroi-hamon-1714",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-shibuya",
+      "date": "2026-08-03",
+      "startTime": "17:14",
+      "endTime": "19:38",
+      "ticketUrl": "https://example.com/tickets/shibuya?movie=shiroi-hamon&date=2026-08-03&time=17:14"
+    },
+    {
+      "id": "screening-20260803-theater-shinjuku-natsu-no-kiroku-0910",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-03",
+      "startTime": "09:10",
+      "endTime": "11:07",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=natsu-no-kiroku&date=2026-08-03&time=09:10"
+    },
+    {
+      "id": "screening-20260803-theater-shinjuku-natsu-no-kiroku-1310",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-03",
+      "startTime": "13:10",
+      "endTime": "15:07",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=natsu-no-kiroku&date=2026-08-03&time=13:10"
+    },
+    {
+      "id": "screening-20260803-theater-shinjuku-natsu-no-kiroku-1710",
+      "movieId": "natsu-no-kiroku",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-03",
+      "startTime": "17:10",
+      "endTime": "19:07",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=natsu-no-kiroku&date=2026-08-03&time=17:10"
+    },
+    {
+      "id": "screening-20260803-theater-shinjuku-shiroi-hamon-0910",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-03",
+      "startTime": "09:10",
+      "endTime": "11:34",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=shiroi-hamon&date=2026-08-03&time=09:10"
+    },
+    {
+      "id": "screening-20260803-theater-shinjuku-shiroi-hamon-1312",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-03",
+      "startTime": "13:12",
+      "endTime": "15:36",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=shiroi-hamon&date=2026-08-03&time=13:12"
+    },
+    {
+      "id": "screening-20260803-theater-shinjuku-shiroi-hamon-1713",
+      "movieId": "shiroi-hamon",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-03",
+      "startTime": "17:13",
+      "endTime": "19:37",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=shiroi-hamon&date=2026-08-03&time=17:13"
+    },
+    {
+      "id": "screening-20260803-theater-shinjuku-robot-to-asa-0910",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-03",
+      "startTime": "09:10",
+      "endTime": "10:58",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=robot-to-asa&date=2026-08-03&time=09:10"
+    },
+    {
+      "id": "screening-20260803-theater-shinjuku-robot-to-asa-1314",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-03",
+      "startTime": "13:14",
+      "endTime": "15:02",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=robot-to-asa&date=2026-08-03&time=13:14"
+    },
+    {
+      "id": "screening-20260803-theater-shinjuku-robot-to-asa-1716",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-03",
+      "startTime": "17:16",
+      "endTime": "19:04",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=robot-to-asa&date=2026-08-03&time=17:16"
+    },
+    {
+      "id": "screening-20260803-theater-shinjuku-kaze-no-restaurant-0910",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-03",
+      "startTime": "09:10",
+      "endTime": "11:13",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=kaze-no-restaurant&date=2026-08-03&time=09:10"
+    },
+    {
+      "id": "screening-20260803-theater-shinjuku-kaze-no-restaurant-1316",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-03",
+      "startTime": "13:16",
+      "endTime": "15:19",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=kaze-no-restaurant&date=2026-08-03&time=13:16"
+    },
+    {
+      "id": "screening-20260803-theater-shinjuku-kaze-no-restaurant-1719",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-shinjuku",
+      "date": "2026-08-03",
+      "startTime": "17:19",
+      "endTime": "19:22",
+      "ticketUrl": "https://example.com/tickets/shinjuku?movie=kaze-no-restaurant&date=2026-08-03&time=17:19"
+    },
+    {
+      "id": "screening-20260803-theater-kichijoji-robot-to-asa-0915",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-03",
+      "startTime": "09:15",
+      "endTime": "11:03",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=robot-to-asa&date=2026-08-03&time=09:15"
+    },
+    {
+      "id": "screening-20260803-theater-kichijoji-robot-to-asa-1315",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-03",
+      "startTime": "13:15",
+      "endTime": "15:03",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=robot-to-asa&date=2026-08-03&time=13:15"
+    },
+    {
+      "id": "screening-20260803-theater-kichijoji-robot-to-asa-1715",
+      "movieId": "robot-to-asa",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-03",
+      "startTime": "17:15",
+      "endTime": "19:03",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=robot-to-asa&date=2026-08-03&time=17:15"
+    },
+    {
+      "id": "screening-20260803-theater-kichijoji-kaze-no-restaurant-0915",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-03",
+      "startTime": "09:15",
+      "endTime": "11:18",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=kaze-no-restaurant&date=2026-08-03&time=09:15"
+    },
+    {
+      "id": "screening-20260803-theater-kichijoji-kaze-no-restaurant-1317",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-03",
+      "startTime": "13:17",
+      "endTime": "15:20",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=kaze-no-restaurant&date=2026-08-03&time=13:17"
+    },
+    {
+      "id": "screening-20260803-theater-kichijoji-kaze-no-restaurant-1718",
+      "movieId": "kaze-no-restaurant",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-03",
+      "startTime": "17:18",
+      "endTime": "19:21",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=kaze-no-restaurant&date=2026-08-03&time=17:18"
+    },
+    {
+      "id": "screening-20260803-theater-kichijoji-ao-no-kakera-0915",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-03",
+      "startTime": "09:15",
+      "endTime": "11:25",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=ao-no-kakera&date=2026-08-03&time=09:15"
+    },
+    {
+      "id": "screening-20260803-theater-kichijoji-ao-no-kakera-1319",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-03",
+      "startTime": "13:19",
+      "endTime": "15:29",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=ao-no-kakera&date=2026-08-03&time=13:19"
+    },
+    {
+      "id": "screening-20260803-theater-kichijoji-ao-no-kakera-1721",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-03",
+      "startTime": "17:21",
+      "endTime": "19:31",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=ao-no-kakera&date=2026-08-03&time=17:21"
+    },
+    {
+      "id": "screening-20260803-theater-kichijoji-hoshi-no-kouro-0915",
+      "movieId": "hoshi-no-kouro",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-03",
+      "startTime": "09:15",
+      "endTime": "11:28",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=hoshi-no-kouro&date=2026-08-03&time=09:15"
+    },
+    {
+      "id": "screening-20260803-theater-kichijoji-hoshi-no-kouro-1321",
+      "movieId": "hoshi-no-kouro",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-03",
+      "startTime": "13:21",
+      "endTime": "15:34",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=hoshi-no-kouro&date=2026-08-03&time=13:21"
+    },
+    {
+      "id": "screening-20260803-theater-kichijoji-hoshi-no-kouro-1724",
+      "movieId": "hoshi-no-kouro",
+      "theaterId": "theater-kichijoji",
+      "date": "2026-08-03",
+      "startTime": "17:24",
+      "endTime": "19:37",
+      "ticketUrl": "https://example.com/tickets/kichijoji?movie=hoshi-no-kouro&date=2026-08-03&time=17:24"
+    },
+    {
+      "id": "screening-20260803-theater-odaiba-ao-no-kakera-0920",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-03",
+      "startTime": "09:20",
+      "endTime": "11:30",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ao-no-kakera&date=2026-08-03&time=09:20"
+    },
+    {
+      "id": "screening-20260803-theater-odaiba-ao-no-kakera-1320",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-03",
+      "startTime": "13:20",
+      "endTime": "15:30",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ao-no-kakera&date=2026-08-03&time=13:20"
+    },
+    {
+      "id": "screening-20260803-theater-odaiba-ao-no-kakera-1720",
+      "movieId": "ao-no-kakera",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-03",
+      "startTime": "17:20",
+      "endTime": "19:30",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ao-no-kakera&date=2026-08-03&time=17:20"
+    },
+    {
+      "id": "screening-20260803-theater-odaiba-hoshi-no-kouro-0920",
+      "movieId": "hoshi-no-kouro",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-03",
+      "startTime": "09:20",
+      "endTime": "11:33",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=hoshi-no-kouro&date=2026-08-03&time=09:20"
+    },
+    {
+      "id": "screening-20260803-theater-odaiba-hoshi-no-kouro-1322",
+      "movieId": "hoshi-no-kouro",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-03",
+      "startTime": "13:22",
+      "endTime": "15:35",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=hoshi-no-kouro&date=2026-08-03&time=13:22"
+    },
+    {
+      "id": "screening-20260803-theater-odaiba-hoshi-no-kouro-1723",
+      "movieId": "hoshi-no-kouro",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-03",
+      "startTime": "17:23",
+      "endTime": "19:36",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=hoshi-no-kouro&date=2026-08-03&time=17:23"
+    },
+    {
+      "id": "screening-20260803-theater-odaiba-ameagari-no-tegami-0920",
+      "movieId": "ameagari-no-tegami",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-03",
+      "startTime": "09:20",
+      "endTime": "11:19",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ameagari-no-tegami&date=2026-08-03&time=09:20"
+    },
+    {
+      "id": "screening-20260803-theater-odaiba-ameagari-no-tegami-1324",
+      "movieId": "ameagari-no-tegami",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-03",
+      "startTime": "13:24",
+      "endTime": "15:23",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ameagari-no-tegami&date=2026-08-03&time=13:24"
+    },
+    {
+      "id": "screening-20260803-theater-odaiba-ameagari-no-tegami-1726",
+      "movieId": "ameagari-no-tegami",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-03",
+      "startTime": "17:26",
+      "endTime": "19:25",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=ameagari-no-tegami&date=2026-08-03&time=17:26"
+    },
+    {
+      "id": "screening-20260803-theater-odaiba-midori-no-tokeitou-0920",
+      "movieId": "midori-no-tokeitou",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-03",
+      "startTime": "09:20",
+      "endTime": "11:41",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=midori-no-tokeitou&date=2026-08-03&time=09:20"
+    },
+    {
+      "id": "screening-20260803-theater-odaiba-midori-no-tokeitou-1326",
+      "movieId": "midori-no-tokeitou",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-03",
+      "startTime": "13:26",
+      "endTime": "15:47",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=midori-no-tokeitou&date=2026-08-03&time=13:26"
+    },
+    {
+      "id": "screening-20260803-theater-odaiba-midori-no-tokeitou-1729",
+      "movieId": "midori-no-tokeitou",
+      "theaterId": "theater-odaiba",
+      "date": "2026-08-03",
+      "startTime": "17:29",
+      "endTime": "19:50",
+      "ticketUrl": "https://example.com/tickets/odaiba?movie=midori-no-tokeitou&date=2026-08-03&time=17:29"
+    }
+  ]
+}

@@ -1,0 +1,404 @@
+.button {
+  display: inline-flex;
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  background: var(--green);
+  border: 0;
+  border-radius: 0.6rem;
+}
+
+.button--accent {
+  color: var(--green-dark);
+  background: var(--amber);
+}
+
+.button:hover {
+  filter: brightness(0.96);
+}
+
+.search-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.search-form__input {
+  min-width: 0;
+  min-height: 46px;
+  flex: 1;
+  padding: 0.7rem 0.9rem;
+  color: var(--ink);
+  background: white;
+  border: 1px solid transparent;
+  border-radius: 0.6rem;
+}
+
+.demo-notice {
+  display: inline-flex;
+  padding: 0.55rem 0.8rem;
+  margin-bottom: 0;
+  color: #694006;
+  font-size: 0.8rem;
+  font-weight: 800;
+  background: #ffedca;
+  border: 1px solid #edc77f;
+  border-radius: 999px;
+}
+
+.date-tabs {
+  max-width: 100%;
+  margin-bottom: 3rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.date-tabs__list {
+  display: grid;
+  min-width: 560px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  padding: 0.35rem;
+  background: #e6e8e3;
+  border-radius: 0.85rem;
+}
+
+.date-tab {
+  min-height: 52px;
+  padding: 0.9rem 0.75rem;
+  color: var(--muted);
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  border: 2px solid transparent;
+  border-radius: 0.65rem;
+}
+
+.date-tab:hover {
+  color: var(--green);
+  background: rgb(255 255 255 / 60%);
+}
+
+.date-tab--active {
+  color: white;
+  background: var(--green);
+  box-shadow: 0 4px 12px rgb(14 90 76 / 18%);
+}
+
+.result-count {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.movie-card {
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  box-shadow: 0 3px 0 transparent;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.movie-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+
+.movie-card__poster,
+.detail-hero__poster,
+.theater-schedule__poster {
+  overflow: hidden;
+  background: #dce2df;
+}
+
+.movie-card__poster {
+  aspect-ratio: 2 / 3;
+}
+
+.poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: 2 / 3;
+}
+
+.poster--fallback {
+  object-fit: cover;
+}
+
+.movie-card__body {
+  padding: 1rem;
+}
+
+.movie-card__title {
+  min-height: 2.5em;
+  font-size: 1.05rem;
+}
+
+.movie-card__genres,
+.movie-card__meta {
+  margin-bottom: 0.45rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.movie-card__next {
+  padding-top: 0.65rem;
+  margin: 0.75rem 0 0;
+  color: var(--green);
+  font-size: 0.88rem;
+  font-weight: 800;
+  border-top: 1px solid var(--line);
+}
+
+.movie-card__next--finished {
+  color: var(--muted);
+}
+
+.theater-card {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+}
+
+.theater-card__title {
+  font-size: 1.2rem;
+}
+
+.theater-card p:not(.eyebrow) {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.theater-card__meta {
+  font-weight: 800;
+}
+
+.text-link,
+.title-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: var(--green);
+  font-weight: 800;
+  text-underline-offset: 0.2em;
+}
+
+.title-link {
+  min-height: auto;
+  margin-bottom: 0.6rem;
+  color: var(--ink);
+  font-size: 1.25rem;
+}
+
+.back-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: var(--green);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.original-title {
+  color: var(--muted);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.1rem;
+}
+
+.synopsis {
+  max-width: 720px;
+  margin-block: 2rem;
+  font-size: 1.02rem;
+}
+
+.metadata {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.65rem 1.5rem;
+}
+
+.metadata dt {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.metadata dd {
+  font-weight: 700;
+}
+
+.external-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.external-link {
+  display: inline-flex;
+  min-height: 46px;
+  padding: 0.75rem 1rem;
+  align-items: center;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-decoration: none;
+  background: var(--green);
+  border-radius: 0.6rem;
+}
+
+.external-link--unavailable {
+  color: var(--muted);
+  background: #e4e6e2;
+}
+
+.schedule-group,
+.theater-schedule__item {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+}
+
+.schedule-group__header {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.schedule-group__header h3 {
+  margin-bottom: 0;
+}
+
+.screening-times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.screening-time {
+  display: inline-flex;
+  min-height: 44px;
+  padding: 0.65rem 0.8rem;
+  align-items: center;
+  color: var(--green-dark);
+  font-size: 0.84rem;
+  font-weight: 800;
+  text-decoration: none;
+  background: #e4f0ec;
+  border: 1px solid #b8d6cd;
+  border-radius: 0.55rem;
+}
+
+a.screening-time:hover {
+  color: white;
+  background: var(--green);
+}
+
+.screening-time--finished {
+  color: var(--muted);
+  text-decoration: line-through;
+  background: #ecece9;
+  border-color: #d7d8d4;
+}
+
+.schedule-note {
+  margin: 0.8rem 0 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.theater-schedule__item {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  gap: 1.5rem;
+}
+
+.theater-schedule__poster {
+  width: 100px;
+  height: 150px;
+  border-radius: 0.5rem;
+}
+
+.theater-schedule__content {
+  align-self: center;
+  min-width: 0;
+}
+
+.empty-state {
+  padding: clamp(2rem, 6vw, 4rem);
+  text-align: center;
+  background: var(--paper);
+  border: 1px dashed #b9c1bc;
+  border-radius: 0.9rem;
+}
+
+.empty-state__title {
+  font-size: 1.35rem;
+}
+
+.empty-state p {
+  color: var(--muted);
+}
+
+@media (max-width: 680px) {
+  .date-tabs {
+    margin-inline: -0.625rem;
+    padding-inline: 0.625rem;
+  }
+
+  .movie-card__body {
+    padding: 0.85rem;
+  }
+
+  .movie-card__title {
+    font-size: 0.98rem;
+  }
+
+  .schedule-group__header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .theater-schedule__item {
+    grid-template-columns: 74px minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .theater-schedule__poster {
+    width: 74px;
+    height: 111px;
+  }
+}
+
+@media (max-width: 410px) {
+  .movie-card__poster {
+    aspect-ratio: auto;
+    min-height: 100%;
+  }
+
+  .movie-card__title {
+    min-height: auto;
+  }
+
+  .date-tabs__list {
+    min-width: 520px;
+  }
+}

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 720" role="img" aria-labelledby="t">
+  <title id="t">白い波紋 デモポスター</title>
+  <rect width="480" height="720" fill="#dce8e7"/><g fill="none" stroke="#6d9198"><ellipse cx="240" cy="300" rx="55" ry="18"/><ellipse cx="240" cy="300" rx="120" ry="40"/><ellipse cx="240" cy="300" rx="195" ry="68"/></g><path d="M0 520 110 330l65 100 70-150 95 150 55-85 85 175z" fill="#789ba0"/><path d="m110 330 25 58 40 42 70-150 37 83 58 67 55-85 30 70" fill="#fff"/>
+  <text x="52" y="590" fill="#213d44" font-size="58" font-family="sans-serif" font-weight="700">白い波紋</text><text x="55" y="638" fill="#5f8288" font-size="18" font-family="sans-serif" letter-spacing="6">WHITE RIPPLES</text><text x="55" y="680" fill="#213d44" font-size="16" font-family="sans-serif">DEMO POSTER</text>
+</svg>

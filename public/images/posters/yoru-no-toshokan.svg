@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 720" role="img" aria-labelledby="t">
+  <title id="t">夜の図書館 デモポスター</title>
+  <rect width="480" height="720" fill="#171d35"/><circle cx="240" cy="175" r="100" fill="#f0d88b"/><path d="M70 390h340v210H70z" fill="#5a2e2d"/><g fill="#dba866"><rect x="90" y="420" width="45" height="150"/><rect x="150" y="445" width="55" height="125"/><rect x="220" y="405" width="42" height="165"/><rect x="280" y="430" width="65" height="140"/><rect x="360" y="415" width="30" height="155"/></g><path d="M160 330q80-90 160 0-80-35-160 0" fill="#f7f0d3"/>
+  <text x="42" y="620" fill="#fff" font-size="50" font-family="sans-serif" font-weight="700">夜の図書館</text><text x="44" y="663" fill="#f0d88b" font-size="16" font-family="sans-serif" letter-spacing="4">LIBRARY AFTER DARK · DEMO</text>
+</svg>

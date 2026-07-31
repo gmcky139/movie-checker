@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 720" role="img" aria-labelledby="t">
+  <title id="t">雨上がりの手紙 デモポスター</title>
+  <defs><linearGradient id="g" y2="1"><stop stop-color="#6b8791"/><stop offset="1" stop-color="#d9c5aa"/></linearGradient></defs>
+  <rect width="480" height="720" fill="url(#g)"/><g stroke="#e7f3f4" stroke-width="3" opacity=".65"><path d="m60 0-30 220M140 0 90 330M260 0l-70 380M410 0l-80 410"/></g><rect x="95" y="240" width="290" height="190" rx="8" fill="#fff5df" transform="rotate(-7 240 335)"/><path d="m105 270 140 80 130-113" fill="none" stroke="#b78c64" stroke-width="5"/>
+  <text x="36" y="575" fill="#fff" font-size="48" font-family="sans-serif" font-weight="700">雨上がりの手紙</text><text x="39" y="628" fill="#263e46" font-size="18" font-family="sans-serif" letter-spacing="4">A LETTER AFTER RAIN</text><text x="39" y="675" fill="#fff5df" font-size="16" font-family="sans-serif">DEMO POSTER</text>
+</svg>

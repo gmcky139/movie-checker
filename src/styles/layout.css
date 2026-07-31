@@ -1,0 +1,252 @@
+.container {
+  width: min(100% - 2rem, 1180px);
+  margin-inline: auto;
+}
+
+.page-main {
+  min-height: 65vh;
+  padding-block: clamp(2rem, 5vw, 4.5rem) 5rem;
+}
+
+.site-header {
+  position: relative;
+  z-index: 10;
+  color: white;
+  background: var(--green-dark);
+  border-bottom: 4px solid var(--amber);
+}
+
+.site-header__inner {
+  display: grid;
+  grid-template-columns: minmax(13rem, 1fr) minmax(18rem, 1.25fr) auto;
+  gap: 1.5rem;
+  align-items: center;
+  min-height: 104px;
+  padding-block: 1rem;
+}
+
+.site-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.site-identity__brand {
+  width: fit-content;
+  color: white;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site-identity__tagline {
+  color: #cfe0db;
+  font-size: 0.75rem;
+}
+
+.site-header__updated {
+  margin: 0;
+  color: #cfe0db;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  text-align: right;
+}
+
+.hero {
+  max-width: 880px;
+  padding-block: clamp(1rem, 4vw, 3rem) clamp(2.5rem, 6vw, 5rem);
+}
+
+.hero h1 {
+  max-width: 850px;
+  margin-bottom: 1.25rem;
+  font-family: Georgia, "Times New Roman", "Yu Mincho", serif;
+}
+
+.hero__lead {
+  max-width: 680px;
+  margin-bottom: 1.5rem;
+  color: var(--muted);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+.section-heading {
+  display: flex;
+  gap: 2rem;
+  align-items: end;
+  justify-content: space-between;
+  margin: 3rem 0 1.5rem;
+}
+
+.section-heading__description {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.section-block {
+  margin-top: clamp(4rem, 8vw, 7rem);
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.theater-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.detail-hero {
+  display: grid;
+  grid-template-columns: minmax(220px, 330px) minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: center;
+  padding-block: 2.5rem 4rem;
+}
+
+.detail-hero h1 {
+  margin-bottom: 0.5rem;
+  font-family: Georgia, "Times New Roman", "Yu Mincho", serif;
+}
+
+.theater-hero {
+  display: flex;
+  gap: 3rem;
+  align-items: end;
+  justify-content: space-between;
+  padding-block: 2.5rem 4rem;
+}
+
+.theater-hero h1 {
+  margin-bottom: 1rem;
+  font-family: Georgia, "Times New Roman", "Yu Mincho", serif;
+}
+
+.theater-hero__description {
+  max-width: 650px;
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.schedule-groups,
+.theater-schedule {
+  display: grid;
+  gap: 1rem;
+}
+
+.site-footer {
+  color: #dbe9e5;
+  background: var(--green-dark);
+}
+
+.site-footer__inner {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 150px;
+  padding-block: 2rem;
+}
+
+.site-footer p {
+  max-width: 760px;
+  margin-bottom: 0;
+  font-size: 0.85rem;
+}
+
+.site-footer a {
+  flex: none;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .site-header__inner {
+    grid-template-columns: 1fr auto;
+  }
+
+  .search-form {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .movie-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .container {
+    width: min(100% - 1.25rem, 1180px);
+  }
+
+  .site-header__inner {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    padding-block: 1rem 1.25rem;
+  }
+
+  .site-header__updated {
+    grid-row: 2;
+    text-align: left;
+  }
+
+  .search-form {
+    grid-row: 3;
+  }
+
+  .site-identity__tagline {
+    display: none;
+  }
+
+  .hero {
+    padding-bottom: 2.5rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 11vw, 3.2rem);
+  }
+
+  .section-heading,
+  .theater-hero,
+  .site-footer__inner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .movie-grid,
+  .theater-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .detail-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    padding-top: 2rem;
+  }
+
+  .detail-hero__poster {
+    width: min(70vw, 280px);
+    margin-inline: auto;
+  }
+
+  .theater-hero {
+    padding-block: 2rem 3rem;
+  }
+}
+
+@media (max-width: 410px) {
+  .movie-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .movie-card {
+    display: grid;
+    grid-template-columns: 42% 1fr;
+  }
+}

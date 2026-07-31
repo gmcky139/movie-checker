@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 720" role="img" aria-labelledby="t">
+  <title id="t">夏の記録 デモポスター</title>
+  <rect width="480" height="720" fill="#f3c64f"/><circle cx="380" cy="120" r="78" fill="#f47b50"/><path d="M0 340q110-70 240 10t240-10v380H0z" fill="#56a6a2"/><path d="M0 430q120-80 250 0t230-10v300H0z" fill="#1d6973"/><rect x="115" y="210" width="250" height="170" rx="18" fill="#183b48"/><circle cx="240" cy="295" r="58" fill="#91c6ca"/><circle cx="240" cy="295" r="30" fill="#f3c64f"/>
+  <text x="48" y="585" fill="#fff" font-size="58" font-family="sans-serif" font-weight="700">夏の記録</text><text x="51" y="632" fill="#f8df99" font-size="18" font-family="sans-serif" letter-spacing="6">SUMMER RECORD</text><text x="51" y="675" fill="#fff" font-size="16" font-family="sans-serif">DEMO POSTER</text>
+</svg>

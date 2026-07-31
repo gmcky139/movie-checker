@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 720" role="img" aria-labelledby="t">
+  <title id="t">緑の時計塔 デモポスター</title>
+  <rect width="480" height="720" fill="#173d32"/><circle cx="240" cy="230" r="145" fill="#b9d39f"/><circle cx="240" cy="230" r="115" fill="#f3e9c7"/><g stroke="#173d32" stroke-width="10" stroke-linecap="round"><path d="M240 230V150M240 230l65 42"/></g><g fill="#173d32"><circle cx="240" cy="125" r="7"/><circle cx="345" cy="230" r="7"/><circle cx="240" cy="335" r="7"/><circle cx="135" cy="230" r="7"/></g><path d="M140 680h200l-35-295H175z" fill="#102a23"/>
+  <text x="45" y="565" fill="#fff" font-size="50" font-family="sans-serif" font-weight="700">緑の時計塔</text><text x="47" y="615" fill="#b9d39f" font-size="18" font-family="sans-serif" letter-spacing="4">THE VERDANT CLOCK</text><text x="47" y="665" fill="#f3e9c7" font-size="16" font-family="sans-serif">DEMO POSTER</text>
+</svg>
