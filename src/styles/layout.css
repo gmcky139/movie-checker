@@ -1,19 +1,19 @@
 .container {
-  width: min(100% - 2rem, 1180px);
+  width: min(100% - 2rem, 1120px);
   margin-inline: auto;
 }
 
 .page-main {
   min-height: 65vh;
-  padding-block: clamp(2rem, 5vw, 4.5rem) 5rem;
+  padding-block: clamp(1.5rem, 4vw, 3rem) 4rem;
 }
 
 .site-header {
   position: relative;
   z-index: 10;
-  color: white;
-  background: var(--green-dark);
-  border-bottom: 4px solid var(--amber);
+  color: var(--ink);
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
 }
 
 .site-header__inner {
@@ -21,8 +21,8 @@
   grid-template-columns: minmax(13rem, 1fr) minmax(18rem, 1.25fr) auto;
   gap: 1.5rem;
   align-items: center;
-  min-height: 104px;
-  padding-block: 1rem;
+  min-height: 84px;
+  padding-block: 0.8rem;
 }
 
 .site-identity {
@@ -32,22 +32,24 @@
 }
 
 .site-identity__brand {
+  display: inline-flex;
   width: fit-content;
-  color: white;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.35rem;
-  font-weight: 700;
+  min-height: 44px;
+  align-items: center;
+  color: var(--ink);
+  font-size: 1.2rem;
+  font-weight: 800;
   text-decoration: none;
 }
 
 .site-identity__tagline {
-  color: #cfe0db;
+  color: var(--muted);
   font-size: 0.75rem;
 }
 
 .site-header__updated {
   margin: 0;
-  color: #cfe0db;
+  color: var(--muted);
   font-size: 0.75rem;
   line-height: 1.5;
   text-align: right;
@@ -55,28 +57,28 @@
 
 .hero {
   max-width: 880px;
-  padding-block: clamp(1rem, 4vw, 3rem) clamp(2.5rem, 6vw, 5rem);
+  padding-block: clamp(0.5rem, 2vw, 1.5rem) clamp(1.5rem, 4vw, 2.5rem);
 }
 
 .hero h1 {
   max-width: 850px;
-  margin-bottom: 1.25rem;
-  font-family: Georgia, "Times New Roman", "Yu Mincho", serif;
+  margin-bottom: 0.9rem;
+  font-size: clamp(1.8rem, 4vw, 3rem);
 }
 
 .hero__lead {
   max-width: 680px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: var(--muted);
   font-size: clamp(1rem, 2vw, 1.2rem);
 }
 
 .section-heading {
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
   align-items: end;
   justify-content: space-between;
-  margin: 3rem 0 1.5rem;
+  margin: 2rem 0 1rem;
 }
 
 .section-heading__description {
@@ -85,13 +87,13 @@
 }
 
 .section-block {
-  margin-top: clamp(4rem, 8vw, 7rem);
+  margin-top: clamp(2.5rem, 6vw, 4.5rem);
 }
 
 .movie-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 .theater-grid {
@@ -103,14 +105,13 @@
 .detail-hero {
   display: grid;
   grid-template-columns: minmax(220px, 330px) minmax(0, 1fr);
-  gap: clamp(2rem, 6vw, 5rem);
+  gap: clamp(2rem, 5vw, 3.5rem);
   align-items: center;
-  padding-block: 2.5rem 4rem;
+  padding-block: 1.5rem 2.5rem;
 }
 
 .detail-hero h1 {
   margin-bottom: 0.5rem;
-  font-family: Georgia, "Times New Roman", "Yu Mincho", serif;
 }
 
 .theater-hero {
@@ -118,12 +119,11 @@
   gap: 3rem;
   align-items: end;
   justify-content: space-between;
-  padding-block: 2.5rem 4rem;
+  padding-block: 1.5rem 2.5rem;
 }
 
 .theater-hero h1 {
   margin-bottom: 1rem;
-  font-family: Georgia, "Times New Roman", "Yu Mincho", serif;
 }
 
 .theater-hero__description {
@@ -139,8 +139,9 @@
 }
 
 .site-footer {
-  color: #dbe9e5;
-  background: var(--green-dark);
+  color: var(--muted);
+  background: var(--paper);
+  border-top: 1px solid var(--line);
 }
 
 .site-footer__inner {
@@ -148,8 +149,8 @@
   gap: 2rem;
   align-items: center;
   justify-content: space-between;
-  min-height: 150px;
-  padding-block: 2rem;
+  min-height: 112px;
+  padding-block: 1.5rem;
 }
 
 .site-footer p {
@@ -159,7 +160,11 @@
 }
 
 .site-footer a {
+  display: inline-flex;
+  min-height: 44px;
   flex: none;
+  align-items: center;
+  color: var(--green);
   font-weight: 700;
 }
 
@@ -180,7 +185,7 @@
 
 @media (max-width: 680px) {
   .container {
-    width: min(100% - 1.25rem, 1180px);
+    width: min(100% - 1.25rem, 1120px);
   }
 
   .site-header__inner {
@@ -203,11 +208,11 @@
   }
 
   .hero {
-    padding-bottom: 2.5rem;
+    padding-bottom: 1.75rem;
   }
 
   .hero h1 {
-    font-size: clamp(2rem, 11vw, 3.2rem);
+    font-size: clamp(1.8rem, 9vw, 2.6rem);
   }
 
   .section-heading,
@@ -227,7 +232,7 @@
   .detail-hero {
     grid-template-columns: minmax(0, 1fr);
     gap: 2rem;
-    padding-top: 2rem;
+    padding-top: 1.5rem;
   }
 
   .detail-hero__poster {
@@ -236,7 +241,7 @@
   }
 
   .theater-hero {
-    padding-block: 2rem 3rem;
+    padding-block: 1.5rem 2.25rem;
   }
 }
 

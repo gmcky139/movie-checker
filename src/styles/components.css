@@ -9,17 +9,18 @@
   text-decoration: none;
   cursor: pointer;
   background: var(--green);
-  border: 0;
-  border-radius: 0.6rem;
+  border: 1px solid var(--green);
+  border-radius: 2px;
 }
 
 .button--accent {
-  color: var(--green-dark);
-  background: var(--amber);
+  color: white;
+  background: var(--green);
 }
 
 .button:hover {
-  filter: brightness(0.96);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .search-form {
@@ -34,25 +35,28 @@
   padding: 0.7rem 0.9rem;
   color: var(--ink);
   background: white;
-  border: 1px solid transparent;
-  border-radius: 0.6rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
 }
 
 .demo-notice {
-  display: inline-flex;
-  padding: 0.55rem 0.8rem;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.65rem 0.8rem;
   margin-bottom: 0;
-  color: #694006;
+  color: var(--muted);
   font-size: 0.8rem;
-  font-weight: 800;
-  background: #ffedca;
-  border: 1px solid #edc77f;
-  border-radius: 999px;
+  font-weight: 700;
+  background: #f0f0f0;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--green);
+  border-radius: 0;
 }
 
 .date-tabs {
   max-width: 100%;
-  margin-bottom: 3rem;
+  margin-bottom: 1.75rem;
 }
 
 .date-tabs__list {
@@ -60,33 +64,36 @@
   width: 100%;
   min-width: 0;
   grid-template-columns: repeat(4, 1fr);
-  gap: 0.5rem;
-  padding: 0.35rem;
-  background: #e6e8e3;
-  border-radius: 0.85rem;
+  gap: 0;
+  padding: 0;
+  background: transparent;
+  border-bottom: 1px solid var(--line);
 }
 
 .date-tab {
   min-width: 0;
-  min-height: 52px;
-  padding: 0.9rem 0.75rem;
+  min-height: 48px;
+  padding: 0.75rem 0.5rem;
   color: var(--muted);
   font-weight: 700;
   text-align: center;
   text-decoration: none;
-  border: 2px solid transparent;
-  border-radius: 0.65rem;
+  background: transparent;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
 }
 
 .date-tab:hover {
   color: var(--green);
-  background: rgb(255 255 255 / 60%);
+  background: #eeeeee;
 }
 
 .date-tab--active {
-  color: white;
-  background: var(--green);
-  box-shadow: 0 4px 12px rgb(14 90 76 / 18%);
+  color: var(--green);
+  font-weight: 800;
+  background: var(--paper);
+  border-bottom-color: var(--green);
 }
 
 .result-count {
@@ -97,32 +104,30 @@
 }
 
 .movie-card {
+  display: block;
   overflow: hidden;
   color: inherit;
   text-decoration: none;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 0.9rem;
-  box-shadow: 0 3px 0 transparent;
-  transition:
-    transform 160ms ease,
-    box-shadow 160ms ease;
+  border-radius: 2px;
 }
 
 .movie-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow);
+  background: #fafafa;
+  border-color: var(--green);
 }
 
 .movie-card__poster,
 .detail-hero__poster,
 .theater-schedule__poster {
   overflow: hidden;
-  background: #dce2df;
+  background: #dedede;
 }
 
 .movie-card__poster {
   aspect-ratio: 2 / 3;
+  border-bottom: 1px solid var(--line);
 }
 
 .poster {
@@ -137,12 +142,14 @@
 }
 
 .movie-card__body {
-  padding: 1rem;
+  padding: 0.9rem;
 }
 
 .movie-card__title {
   min-height: 2.5em;
+  margin-bottom: 0.55rem;
   font-size: 1.05rem;
+  font-weight: 800;
 }
 
 .movie-card__genres,
@@ -173,7 +180,12 @@
   text-decoration: none;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 0.9rem;
+  border-radius: 2px;
+}
+
+.theater-card:hover {
+  background: #fafafa;
+  border-color: var(--green);
 }
 
 .theater-card__title {
@@ -186,6 +198,7 @@
 }
 
 .theater-card__meta {
+  color: var(--ink);
   font-weight: 800;
 }
 
@@ -200,7 +213,6 @@
 }
 
 .title-link {
-  min-height: auto;
   margin-bottom: 0.6rem;
   color: var(--ink);
   font-size: 1.25rem;
@@ -258,12 +270,19 @@
   font-weight: 800;
   text-decoration: none;
   background: var(--green);
-  border-radius: 0.6rem;
+  border: 1px solid var(--green);
+  border-radius: 2px;
+}
+
+.external-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .external-link--unavailable {
   color: var(--muted);
-  background: #e4e6e2;
+  background: #ededed;
+  border-color: var(--line-strong);
 }
 
 .schedule-group,
@@ -271,7 +290,7 @@
   padding: clamp(1.25rem, 3vw, 2rem);
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 0.9rem;
+  border-radius: 2px;
 }
 
 .schedule-group__header {
@@ -300,13 +319,13 @@
   min-height: 44px;
   padding: 0.65rem 0.8rem;
   align-items: center;
-  color: var(--green-dark);
+  color: var(--ink);
   font-size: 0.84rem;
   font-weight: 800;
   text-decoration: none;
-  background: #e4f0ec;
-  border: 1px solid #b8d6cd;
-  border-radius: 0.55rem;
+  background: #f7f7f7;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
 }
 
 a.screening-time:hover {
@@ -317,8 +336,8 @@ a.screening-time:hover {
 .screening-time--finished {
   color: var(--muted);
   text-decoration: line-through;
-  background: #ecece9;
-  border-color: #d7d8d4;
+  background: #ededed;
+  border-color: var(--line);
 }
 
 .schedule-note {
@@ -336,7 +355,7 @@ a.screening-time:hover {
 .theater-schedule__poster {
   width: 100px;
   height: 150px;
-  border-radius: 0.5rem;
+  border-radius: 0;
 }
 
 .theater-schedule__content {
@@ -345,11 +364,11 @@ a.screening-time:hover {
 }
 
 .empty-state {
-  padding: clamp(2rem, 6vw, 4rem);
+  padding: clamp(1.75rem, 5vw, 3rem);
   text-align: center;
   background: var(--paper);
-  border: 1px dashed #b9c1bc;
-  border-radius: 0.9rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
 }
 
 .empty-state__title {
@@ -362,7 +381,7 @@ a.screening-time:hover {
 
 @media (max-width: 680px) {
   .date-tab {
-    padding: 0.75rem 0.2rem;
+    padding: 0.7rem 0.15rem;
     font-size: 0.76rem;
     white-space: nowrap;
   }
