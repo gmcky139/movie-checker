@@ -5,6 +5,7 @@ import { aggregateProviderData } from "../../scripts/fetch-real-data";
 import { generateData } from "../../scripts/generate-data";
 import type { ScheduleProvider } from "../../scripts/providers/types";
 import { validateAppData } from "../../scripts/validate-data";
+import { enrichMoviesWithTmdb } from "../../scripts/tmdb-posters";
 
 const dates = ["2026-08-03", "2026-08-04", "2026-08-05", "2026-08-06"];
 const generatedAt = "2026-08-03T00:00:00.000Z";
@@ -83,11 +84,40 @@ describe("three-provider aggregation and atomic generation", () => {
   });
 
   it("creates one complete real dataset only after all three providers succeed", async () => {
-    const data = await aggregateProviderData(
+    const schedules = await aggregateProviderData(
       [provider(0), provider(1), provider(2)],
       dates,
       generatedAt,
     );
+    const data = await enrichMoviesWithTmdb(schedules, {
+      api: {
+        async configuration() {
+          return {
+            images: {
+              secure_base_url: "https://image.tmdb.org/t/p/",
+              poster_sizes: ["w500"],
+            },
+          };
+        },
+        async searchMovie() {
+          return {
+            results: [
+              {
+                id: 123,
+                title: "Michael マイケル",
+                original_title: "Michael マイケル",
+                poster_path: "/michael.jpg",
+                release_date: "2026-01-01",
+                adult: false,
+              },
+            ],
+          };
+        },
+        async movie() {
+          throw new Error("not used");
+        },
+      },
+    });
     expect(data.dataMode).toBe("real");
     expect(data.theaters).toHaveLength(3);
     expect(data.sources).toHaveLength(3);
@@ -95,9 +125,10 @@ describe("three-provider aggregation and atomic generation", () => {
     await expect(
       validateAppData(data, {
         now: new Date(generatedAt),
-        checkPosters: false,
+        checkPosters: true,
       }),
     ).resolves.toEqual([]);
+    expect(data.posterCoverage?.coveragePercent).toBe(100);
   });
 
   it("rejects partial provider data and leaves the previous JSON untouched", async () => {

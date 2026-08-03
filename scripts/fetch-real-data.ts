@@ -6,6 +6,8 @@ import { createCinema109Provider } from "./providers/cinema109-nagoya";
 import { HttpStatusError, SafeHttpClient } from "./providers/http-client";
 import { createMidlandProvider } from "./providers/midland-square";
 import type { ScheduleProvider } from "./providers/types";
+import { TmdbClient } from "./tmdb-client";
+import { enrichMoviesWithTmdb } from "./tmdb-posters";
 
 function safeErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
@@ -72,5 +74,8 @@ export async function fetchRealData(now: Date = new Date()): Promise<AppData> {
     createMidlandProvider(client),
     createAeonTokonameProvider(client),
   ];
-  return aggregateProviderData(providers, dates, generatedAt);
+  const scheduleData = await aggregateProviderData(providers, dates, generatedAt);
+  const token = process.env.TMDB_API_READ_TOKEN?.trim();
+  if (!token) throw new Error("TMDB_API_READ_TOKEN is required in real mode");
+  return enrichMoviesWithTmdb(scheduleData, { api: new TmdbClient(token) });
 }

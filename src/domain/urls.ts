@@ -12,6 +12,7 @@ const REAL_EXTERNAL_HOSTS = new Set([
   "theater.aeoncinema.com",
   "www.aeoncinema.com",
   "aeoncinema.com",
+  "www.themoviedb.org",
 ]);
 
 function withParams(page: string, values: Record<string, string | undefined>): string {

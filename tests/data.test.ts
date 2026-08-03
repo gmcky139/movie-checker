@@ -72,4 +72,10 @@ describe("sample data", () => {
     });
     expect(errors.some((error) => error.includes("movies[0].title is required"))).toBe(true);
   });
+
+  it("rejects credential markers in generated data", async () => {
+    const data = { ...createSampleData(now), accidental: "Bearer synthetic-test-token" };
+    const errors = await validateAppData(data, { now, checkPosters: false });
+    expect(errors).toContain("Generated data contains a credential marker");
+  });
 });

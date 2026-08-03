@@ -44,6 +44,7 @@ describe("URL utilities", () => {
     expect(isSafeExternalUrl("https://user@example.com")).toBe(false);
     expect(isSafeExternalUrl("https://example.com:444/path")).toBe(false);
     expect(isSafeRealExternalUrl("https://109cinemas.net/nagoya/")).toBe(true);
+    expect(isSafeRealExternalUrl("https://www.themoviedb.org/")).toBe(true);
     expect(isSafeRealExternalUrl("https://example.com/reserve")).toBe(false);
     expect(isSafeRealExternalUrl("https://user@109cinemas.net/nagoya/")).toBe(false);
   });

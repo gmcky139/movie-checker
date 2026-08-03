@@ -4,6 +4,12 @@ services:
       context: .
       args:
         DATA_MODE: ${DATA_MODE:-sample}
+      secrets:
+        - tmdb_token
     ports:
       - "8080:80"
     restart: unless-stopped
+
+secrets:
+  tmdb_token:
+    environment: TMDB_API_READ_TOKEN

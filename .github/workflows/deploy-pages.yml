@@ -36,6 +36,7 @@ jobs:
       - name: Fetch real screening data
         env:
           DATA_MODE: real
+          TMDB_API_READ_TOKEN: ${{ secrets.TMDB_API_READ_TOKEN }}
         run: npm run generate:data
 
       - name: Validate complete real dataset

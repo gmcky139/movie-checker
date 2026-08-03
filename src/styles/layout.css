@@ -146,11 +146,29 @@
 
 .site-footer__inner {
   display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
   align-items: center;
   justify-content: space-between;
   min-height: 112px;
   padding-block: 1.5rem;
+}
+
+.tmdb-attribution {
+  display: grid;
+  max-width: 360px;
+  gap: 0.45rem;
+}
+
+.site-footer .tmdb-attribution__link {
+  width: fit-content;
+  min-height: 44px;
+}
+
+.tmdb-attribution__logo {
+  display: block;
+  width: min(180px, 100%);
+  height: auto;
 }
 
 .site-footer p {

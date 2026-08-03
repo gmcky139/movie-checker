@@ -1,4 +1,9 @@
 import { appConfig } from "../config";
+import {
+  TMDB_ATTRIBUTION_NOTICE,
+  TMDB_ATTRIBUTION_URL,
+  TMDB_LOGO_PATH,
+} from "../domain/presentation";
 import type { AppData } from "../domain/types";
 import { append, element } from "./dom";
 import { createExternalLink } from "./external-link";
@@ -30,6 +35,37 @@ export function createFooter(data: AppData): HTMLElement {
       sources.append(createExternalLink(`情報元: ${source.theaterName}`, source.sourceUrl, false));
     }
     inner.append(sources);
+    const attribution = element("section", {
+      className: "tmdb-attribution",
+      attributes: { "aria-label": "TMDBクレジット" },
+    });
+    const tmdbLink = element("a", {
+      className: "tmdb-attribution__link",
+      attributes: {
+        href: TMDB_ATTRIBUTION_URL,
+        target: "_blank",
+        rel: "noopener noreferrer",
+        "aria-label": "TMDB公式サイトを外部タブで開く",
+      },
+    });
+    tmdbLink.append(
+      element("img", {
+        className: "tmdb-attribution__logo",
+        attributes: {
+          src: TMDB_LOGO_PATH,
+          alt: "TMDB",
+          width: "273",
+          height: "36",
+        },
+      }),
+    );
+    attribution.append(
+      tmdbLink,
+      element("p", {
+        text: TMDB_ATTRIBUTION_NOTICE,
+      }),
+    );
+    inner.append(attribution);
   }
   inner.append(repository);
   footer.append(inner);

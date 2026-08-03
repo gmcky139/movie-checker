@@ -26,6 +26,8 @@
 - 109シネマズ名古屋、ミッドランドスクエアシネマ、イオンシネマ常滑の限定実データ取得
 - 作品名の規則ベース正規化、字幕・吹替・特殊上映、スクリーン、深夜上映の保持
 - 取得元、取得日時、取得成否を含むデータ検証と、全3館成功時だけの原子的更新
+- TMDBとの保守的な完全一致・明示エイリアス照合によるポスター表示
+- 未一致時の作品名付きfallback、70%取得率検証、TMDB帰属表示
 
 ## スクリーンショット
 
@@ -41,7 +43,7 @@
 - Docker Compose
 - GitHub Actions + GitHub Pages
 
-ブラウザ側にバックエンド、データベース、認証、外部映画API、取得処理はありません。許可した公式上映予定の取得はビルド時だけに行い、Viteの`dist`をGitHub PagesとNginxの双方へそのまま配信します。`base: "./"`と相対内部URLにより、GitHub Pagesのプロジェクトサイト配下でも動作します。
+ブラウザ側にバックエンド、データベース、認証、外部API認証、取得処理はありません。許可した公式上映予定の取得とTMDBポスター照合はビルド時だけに行い、Viteの`dist`をGitHub PagesとNginxの双方へそのまま配信します。`base: "./"`と相対内部URLにより、GitHub Pagesのプロジェクトサイト配下でも動作します。
 
 ## ディレクトリ構成
 
@@ -54,8 +56,8 @@
 │   ├── domain/           # 型、日付、セレクタ、URL処理
 │   ├── pages/            # 各ページの表示制御
 │   └── styles/           # 共通・レイアウト・部品CSS
-├── public/               # faviconと独自SVGデモポスター
-├── scripts/              # モード選択、取得アダプター、正規化、データ検証
+├── public/               # favicon、ローカルfallback、承認済みTMDBロゴ
+├── scripts/              # 取得、正規化、TMDB照合、データ検証
 ├── tests/                # Vitest単体テストと人工的な取得フィクスチャ
 ├── .github/workflows/    # Pagesの検証・ビルド・デプロイ
 ├── Dockerfile
@@ -87,7 +89,7 @@ DATA_MODE=sample docker compose build --no-cache
 DATA_MODE=sample docker compose up -d
 ```
 
-実データモード:
+実データモードでは、`TMDB_API_READ_TOKEN`をシェル環境へ安全に設定してからBuildKit secretとして渡します。値をコマンドライン、Docker build arg、`.env`、リポジトリへ記載しないでください。
 
 ```bash
 DATA_MODE=real docker compose build --no-cache
@@ -141,7 +143,7 @@ npm run preview        # distをローカルプレビュー
 - Actions画面からの手動実行
 - 6時間ごとの定期実行
 
-ワークフローは`DATA_MODE=real`で、`npm ci`、3館の実データ取得、実データ全体の検証、Lint、整形確認、非watchテスト、型チェックとビルドを順に行います。すべて成功した場合だけ`dist`をPages artifactとしてアップロードしてデプロイします。定期実行では生成データをリポジトリへcommitせず、その回の公開成果物だけを更新します。
+ワークフローは`DATA_MODE=real`で、`npm ci`、3館の実データ取得、TMDBポスター照合、取得率を含む実データ検証、Lint、整形確認、非watchテスト、型チェックとビルドを順に行います。すべて成功した場合だけ`dist`をPages artifactとしてアップロードしてデプロイします。定期実行では生成データをリポジトリへcommitせず、その回の公開成果物だけを更新します。
 
 1館でも取得・解析・検証に失敗した場合、またはLint・テスト・ビルドが失敗した場合は、artifactのアップロードとデプロイを行いません。サンプルや部分データへ切り替えず、直前に成功したPagesを維持します。
 
@@ -151,8 +153,9 @@ npm run preview        # distをローカルプレビュー
 
 1. **Settings → Pages → Build and deployment → Source**で**GitHub Actions**を選択する。
 2. **Actions**がリポジトリで有効であることを確認する。
-3. `Test, build, and deploy GitHub Pages`ワークフローを手動実行するか、`main`への次回pushを待つ。
-4. workflowの`deploy`ジョブと`github-pages` environmentが成功したことを確認する。
+3. **Settings → Secrets and variables → Actions**にRepository Secret `TMDB_API_READ_TOKEN`を登録する。値はTMDBのAPI Read Access Tokenとし、コードやログへ保存しない。
+4. `Test, build, and deploy GitHub Pages`ワークフローを手動実行するか、`main`への次回pushを待つ。
+5. workflowの`deploy`ジョブと`github-pages` environmentが成功したことを確認する。
 
 公開後は、Pages URLでCSS、JavaScript、ポスター、詳細ページ遷移と詳細ページの再読み込みを確認してください。
 
@@ -160,12 +163,18 @@ npm run preview        # distをローカルプレビュー
 
 `scripts/generate-data.ts`がモードを選び、`src/data/generated.json`を原子的に更新します。`real`では取得元ごとのアダプターを共通中間型へ変換し、Unicode NFKC、空白・括弧の統一、確実に識別できる上映形式の分離、明示エイリアスによって作品をまとめます。曖昧な文字列類似度による統合は行いません。
 
-HTTPはHTTPSと公式ホストallowlistに限定し、リダイレクト先も検証します。タイムアウト、レスポンスサイズ、最大2同時接続を設定し、403・404・429はリトライしません。公式画像、ポスター、ロゴ、あらすじ、キャストは取得せず、実データ作品にもローカルの共通プレースホルダーを使います。イオンシネマの上映回には、安全に確認できる公式予約URLがないため推測せず、時刻を非リンクで表示します。
+HTTPは用途別のHTTPS・公式ホストallowlistに限定し、リダイレクト先も検証します。タイムアウト、レスポンスサイズ、最大2同時接続を設定し、401・403・404・429はリトライしません。映画館サイトから画像、あらすじ、キャストは取得しません。正規化後の代表作品名をTMDBの日本向け映画検索へ問い合わせ、候補タイトルの完全一致、管理された別名、公開年、必要な明示overrideだけで保守的に照合します。検索結果の先頭、人気度、曖昧一致では採用しません。
+
+照合できた作品はTMDB IDと検証済み`image.tmdb.org`のポスターURLだけを生成JSONへ保存します。ライブ中継など明示した対象外を除く通常映画の取得率が70%未満なら公開ビルドを失敗させます。未一致作品は誤った画像を採用せず、作品名を表示するローカルfallbackになります。実データ画面のフッターにはTMDBの承認済みロゴ、TMDBへのリンクと指定の帰属文を表示します。This product uses the TMDB API but is not endorsed or certified by TMDB.
+
+イオンシネマの上映回には、安全に確認できる公式予約URLがないため推測せず、時刻を非リンクで表示します。
 
 ## 制限事項
 
 - `sample`の上映、映画館、予約情報はデモ用で、実際の予約はできません。
 - `real`も情報の正確性・完全性・継続取得を保証しません。サイト構造変更、未発表日、HTTPエラーによってビルドが失敗する場合があります。
+- TMDBで保守的に一意と判断できない作品はポスター未一致になります。明示overrideと対象外指定は上映ラインアップの変化に合わせて人間がレビューしてください。
+- TMDB由来データはTMDBの利用条件に従い、少なくとも6か月以内の定期更新を維持してください。商用利用へ変更する場合は別途ライセンス確認が必要です。
 - 長期運用では、対象3サイトの利用条件、robots.txt、表示方針、許容されるアクセス頻度に変更がないかを人間が定期的に確認する必要があります。
 - イオンシネマについては[サイトポリシー](https://www.aeoncinema.com/sitepolicy/)も確認してください。109シネマズとミッドランドスクエアシネマについても、公開利用を認める明示条件が見つからない場合は各運営者へ確認してください。
 - GitHub Pagesのpush・手動・定期公開は実データモードです。取得を拒否する応答や構造変更が発生した場合は、回避せず公開更新を停止します。

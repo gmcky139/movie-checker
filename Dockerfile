@@ -8,8 +8,14 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run generate:data \
-    && npm run validate:data \
+RUN --mount=type=secret,id=tmdb_token,required=false \
+    if [ "$DATA_MODE" = "real" ]; then \
+      test -s /run/secrets/tmdb_token || { echo "TMDB API Read Token BuildKit secret is required in real mode" >&2; exit 1; }; \
+      TMDB_API_READ_TOKEN="$(cat /run/secrets/tmdb_token)" npm run generate:data; \
+    else \
+      npm run generate:data; \
+    fi
+RUN npm run validate:data \
     && npm run lint \
     && npm run format:check \
     && npm run test:run \

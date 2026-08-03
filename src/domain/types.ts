@@ -8,6 +8,7 @@ export type AppData = {
   movies: Movie[];
   theaters: Theater[];
   screenings: Screening[];
+  posterCoverage?: PosterCoverage;
 };
 
 export type DataMode = "sample" | "real";
@@ -30,7 +31,18 @@ export type Movie = {
   releaseDate?: string;
   genres: string[];
   posterPath: string;
+  posterSource?: "tmdb" | "local";
+  posterMatchStatus?: "matched" | "unmatched" | "not-applicable";
+  tmdbId?: number;
   officialUrl?: string;
+};
+
+export type PosterCoverage = {
+  eligibleCount: number;
+  matchedCount: number;
+  notApplicableCount: number;
+  coveragePercent: number;
+  unmatchedTitles: string[];
 };
 
 export type Theater = {

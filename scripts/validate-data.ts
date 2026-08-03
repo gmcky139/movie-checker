@@ -28,6 +28,7 @@ const REAL_HOSTS = new Set([
   "www.aeoncinema.com",
   "aeoncinema.com",
 ]);
+const TMDB_IMAGE_HOST = "image.tmdb.org";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -57,11 +58,24 @@ function isAllowedRealUrl(value: unknown): value is string {
   );
 }
 
+function isAllowedTmdbImageUrl(value: unknown): value is string {
+  if (!isHttpsUrl(value)) return false;
+  const url = new URL(value);
+  return (
+    url.username === "" &&
+    url.password === "" &&
+    url.hostname === TMDB_IMAGE_HOST &&
+    (url.port === "" || url.port === "443") &&
+    /^\/t\/p\/(?:w\d+|original)\/[A-Za-z0-9._-]+\.(?:jpg|jpeg|png|webp)$/u.test(url.pathname)
+  );
+}
+
 function validateMovie(
   value: unknown,
   index: number,
   mode: DataMode,
   errors: string[],
+  checkPosterMetadata: boolean,
 ): value is Movie {
   const label = `movies[${index}]`;
   if (!isRecord(value)) {
@@ -111,6 +125,42 @@ function validateMovie(
   if (!isNonEmptyString(value.posterPath)) {
     errors.push(`${label}.posterPath is required`);
     valid = false;
+  }
+  const posterSources = new Set(["tmdb", "local"]);
+  const matchStatuses = new Set(["matched", "unmatched", "not-applicable"]);
+  if (value.posterSource !== undefined && !posterSources.has(String(value.posterSource))) {
+    errors.push(`${label}.posterSource is invalid`);
+    valid = false;
+  }
+  if (
+    value.posterMatchStatus !== undefined &&
+    !matchStatuses.has(String(value.posterMatchStatus))
+  ) {
+    errors.push(`${label}.posterMatchStatus is invalid`);
+    valid = false;
+  }
+  if (
+    value.tmdbId !== undefined &&
+    (!Number.isSafeInteger(value.tmdbId) || Number(value.tmdbId) < 1)
+  ) {
+    errors.push(`${label}.tmdbId is invalid`);
+    valid = false;
+  }
+  if (mode === "real" && checkPosterMetadata) {
+    if (value.posterSource === "tmdb" && value.posterMatchStatus === "matched") {
+      if (!Number.isSafeInteger(value.tmdbId) || !isAllowedTmdbImageUrl(value.posterPath)) {
+        errors.push(`${label} has invalid matched TMDB poster metadata`);
+        valid = false;
+      }
+    } else if (
+      value.posterSource !== "local" ||
+      (value.posterMatchStatus !== "unmatched" && value.posterMatchStatus !== "not-applicable") ||
+      value.posterPath !== "images/posters/placeholder.svg" ||
+      value.tmdbId !== undefined
+    ) {
+      errors.push(`${label} has inconsistent local poster metadata`);
+      valid = false;
+    }
   }
   if (value.originalTitle !== undefined && !isNonEmptyString(value.originalTitle)) {
     errors.push(`${label}.originalTitle must not be empty`);
@@ -269,6 +319,7 @@ async function validatePosterPaths(
 ): Promise<void> {
   const normalizedRoot = resolve(publicRoot);
   for (const movie of movies) {
+    if (isAllowedTmdbImageUrl(movie.posterPath)) continue;
     const poster = resolve(normalizedRoot, movie.posterPath);
     if (!poster.startsWith(`${normalizedRoot}${sep}`)) {
       errors.push(`Poster path escapes public directory: ${movie.posterPath}`);
@@ -288,6 +339,11 @@ export async function validateAppData(
 ): Promise<string[]> {
   const errors: string[] = [];
   if (!isRecord(input)) return ["Root data must be an object"];
+
+  const serializedInput = JSON.stringify(input);
+  if (/TMDB_API_READ_TOKEN|Bearer\s+[A-Za-z0-9._~-]+/u.test(serializedInput)) {
+    errors.push("Generated data contains a credential marker");
+  }
 
   if (input.schemaVersion !== 1) errors.push("schemaVersion must be 1");
   if (!isNonEmptyString(input.generatedAt) || Number.isNaN(Date.parse(input.generatedAt))) {
@@ -320,7 +376,7 @@ export async function validateAppData(
   }
 
   const movies = movieValues.filter((movie, index): movie is Movie =>
-    validateMovie(movie, index, dataMode, errors),
+    validateMovie(movie, index, dataMode, errors, options.checkPosters !== false),
   );
   const theaters = theaterValues.filter((theater, index): theater is Theater =>
     validateTheater(theater, index, errors),
@@ -370,6 +426,38 @@ export async function validateAppData(
     for (const movie of movies) {
       if (movie.officialUrl !== undefined && !isAllowedRealUrl(movie.officialUrl)) {
         errors.push(`Real movie URL is not allowed: ${movie.id}`);
+      }
+    }
+    const coverage = isRecord(input.posterCoverage) ? input.posterCoverage : undefined;
+    if (options.checkPosters !== false && !coverage) {
+      errors.push("Real data must include posterCoverage");
+    } else if (options.checkPosters !== false && coverage) {
+      const eligibleCount = movies.filter(
+        (movie) => movie.posterMatchStatus !== "not-applicable",
+      ).length;
+      const matchedCount = movies.filter((movie) => movie.posterMatchStatus === "matched").length;
+      const notApplicableCount = movies.length - eligibleCount;
+      const unmatchedTitles = movies
+        .filter((movie) => movie.posterMatchStatus === "unmatched")
+        .map((movie) => movie.title);
+      const expectedPercent =
+        eligibleCount === 0 ? 100 : Number(((matchedCount / eligibleCount) * 100).toFixed(1));
+      if (
+        coverage.eligibleCount !== eligibleCount ||
+        coverage.matchedCount !== matchedCount ||
+        coverage.notApplicableCount !== notApplicableCount ||
+        coverage.coveragePercent !== expectedPercent ||
+        !Array.isArray(coverage.unmatchedTitles) ||
+        coverage.unmatchedTitles.length !== unmatchedTitles.length ||
+        unmatchedTitles.some(
+          (title, index) =>
+            !Array.isArray(coverage.unmatchedTitles) || coverage.unmatchedTitles[index] !== title,
+        )
+      ) {
+        errors.push("Real posterCoverage does not match movie metadata");
+      }
+      if (eligibleCount > 0 && (matchedCount === 0 || expectedPercent < 70)) {
+        errors.push(`Real TMDB poster coverage is below 70%: ${expectedPercent}%`);
       }
     }
   }

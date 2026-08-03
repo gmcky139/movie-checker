@@ -23,11 +23,17 @@ export async function generateData(mode: DataMode, options: GenerateOptions = {}
     );
   }
 
+  const serialized = `${JSON.stringify(data, null, 2)}\n`;
+  const token = process.env.TMDB_API_READ_TOKEN;
+  if (mode === "real" && token && serialized.includes(token)) {
+    throw new Error("Generated real data contains the TMDB credential");
+  }
+
   const outputPath = options.outputPath ?? resolve(process.cwd(), "src/data/generated.json");
   const temporaryPath = `${outputPath}.tmp-${process.pid}`;
   await mkdir(dirname(outputPath), { recursive: true });
   try {
-    await writeFile(temporaryPath, `${JSON.stringify(data, null, 2)}\n`, "utf8");
+    await writeFile(temporaryPath, serialized, "utf8");
     await rename(temporaryPath, outputPath);
   } catch (error: unknown) {
     await rm(temporaryPath, { force: true });

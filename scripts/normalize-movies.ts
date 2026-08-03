@@ -231,6 +231,8 @@ export function normalizeRealData(
         durationMinutes: selectDuration(items.map((item) => item.raw.durationMinutes)),
         genres: [],
         posterPath: "images/posters/placeholder.svg",
+        posterSource: "local" as const,
+        posterMatchStatus: "unmatched" as const,
         ...(officialUrl ? { officialUrl } : {}),
       };
     })

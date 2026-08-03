@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 720" role="img" aria-labelledby="t">
   <title id="t">ポスター画像を表示できません</title>
   <rect width="480" height="720" fill="#dfe4e0"/><rect x="85" y="170" width="310" height="260" rx="18" fill="none" stroke="#81908a" stroke-width="10"/><circle cx="180" cy="250" r="34" fill="#81908a"/><path d="m105 400 100-100 70 65 45-50 55 85z" fill="#81908a"/>
-  <text x="240" y="520" fill="#44534e" font-size="26" font-family="sans-serif" text-anchor="middle">NO IMAGE</text><text x="240" y="565" fill="#687872" font-size="17" font-family="sans-serif" text-anchor="middle">デモ用プレースホルダー</text>
+  <text x="240" y="520" fill="#44534e" font-size="26" font-family="sans-serif" text-anchor="middle">NO IMAGE</text><text x="240" y="565" fill="#687872" font-size="17" font-family="sans-serif" text-anchor="middle">ポスター画像なし</text>
 </svg>
