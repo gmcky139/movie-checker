@@ -4,6 +4,13 @@ const DEFAULT_MAX_BYTES = 2 * 1024 * 1024;
 const MAX_REDIRECTS = 5;
 const MAX_RETRIES = 2;
 
+type SafeHttpClientOptions = {
+  timeoutMs?: number;
+  maxBytes?: number;
+  maxRetries?: number;
+  retryBaseDelayMs?: number;
+};
+
 export type HttpResponseData = {
   url: string;
   contentType: string;
@@ -115,13 +122,24 @@ function validateContent(response: Response, body: Uint8Array, expected: "html" 
   }
 }
 
-async function waitBeforeRetry(attempt: number): Promise<void> {
-  await new Promise<void>((resolve) => setTimeout(resolve, 250 * (attempt + 1)));
+async function waitBeforeRetry(attempt: number, baseDelayMs: number): Promise<void> {
+  await new Promise<void>((resolve) => setTimeout(resolve, baseDelayMs * 2 ** attempt));
 }
 
 export class SafeHttpClient {
   private readonly semaphore = new Semaphore(2);
   private readonly cache = new Map<string, Promise<HttpResponseData | null>>();
+  private readonly timeoutMs: number;
+  private readonly maxBytes: number;
+  private readonly maxRetries: number;
+  private readonly retryBaseDelayMs: number;
+
+  constructor(options: SafeHttpClientOptions = {}) {
+    this.timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+    this.maxBytes = options.maxBytes ?? DEFAULT_MAX_BYTES;
+    this.maxRetries = options.maxRetries ?? MAX_RETRIES;
+    this.retryBaseDelayMs = options.retryBaseDelayMs ?? 250;
+  }
 
   get(url: string, options: GetOptions): Promise<HttpResponseData | null> {
     const validated = validateUrl(url, options.allowedHosts).toString();
@@ -137,7 +155,7 @@ export class SafeHttpClient {
     options: GetOptions,
   ): Promise<HttpResponseData | null> {
     let lastError: unknown;
-    for (let attempt = 0; attempt <= MAX_RETRIES; attempt += 1) {
+    for (let attempt = 0; attempt <= this.maxRetries; attempt += 1) {
       try {
         const result = await this.requestFollowingRedirects(url, options);
         if (result instanceof Response && result.status >= 500) {
@@ -153,7 +171,7 @@ export class SafeHttpClient {
             await result.body?.cancel();
             throw new HttpStatusError(result.status, result.url || url);
           }
-          const body = await readBoundedBody(result, DEFAULT_MAX_BYTES);
+          const body = await readBoundedBody(result, this.maxBytes);
           validateContent(result, body, options.expected);
           return {
             url: result.url || url,
@@ -171,10 +189,14 @@ export class SafeHttpClient {
         const retryableNetwork =
           error instanceof TypeError ||
           (error instanceof DOMException && ["AbortError", "TimeoutError"].includes(error.name));
-        if (terminalStatus || attempt >= MAX_RETRIES || (!retryableStatus && !retryableNetwork)) {
+        if (
+          terminalStatus ||
+          attempt >= this.maxRetries ||
+          (!retryableStatus && !retryableNetwork)
+        ) {
           throw error;
         }
-        await waitBeforeRetry(attempt);
+        await waitBeforeRetry(attempt, this.retryBaseDelayMs);
       }
     }
     throw lastError;
@@ -189,7 +211,7 @@ export class SafeHttpClient {
       const response = await fetch(currentUrl, {
         redirect: "manual",
         credentials: "omit",
-        signal: AbortSignal.timeout(DEFAULT_TIMEOUT_MS),
+        signal: AbortSignal.timeout(this.timeoutMs),
         headers: {
           accept: options.expected === "json" ? "application/json, */*;q=0.1" : "text/html",
           "user-agent": USER_AGENT,

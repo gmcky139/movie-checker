@@ -7,6 +7,7 @@ import { createPoster } from "../components/poster";
 import { createScreeningList } from "../components/screening-list";
 import { SampleDataProvider } from "../data/sample-data-provider";
 import { formatLongDate, formatMinutes, getTokyoDate } from "../domain/date";
+import { scheduleLinkNotice } from "../domain/presentation";
 import { getMoviesForTheater, getScreeningsForMovieAtTheater } from "../domain/selectors";
 import { homeUrl, movieUrl, readId, readSearchState, theaterUrl } from "../domain/urls";
 
@@ -117,7 +118,7 @@ export async function runTheaterDetailPage(): Promise<void> {
             "aria-label": `${movie.title}の詳細を見る`,
           },
         });
-        posterLink.append(createPoster(movie));
+        posterLink.append(createPoster(movie, data.dataMode));
         const content = element("div", { className: "theater-schedule__content" });
         const titleLink = element("a", {
           className: "title-link",
@@ -134,11 +135,16 @@ export async function runTheaterDetailPage(): Promise<void> {
             .join(" / "),
         });
         const screenings = getScreeningsForMovieAtTheater(data, movie.id, theater.id, state.date);
-        append(content, titleLink, meta, createScreeningList(screenings, now, theater.ticketUrl));
+        append(
+          content,
+          titleLink,
+          meta,
+          createScreeningList(screenings, now, data.dataMode, theater.ticketUrl),
+        );
         content.append(
           element("p", {
             className: "schedule-note",
-            text: "時刻はデモ用予約リンクです。",
+            text: scheduleLinkNotice(data.dataMode),
           }),
         );
         append(row, posterLink, content);

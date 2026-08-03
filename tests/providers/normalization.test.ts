@@ -21,6 +21,40 @@ describe("real movie normalization", () => {
       title: "モアナと伝説の海",
       formatLabel: "字幕",
     });
+    expect(normalizeMovieTitle("『Michael マイケル』")).toEqual({
+      title: "Michael マイケル",
+    });
+    expect(normalizeMovieTitle("3D・日本語吹替  Michael/マイケル")).toEqual({
+      title: "Michael マイケル",
+      formatLabel: "3D・吹替",
+    });
+    expect(normalizeMovieTitle("字幕 SPIDER-MAN： BRAND NEW DAY")).toEqual({
+      title: "Spider-Man: Brand New Day",
+      formatLabel: "字幕",
+    });
+    expect(normalizeMovieTitle("スター･ウォーズ／マンダロリアン･アンド･グローグー")).toEqual({
+      title: "スター・ウォーズ/マンダロリアン・アンド・グローグー",
+    });
+    expect(normalizeMovieTitle("映画クレヨンしんちゃん 奇々怪々！オラの妖怪...")).toEqual({
+      title: "映画クレヨンしんちゃん 奇々怪々!オラの妖怪バケーション",
+    });
+    expect(normalizeMovieTitle("スター・ウォーズ／マンダロリアン...[字幕][応援上映]")).toEqual({
+      title: "スター・ウォーズ/マンダロリアン・アンド・グローグー",
+      formatLabel: "字幕・応援上映",
+    });
+    expect(
+      normalizeMovieTitle(
+        "映画館デビュー) 映画『仮面ライダーゼッツ さよならのミッション』／映画『超宇宙刑事ギャバン インフィニティ 太陽が泣いた日』",
+      ),
+    ).toEqual({
+      title:
+        "映画『仮面ライダーゼッツ さよならのミッション』/映画『超宇宙刑事ギャバン インフィニティ 太陽が泣いた日』",
+      formatLabel: "映画館デビュー",
+    });
+    expect(normalizeMovieTitle("仮面ライダーゼッツ／超宇宙刑事ギャバン")).toEqual({
+      title:
+        "映画『仮面ライダーゼッツ さよならのミッション』/映画『超宇宙刑事ギャバン インフィニティ 太陽が泣いた日』",
+    });
   });
 
   it("creates a deterministic ID without fuzzy matching", () => {
@@ -28,6 +62,49 @@ describe("real movie normalization", () => {
     expect(first).toBe(deterministicMovieId("作品　A"));
     expect(first).not.toBe(deterministicMovieId("作品 B"));
     expect(first).toMatch(/^movie-[a-f0-9]{16}$/u);
+    expect(deterministicMovieId("仮面ライダー 長編タイトル")).not.toBe(
+      deterministicMovieId("仮面ライダー／ギャバン"),
+    );
+    expect(deterministicMovieId("星")).not.toBe(deterministicMovieId("星々"));
+  });
+
+  it("deduplicates normalized screenings and prefers a safely extracted reservation URL", () => {
+    const theater: Theater = {
+      id: "cinema109-nagoya",
+      name: "109",
+      area: "名古屋",
+      description: "a",
+      officialUrl: "https://109cinemas.net/nagoya/",
+    };
+    const base: RawScreening = {
+      providerId: "cinema109-nagoya",
+      theaterId: theater.id,
+      theaterName: theater.name,
+      rawTitle: "『Michael マイケル』",
+      date: "2026-07-31",
+      startTime: "10:00",
+      endTime: "12:00",
+      screenName: "シアター1",
+      sourceUrl: theater.officialUrl,
+    };
+    const withTicket: RawScreening = {
+      ...base,
+      rawTitle: "字幕 Michael/マイケル",
+      formatLabel: "字幕",
+      reservationUrl: "https://cinema.109cinemas.net/reserve/1",
+    };
+    const withoutTicket: RawScreening = {
+      ...base,
+      rawTitle: "Michael マイケル（字幕版）",
+    };
+    const create = (raws: RawScreening[]) =>
+      normalizeRealData(raws, [theater], ["2026-07-31"], "2026-07-31T00:00:00.000Z", []);
+    const forward = create([withoutTicket, withTicket]);
+    const reverse = create([withTicket, withoutTicket]);
+    expect(forward.movies).toHaveLength(1);
+    expect(forward.screenings).toHaveLength(1);
+    expect(forward.screenings[0]?.ticketUrl).toBe(withTicket.reservationUrl);
+    expect(reverse.screenings).toEqual(forward.screenings);
   });
 
   it("merges exact normalized titles from three providers into valid real data", async () => {

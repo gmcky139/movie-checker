@@ -1,4 +1,4 @@
-import { isSafeExternalUrl } from "../domain/urls";
+import { isSafeExternalUrl, isSafeRealExternalUrl } from "../domain/urls";
 import { element } from "./dom";
 
 export function createExternalLink(
@@ -6,7 +6,9 @@ export function createExternalLink(
   url: string | undefined,
   demo = true,
 ): HTMLElement {
-  if (!isSafeExternalUrl(url)) {
+  const safeUrl =
+    demo && isSafeExternalUrl(url) ? url : !demo && isSafeRealExternalUrl(url) ? url : undefined;
+  if (!safeUrl) {
     return element("span", {
       className: "external-link external-link--unavailable",
       text: `${label}（リンク情報なし）`,
@@ -16,7 +18,7 @@ export function createExternalLink(
     className: "external-link",
     text: `${label}（${demo ? "デモ用外部リンク" : "外部サイト"}） ↗`,
     attributes: {
-      href: url,
+      href: safeUrl,
       target: "_blank",
       rel: "noopener noreferrer",
     },

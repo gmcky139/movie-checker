@@ -72,7 +72,8 @@ export function parseAeonScheduleJson(
   for (const date of dates) {
     const compactDate = date.replaceAll("-", "");
     const dateValue = input[compactDate];
-    if (!isRecord(dateValue)) throw new Error(`Aeon schedule is not published for ${date}`);
+    if (dateValue === undefined) continue;
+    if (!isRecord(dateValue)) throw new Error(`Aeon schedule date is invalid for ${date}`);
 
     for (const [groupId, groupValue] of Object.entries(dateValue)) {
       if (!Array.isArray(groupValue)) throw new Error(`Aeon movie group is invalid: ${groupId}`);

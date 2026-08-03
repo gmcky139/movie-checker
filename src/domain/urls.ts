@@ -3,6 +3,17 @@ export type HomeUrlOptions = {
   query?: string;
 };
 
+const REAL_EXTERNAL_HOSTS = new Set([
+  "cinema.109cinemas.net",
+  "109cinemas.net",
+  "ticket.midlandcinema.jp",
+  "www.midland-sq-cinema.jp",
+  "midland-sq-cinema.jp",
+  "theater.aeoncinema.com",
+  "www.aeoncinema.com",
+  "aeoncinema.com",
+]);
+
 function withParams(page: string, values: Record<string, string | undefined>): string {
   const params = new URLSearchParams();
   for (const [key, value] of Object.entries(values)) {
@@ -51,8 +62,25 @@ export function readId(search: string): string {
 export function isSafeExternalUrl(value: string | undefined): value is string {
   if (!value) return false;
   try {
-    return new URL(value).protocol === "https:";
+    const url = new URL(value);
+    return (
+      url.protocol === "https:" &&
+      url.username === "" &&
+      url.password === "" &&
+      (url.port === "" || url.port === "443")
+    );
   } catch {
     return false;
   }
+}
+
+export function isSafeRealExternalUrl(value: string | undefined): value is string {
+  if (!isSafeExternalUrl(value)) return false;
+  const url = new URL(value);
+  return (
+    url.username === "" &&
+    url.password === "" &&
+    (url.port === "" || url.port === "443") &&
+    REAL_EXTERNAL_HOSTS.has(url.hostname)
+  );
 }

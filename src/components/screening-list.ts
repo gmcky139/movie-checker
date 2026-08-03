@@ -1,11 +1,13 @@
 import { isScreeningFinished } from "../domain/date";
-import type { Screening } from "../domain/types";
-import { isSafeExternalUrl } from "../domain/urls";
+import { reservationLinkAriaLabel } from "../domain/presentation";
+import type { DataMode, Screening } from "../domain/types";
+import { isSafeExternalUrl, isSafeRealExternalUrl } from "../domain/urls";
 import { append, element } from "./dom";
 
 export function createScreeningList(
   screenings: Screening[],
   now: Date,
+  mode: DataMode,
   fallbackTicketUrl?: string,
 ): HTMLElement {
   const list = element("ul", {
@@ -16,9 +18,9 @@ export function createScreeningList(
   for (const screening of screenings) {
     const finished = isScreeningFinished(screening, now);
     const item = element("li");
-    const ticketUrl = screening.ticketUrl ?? fallbackTicketUrl;
-    const details = [screening.formatLabel, screening.screenName].filter((value): value is string =>
-      Boolean(value),
+    const ticketUrl = screening.ticketUrl ?? (mode === "sample" ? fallbackTicketUrl : undefined);
+    const details = [screening.formatLabel, screening.screenName, screening.salesStatus].filter(
+      (value): value is string => Boolean(value),
     );
     const dayLabel = screening.startsNextDay
       ? "（翌日）"
@@ -26,16 +28,22 @@ export function createScreeningList(
         ? "（終了は翌日）"
         : "";
     const label = `${screening.startTime}–${screening.endTime}${dayLabel}${details.length > 0 ? `（${details.join(" / ")}）` : ""}${finished ? "（終了）" : ""}`;
-    if (isSafeExternalUrl(ticketUrl)) {
+    const safeTicketUrl =
+      mode === "real" && isSafeRealExternalUrl(ticketUrl)
+        ? ticketUrl
+        : mode === "sample" && isSafeExternalUrl(ticketUrl)
+          ? ticketUrl
+          : undefined;
+    if (safeTicketUrl) {
       item.append(
         element("a", {
           className: `screening-time${finished ? " screening-time--finished" : ""}`,
           text: label,
           attributes: {
-            href: ticketUrl,
+            href: safeTicketUrl,
             target: "_blank",
             rel: "noopener noreferrer",
-            "aria-label": `${label}のデモ予約ページを外部サイトで開く`,
+            "aria-label": reservationLinkAriaLabel(label, mode),
           },
         }),
       );

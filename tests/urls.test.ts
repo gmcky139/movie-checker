@@ -1,6 +1,7 @@
 import {
   homeUrl,
   isSafeExternalUrl,
+  isSafeRealExternalUrl,
   movieUrl,
   readId,
   readSearchState,
@@ -40,5 +41,10 @@ describe("URL utilities", () => {
     expect(isSafeExternalUrl("https://example.com")).toBe(true);
     expect(isSafeExternalUrl("http://example.com")).toBe(false);
     expect(isSafeExternalUrl("javascript:alert(1)")).toBe(false);
+    expect(isSafeExternalUrl("https://user@example.com")).toBe(false);
+    expect(isSafeExternalUrl("https://example.com:444/path")).toBe(false);
+    expect(isSafeRealExternalUrl("https://109cinemas.net/nagoya/")).toBe(true);
+    expect(isSafeRealExternalUrl("https://example.com/reserve")).toBe(false);
+    expect(isSafeRealExternalUrl("https://user@109cinemas.net/nagoya/")).toBe(false);
   });
 });

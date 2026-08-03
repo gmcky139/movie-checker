@@ -1,4 +1,5 @@
-import { parseCinema109Html } from "../../scripts/providers/cinema109-nagoya";
+import { encode } from "iconv-lite";
+import { decodeCinema109Html, parseCinema109Html } from "../../scripts/providers/cinema109-nagoya";
 
 const sourceUrl = "https://cinema.109cinemas.net/cgi-bin/pc/site/det.cgi?tsc=1149&ymd=2026-07-31";
 
@@ -47,6 +48,35 @@ describe("109 Cinemas adapter", () => {
     });
   });
 
+  it("decodes an EUC-JP response before parsing", () => {
+    const encoded = encode(fixture(""), "euc-jp");
+    const decoded = decodeCinema109Html(encoded);
+    expect(decoded).toContain("作品A");
+    expect(parseCinema109Html(decoded, "2026-07-31", sourceUrl)).toHaveLength(2);
+  });
+
+  it("parses multiple movies shown on different screens", () => {
+    const secondMovie = `
+      <div class="inner1">
+        <div class="work_head1"><div class="content_ja">
+          <h2 class="work_name1">作品B（吹替版）</h2>
+          <span class="com_screening_time1">95分</span>
+        </div></div>
+        <div class="work_head2"><h3 class="content_ja">シアター2</h3></div>
+        <a class="com_select_screening_time_item1 status2" href="">
+          <span class="time1">12:10<span>～13:45</span></span>
+        </a>
+      </div>`;
+    const html = fixture("").replace("</div></body></html>", `${secondMovie}</div></body></html>`);
+    const screenings = parseCinema109Html(html, "2026-07-31", sourceUrl);
+    expect(new Set(screenings.map((screening) => screening.rawTitle))).toEqual(
+      new Set(["作品A[SCREENX・字幕]", "作品B（吹替版）"]),
+    );
+    expect(new Set(screenings.map((screening) => screening.screenName))).toEqual(
+      new Set(["シアター5", "シアター2"]),
+    );
+  });
+
   it("discards a reservation URL outside the allowlist without losing the screening", () => {
     const [screening] = parseCinema109Html(
       fixture("https://example.net/unsafe"),
@@ -64,5 +94,15 @@ describe("109 Cinemas adapter", () => {
     expect(() =>
       parseCinema109Html('<div class="com_schedule_body1"></div>', "2026-07-31", sourceUrl),
     ).toThrow(/no parseable screenings/u);
+  });
+
+  it("accepts a recognized unpublished-day notice without inventing screenings", () => {
+    expect(
+      parseCinema109Html(
+        '<div class="com_schedule_body1"><p>上映スケジュールは公開前です</p></div>',
+        "2026-08-03",
+        sourceUrl,
+      ),
+    ).toEqual([]);
   });
 });

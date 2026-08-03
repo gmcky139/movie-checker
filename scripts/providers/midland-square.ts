@@ -115,14 +115,13 @@ export function createMidlandProvider(client: SafeHttpClient): ScheduleProvider 
       if (!listResponse) throw new Error("Midland date list was not found");
       const listHtml = new TextDecoder().decode(listResponse.body);
       const publishedDates = new Set(parseMidlandDateList(listHtml));
-      for (const date of dates) {
-        if (!publishedDates.has(compactDate(date))) {
-          throw new Error(`Midland schedule is not published for ${date}`);
-        }
+      if (!dates.some((date) => publishedDates.has(compactDate(date)))) {
+        throw new Error("Midland returned no published dates in the requested range");
       }
 
       const dailyResults = await Promise.all(
         dates.map(async (date) => {
+          if (!publishedDates.has(compactDate(date))) return [];
           const prefix = `s0100_0201_${compactDate(date)}`;
           const primaryUrl = new URL(`${prefix}-1.html`, SCHEDULE_DIRECTORY).toString();
           const secondaryUrl = new URL(`${prefix}-2.html`, SCHEDULE_DIRECTORY).toString();
@@ -151,6 +150,11 @@ export function createMidlandProvider(client: SafeHttpClient): ScheduleProvider 
         }),
       );
 
+      const screenings = uniqueRawScreenings(dailyResults.flat());
+      if (screenings.length === 0) {
+        throw new Error("Midland returned no screenings across the requested dates");
+      }
+
       return {
         theater,
         source: {
@@ -161,7 +165,7 @@ export function createMidlandProvider(client: SafeHttpClient): ScheduleProvider 
           fetchedAt,
           status: "success",
         },
-        screenings: uniqueRawScreenings(dailyResults.flat()),
+        screenings,
       };
     },
   };

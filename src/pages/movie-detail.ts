@@ -7,6 +7,7 @@ import { createMain, getAppRoot, renderFatalError, renderPage } from "../compone
 import { createScreeningList } from "../components/screening-list";
 import { SampleDataProvider } from "../data/sample-data-provider";
 import { formatLongDate, formatMinutes, getTokyoDate } from "../domain/date";
+import { scheduleLinkNotice } from "../domain/presentation";
 import { getScreeningsForMovieAtTheater, getTheatersForMovie } from "../domain/selectors";
 import { homeUrl, movieUrl, readId, readSearchState, theaterUrl } from "../domain/urls";
 
@@ -45,7 +46,7 @@ export async function runMovieDetailPage(): Promise<void> {
 
     const details = element("article", { className: "detail-hero" });
     const posterFrame = element("div", { className: "detail-hero__poster" });
-    posterFrame.append(createPoster(movie, true));
+    posterFrame.append(createPoster(movie, data.dataMode, true));
     const body = element("div", { className: "detail-hero__body" });
     append(
       body,
@@ -140,11 +141,15 @@ export async function runMovieDetailPage(): Promise<void> {
         });
         append(groupHeader, identity, detailLink);
         const screenings = getScreeningsForMovieAtTheater(data, movie.id, theater.id, state.date);
-        append(group, groupHeader, createScreeningList(screenings, now, theater.ticketUrl));
+        append(
+          group,
+          groupHeader,
+          createScreeningList(screenings, now, data.dataMode, theater.ticketUrl),
+        );
         group.append(
           element("p", {
             className: "schedule-note",
-            text: "時刻を選ぶとデモ用予約リンクが外部タブで開きます。",
+            text: scheduleLinkNotice(data.dataMode),
           }),
         );
         list.append(group);

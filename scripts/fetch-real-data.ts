@@ -3,22 +3,32 @@ import type { AppData } from "../src/domain/types";
 import { normalizeRealData } from "./normalize-movies";
 import { createAeonTokonameProvider } from "./providers/aeon-tokoname";
 import { createCinema109Provider } from "./providers/cinema109-nagoya";
-import { SafeHttpClient } from "./providers/http-client";
+import { HttpStatusError, SafeHttpClient } from "./providers/http-client";
 import { createMidlandProvider } from "./providers/midland-square";
+import type { ScheduleProvider } from "./providers/types";
 
 function safeErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
-export async function fetchRealData(now: Date = new Date()): Promise<AppData> {
-  const dates = createDateRange(now);
-  const generatedAt = now.toISOString();
-  const client = new SafeHttpClient();
-  const providers = [
-    createCinema109Provider(client),
-    createMidlandProvider(client),
-    createAeonTokonameProvider(client),
-  ];
+function failureStage(error: unknown): "fetch" | "parse" {
+  if (
+    error instanceof HttpStatusError ||
+    error instanceof TypeError ||
+    error instanceof DOMException ||
+    (error instanceof Error && /URL is outside|redirect|response exceeds/iu.test(error.message))
+  ) {
+    return "fetch";
+  }
+  return "parse";
+}
+
+export async function aggregateProviderData(
+  providers: ScheduleProvider[],
+  dates: string[],
+  generatedAt: string,
+): Promise<AppData> {
+  if (providers.length !== 3) throw new Error("Exactly three real-data providers are required");
   const settled = await Promise.allSettled(
     providers.map((provider) => provider.fetch(dates, generatedAt)),
   );
@@ -37,7 +47,7 @@ export async function fetchRealData(now: Date = new Date()): Promise<AppData> {
     }
     failed = true;
     console.error(
-      `[real-data] theater=${provider.theaterName} url=${provider.sourceUrl} stage=fetch-or-parse error=${safeErrorMessage(result.reason)}`,
+      `[real-data] theater=${provider.theaterName} url=${provider.sourceUrl} stage=${failureStage(result.reason)} error=${safeErrorMessage(result.reason)}`,
     );
   }
 
@@ -51,4 +61,16 @@ export async function fetchRealData(now: Date = new Date()): Promise<AppData> {
     generatedAt,
     successful.map((result) => result.source),
   );
+}
+
+export async function fetchRealData(now: Date = new Date()): Promise<AppData> {
+  const dates = createDateRange(now);
+  const generatedAt = now.toISOString();
+  const client = new SafeHttpClient();
+  const providers = [
+    createCinema109Provider(client),
+    createMidlandProvider(client),
+    createAeonTokonameProvider(client),
+  ];
+  return aggregateProviderData(providers, dates, generatedAt);
 }

@@ -49,7 +49,12 @@ function isHttpsUrl(value: unknown): value is string {
 function isAllowedRealUrl(value: unknown): value is string {
   if (!isHttpsUrl(value)) return false;
   const url = new URL(value);
-  return REAL_HOSTS.has(url.hostname) && (url.port === "" || url.port === "443");
+  return (
+    url.username === "" &&
+    url.password === "" &&
+    REAL_HOSTS.has(url.hostname) &&
+    (url.port === "" || url.port === "443")
+  );
 }
 
 function validateMovie(

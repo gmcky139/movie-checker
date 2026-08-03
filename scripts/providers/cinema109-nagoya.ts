@@ -26,6 +26,10 @@ const theater: Theater = {
   ticketUrl: SCHEDULE_URL,
 };
 
+export function decodeCinema109Html(body: Uint8Array): string {
+  return decode(Buffer.from(body), "euc-jp");
+}
+
 function salesStatus(className: string): string | undefined {
   if (/\bstatus1\b/u.test(className)) return "空席あり";
   if (/\bstatus2\b/u.test(className)) return "残席わずか";
@@ -84,6 +88,10 @@ export function parseCinema109Html(html: string, date: string, sourceUrl: string
   });
 
   if (results.length === 0) {
+    const notice = $(".com_schedule_body1").text().replace(/\s+/gu, " ");
+    if (/上映.*(?:未定|ありません|公開前)|スケジュール.*(?:未定|ありません|公開前)/u.test(notice)) {
+      return [];
+    }
     throw new Error(`109 Cinemas returned no parseable screenings for ${date}`);
   }
   return uniqueRawScreenings(results);
@@ -104,10 +112,14 @@ export function createCinema109Provider(client: SafeHttpClient): ScheduleProvide
             expected: "html",
           });
           if (!response) throw new Error(`109 Cinemas schedule was not found: ${url.toString()}`);
-          const html = decode(Buffer.from(response.body), "euc-jp");
+          const html = decodeCinema109Html(response.body);
           return parseCinema109Html(html, date, response.url);
         }),
       );
+      const screenings = uniqueRawScreenings(dailyResults.flat());
+      if (screenings.length === 0) {
+        throw new Error("109 Cinemas returned no screenings across the requested dates");
+      }
       return {
         theater,
         source: {
@@ -118,7 +130,7 @@ export function createCinema109Provider(client: SafeHttpClient): ScheduleProvide
           fetchedAt,
           status: "success",
         },
-        screenings: dailyResults.flat(),
+        screenings,
       };
     },
   };

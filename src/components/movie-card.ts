@@ -20,7 +20,7 @@ export function createMovieCard(
     },
   });
   const posterFrame = element("div", { className: "movie-card__poster" });
-  posterFrame.append(createPoster(movie, eager));
+  posterFrame.append(createPoster(movie, data.dataMode, eager));
 
   const body = element("div", { className: "movie-card__body" });
   const title = element("h3", { className: "movie-card__title", text: movie.title });

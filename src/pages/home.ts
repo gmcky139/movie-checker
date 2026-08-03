@@ -6,6 +6,7 @@ import { createMain, getAppRoot, renderFatalError, renderPage } from "../compone
 import { createTheaterCard } from "../components/theater-card";
 import { SampleDataProvider } from "../data/sample-data-provider";
 import { formatLongDate, getTokyoDate } from "../domain/date";
+import { homeScheduleLabel } from "../domain/presentation";
 import { getMoviesForDate, searchMovies, sortMoviesForSchedule } from "../domain/selectors";
 import { homeUrl, readSearchState } from "../domain/urls";
 
@@ -21,7 +22,10 @@ export async function runHomePage(): Promise<void> {
     const now = new Date();
     const main = createMain();
     const intro = element("section", { className: "hero" });
-    const eyebrow = element("p", { className: "eyebrow", text: "4 DAYS / DEMO SCHEDULE" });
+    const eyebrow = element("p", {
+      className: "eyebrow",
+      text: homeScheduleLabel(data.dataMode),
+    });
     const heading = element("h1", {
       text: "観たい映画と、行ける映画館をひとつの場所で。",
     });
