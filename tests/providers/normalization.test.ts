@@ -108,7 +108,7 @@ describe("real movie normalization", () => {
   });
 
   it("merges exact normalized titles from three providers into valid real data", async () => {
-    const dates = ["2026-07-31", "2026-08-01", "2026-08-02", "2026-08-03"];
+    const dates = ["2026-07-31", "2026-08-01", "2026-08-02"];
     const theaters: Theater[] = [
       {
         id: "cinema109-nagoya",

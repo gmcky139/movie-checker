@@ -15,12 +15,11 @@ describe("date utilities", () => {
     expect(getTokyoDate(new Date("2026-07-30T15:30:00.000Z"))).toBe("2026-07-31");
   });
 
-  it("creates today and the following three dates", () => {
+  it("creates today and the following two dates", () => {
     expect(createDateRange(new Date("2026-07-30T15:30:00.000Z"))).toEqual([
       "2026-07-31",
       "2026-08-01",
       "2026-08-02",
-      "2026-08-03",
     ]);
   });
 

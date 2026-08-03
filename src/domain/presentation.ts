@@ -6,7 +6,7 @@ export const TMDB_ATTRIBUTION_URL = "https://www.themoviedb.org/";
 export const TMDB_LOGO_PATH = "images/tmdb-logo.svg";
 
 export function homeScheduleLabel(mode: DataMode): string {
-  return mode === "real" ? "4 DAYS / OFFICIAL SCHEDULE" : "4 DAYS / DEMO SCHEDULE";
+  return mode === "real" ? "3 DAYS / OFFICIAL SCHEDULE" : "3 DAYS / DEMO SCHEDULE";
 }
 
 export function posterAlt(

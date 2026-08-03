@@ -48,7 +48,7 @@ export function addDays(date: string, days: number): string {
   ].join("-");
 }
 
-export function createDateRange(now: Date = new Date(), count = 4): string[] {
+export function createDateRange(now: Date = new Date(), count = 3): string[] {
   const today = getTokyoDate(now);
   return Array.from({ length: count }, (_, index) => addDays(today, index));
 }

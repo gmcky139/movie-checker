@@ -63,7 +63,7 @@
   display: grid;
   width: 100%;
   min-width: 0;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0;
   padding: 0;
   background: transparent;

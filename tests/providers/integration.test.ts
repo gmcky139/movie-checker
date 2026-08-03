@@ -7,7 +7,7 @@ import type { ScheduleProvider } from "../../scripts/providers/types";
 import { validateAppData } from "../../scripts/validate-data";
 import { enrichMoviesWithTmdb } from "../../scripts/tmdb-posters";
 
-const dates = ["2026-08-03", "2026-08-04", "2026-08-05", "2026-08-06"];
+const dates = ["2026-08-03", "2026-08-04", "2026-08-05"];
 const generatedAt = "2026-08-03T00:00:00.000Z";
 
 const definitions = [

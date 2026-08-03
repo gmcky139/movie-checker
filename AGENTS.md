@@ -9,7 +9,7 @@ Dockerized Nginx. It displays current screening schedules for these three theate
 - ミッドランドスクエアシネマ
 - イオンシネマ常滑
 
-The application must continue to support title search, four-day date switching,
+The application must continue to support title search, three-day date switching,
 movie details, theater details, screening times, source information, and safe links
 to official reservation or schedule pages. Correct movie posters are a primary
 feature, not optional decoration. Real-mode movies should be enriched with poster

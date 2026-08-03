@@ -14,7 +14,7 @@ describe("sample data", () => {
     expect(errors).toEqual([]);
     expect(data.movies.length).toBeGreaterThanOrEqual(8);
     expect(data.theaters.length).toBeGreaterThanOrEqual(4);
-    expect(data.dates).toHaveLength(4);
+    expect(data.dates).toHaveLength(3);
   });
 
   it("has unique IDs and valid references", () => {

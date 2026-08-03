@@ -9,7 +9,7 @@ import {
 } from "../src/domain/urls";
 
 describe("URL utilities", () => {
-  const dates = ["2026-07-31", "2026-08-01", "2026-08-02", "2026-08-03"];
+  const dates = ["2026-07-31", "2026-08-01", "2026-08-02"];
 
   it("builds relative movie and theater URLs", () => {
     expect(movieUrl("movie-001", dates[0] ?? "")).toBe("movie.html?id=movie-001&date=2026-07-31");

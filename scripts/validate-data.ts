@@ -371,8 +371,8 @@ export async function validateAppData(
   );
   if (validDates.length !== dates.length) errors.push("dates contains an invalid date");
   const expectedDates = createDateRange(options.now ?? new Date());
-  if (dates.length !== 4 || dates.some((date, index) => date !== expectedDates[index])) {
-    errors.push(`dates must be the current four Tokyo dates: ${expectedDates.join(", ")}`);
+  if (dates.length !== 3 || dates.some((date, index) => date !== expectedDates[index])) {
+    errors.push(`dates must be the current three Tokyo dates: ${expectedDates.join(", ")}`);
   }
 
   const movies = movieValues.filter((movie, index): movie is Movie =>

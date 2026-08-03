@@ -31,7 +31,7 @@ export async function runHomePage(): Promise<void> {
     });
     const description = element("p", {
       className: "hero__lead",
-      text: "今日から4日分の上映予定を、映画と映画館の両方から探せます。",
+      text: "今日から3日分の上映予定を、映画と映画館の両方から探せます。",
     });
     const demoBadge = element("p", {
       className: "demo-notice",
