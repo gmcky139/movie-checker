@@ -153,6 +153,7 @@ function createTicketUrl(
   date: string,
   startTime: string,
 ): string {
+  if (!theater.ticketUrl) throw new Error(`Sample theater has no ticket URL: ${theater.id}`);
   const url = new URL(theater.ticketUrl);
   url.searchParams.set("movie", movieId);
   url.searchParams.set("date", date);
@@ -169,6 +170,9 @@ export function createSampleData(now: Date = new Date()): AppData {
       for (let slot = 0; slot < 4; slot += 1) {
         const movie = movies[(theaterIndex * 2 + dateIndex + slot) % movies.length];
         if (!movie) continue;
+        if (!movie.durationMinutes) {
+          throw new Error(`Sample movie has no duration: ${movie.id}`);
+        }
 
         const minuteOffset = theaterIndex * 5 + (dateIndex % 2) * 5;
         const startTimes = [
@@ -194,9 +198,19 @@ export function createSampleData(now: Date = new Date()): AppData {
 
   return {
     schemaVersion: 1,
+    dataMode: "sample",
     generatedAt: now.toISOString(),
     timezone: "Asia/Tokyo",
-    sourceMode: "sample",
+    sources: [
+      {
+        providerId: "sample-generator",
+        theaterId: "sample-data",
+        theaterName: "生成デモデータ",
+        sourceUrl: "https://github.com/gmcky139/movie-checker",
+        fetchedAt: now.toISOString(),
+        status: "success",
+      },
+    ],
     dates,
     movies,
     theaters,

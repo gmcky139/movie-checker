@@ -1,5 +1,8 @@
 FROM node:24-alpine AS build
 
+ARG DATA_MODE=sample
+ENV DATA_MODE=$DATA_MODE
+
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci

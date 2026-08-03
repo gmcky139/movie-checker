@@ -1,6 +1,6 @@
 # 映画館横断上映情報アプリ — プロトタイプ仕様書
 
-- 文書バージョン: 1.0
+- 文書バージョン: 1.1
 - 対象: Codex による初期実装
 - 公開形態: GitHub Pages
 - ローカル実行: Docker
@@ -18,7 +18,7 @@
 1. GitHub Pagesで常時公開し、PC・スマートフォンから普段使いできること。
 2. 同じアプリをDockerコンテナ上でも起動でき、課題の「Dockerコンテナ上で動作し、ホストPCからブラウザでアクセスする」という条件を満たすこと。
 
-初期実装では、実際の映画館サイトへのスクレイピングや外部API接続は行わない。相対日付で生成するサンプルデータを使用し、UI、検索、日付切り替え、詳細表示、Docker実行、GitHub Pages公開までを確実に完成させる。
+通常公開では相対日付で生成するサンプルデータを使用する。追加の手動検証用途に限り、109シネマズ名古屋、ミッドランドスクエアシネマ、イオンシネマ常滑の公式上映予定から事実情報を取得できる。外部映画APIは使用しない。
 
 将来、サンプルデータ生成処理を上映情報取得処理に置き換えられる構造にする。
 
@@ -85,7 +85,7 @@
 
 ### 4.2 初期実装に含めないもの
 
-- 実在映画館サイトのスクレイピング
+- 許可対象3館以外の実在映画館サイトの取得
 - 外部映画APIの利用
 - 座席の空き状況
 - アプリ内での予約・決済
@@ -210,13 +210,23 @@ movie-schedule-viewer/
 ```ts
 export type AppData = {
   schemaVersion: 1;
+  dataMode: "sample" | "real";
   generatedAt: string;
   timezone: "Asia/Tokyo";
-  sourceMode: "sample" | "live";
+  sources: DataSourceStatus[];
   dates: string[];
   movies: Movie[];
   theaters: Theater[];
   screenings: Screening[];
+};
+
+export type DataSourceStatus = {
+  providerId: string;
+  theaterId: string;
+  theaterName: string;
+  sourceUrl: string;
+  fetchedAt: string;
+  status: "success" | "failed";
 };
 ```
 
@@ -253,13 +263,13 @@ export type Theater = {
   area: string;
   description: string;
   officialUrl: string;
-  ticketUrl: string;
+  ticketUrl?: string;
 };
 ```
 
 制約:
 
-- `officialUrl` と `ticketUrl` は `https://` で始まるURLとする。
+- `officialUrl` と、存在する場合の `ticketUrl` は `https://` で始まるURLとする。
 - プロトタイプでは、予約リンクは実在サイトを装わず、安全なサンプルURLまたは明示的なダミーリンクとする。
 - ダミーリンクを使う場合、画面上に「デモ用リンク」と明記する。
 
@@ -273,6 +283,8 @@ export type Screening = {
   date: string;
   startTime: string;
   endTime: string;
+  formatLabel?: string;
+  screenName?: string;
   ticketUrl?: string;
 };
 ```
@@ -1099,3 +1111,78 @@ export interface MovieDataProvider {
 - [GitHub Pagesでカスタムワークフローを使用する](https://docs.github.com/ja/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
 - [GitHub Actionsのワークフロー構文](https://docs.github.com/ja/actions/reference/workflows-and-actions/workflow-syntax)
 - [ワークフローをトリガーするイベント](https://docs.github.com/ja/actions/reference/workflows-and-actions/events-that-trigger-workflows)
+
+---
+
+## 29. 限定実データモード（バージョン1.1追加要件）
+
+本節は、実データ取得に関して本書の旧記述より優先する。データモードは`sample`と
+`real`の2種類とし、デフォルトおよびGitHub Pagesのpush・schedule公開は`sample`を
+維持する。`real`はローカルDockerビルドと手動検証ワークフローだけで使用し、利用条件を
+人間が確認して明示的に許可するまでPagesへデプロイしない。
+
+### 29.1 許可対象と取得範囲
+
+取得を許可するのは次の3館の公式上映予定だけとする。
+
+- 109シネマズ名古屋:
+  `https://cinema.109cinemas.net/cgi-bin/pc/site/det.cgi?tsc=1149&ymd=YYYY-MM-DD`
+- ミッドランドスクエアシネマ:
+  `https://ticket.midlandcinema.jp/schedule/schedule/pc/s0100_0201_DateList.html`と、
+  公式ページが示す日付別スケジュール
+- イオンシネマ常滑:
+  `https://theater.aeoncinema.com/schedule/v2/data/tokoname/schedule.json`
+
+取得するのは、作品名、上映日、開始・終了時刻、本編時間、スクリーン名、上映形式、
+販売状態、公式に提供された予約URLなど、上映予定の表示に必要な事実情報に限定する。
+公式画像、ポスター、ロゴ、あらすじ、キャストは取得・複製・直接埋め込みしない。
+実データ作品にはローカルの共通プレースホルダーを使用し、不明な情報を推測しない。
+
+許可ホストは次だけとする。
+
+- `cinema.109cinemas.net`、`109cinemas.net`
+- `ticket.midlandcinema.jp`、`www.midland-sq-cinema.jp`、`midland-sq-cinema.jp`
+- `theater.aeoncinema.com`、`www.aeoncinema.com`、`aeoncinema.com`
+
+検索エンジン、映画情報集約サイト、上記以外の映画館へアクセスしない。ログイン、認証、
+CAPTCHA、アクセス制限を回避せず、ブラウザ自動操作、Selenium、Playwright、`eval`、
+`Function`を使用しない。403または429はリトライも回避もせず失敗として終了する。
+
+### 29.2 HTTPと解析
+
+HTTP処理を共通化し、HTTPS、接続先とリダイレクト先のallowlist、約15秒のタイムアウト、
+最大2同時接続、レスポンスサイズ上限を適用する。リトライは一時的ネットワークエラーと
+5xxだけを対象に最大2回とし、403、404、429は繰り返さない。同一更新内の同一URLは
+1回だけ取得し、リポジトリを示す正直なUser-Agentを送り、Cookieや認証情報を送らない。
+HTMLまたはJSONとして妥当でないレスポンスは拒否する。
+
+109シネマズのEUC-JPはUTF-8へ変換してから解析する。ミッドランドの`onclick`は
+JavaScriptを実行せず、許可された`window.open`引数だけを文字列として読む。イオンの
+ISO 8601日時は瞬間として解析し、`Asia/Tokyo`の上映日と時刻へ変換する。予約URLを公式
+レスポンスから安全に得られない上映回は非リンクで表示する。
+
+### 29.3 正規化と更新安全性
+
+取得元固有の処理は個別アダプターに分け、共通の`RawScreening`へ変換する。作品名には
+Unicode NFKC、前後空白除去、連続・全角空白の統一、括弧・区切り記号の統一を適用し、
+字幕、吹替、IMAX、SCREENX、4DX、Dolbyなど確実に識別できる形式を上映回へ分離する。
+完全一致、規則ベース、管理可能な明示エイリアスだけで作品を統合し、曖昧な類似度統合は
+行わない。正規化名から実行ごとに変わらない決定的IDを生成する。
+
+生成JSONには`dataMode`、`generatedAt`、`sources`を含める。各情報源について
+`providerId`、`theaterId`、`theaterName`、`sourceUrl`、`fetchedAt`、`status`を記録する。
+3館すべての取得・解析・検証が成功した場合だけ、一時ファイルを最終JSONへ原子的に
+置き換える。失敗や0件を空データとして上書きせず、映画館名、URL、処理段階を含む安全な
+エラーを出す。
+
+### 29.4 表示、テスト、公開
+
+`real`では実上映情報、最終取得日時、情報元映画館名、変更可能性、購入前の公式確認を
+画面に表示する。上映形式とスクリーン名を保持し、予約URLがない上映時刻は非リンクにする。
+`sample`のデモ表示と既存URL・画面構成は維持する。
+
+各アダプターは公式ページ全体ではなく最小の人工HTML・JSONフィクスチャで、正常解析、
+複数上映、形式分離、日時変換、深夜上映、不正URL破棄、重複除去、空・欠落・構造変更、
+正規化、決定的ID、3館統合をネットワークなしでテストする。実サイト接続は明示的な別
+コマンドだけで行う。手動GitHub Actionsは取得、検証、Lint、整形、テスト、ビルド、
+artifact保存を行うが、Pagesへデプロイしない。

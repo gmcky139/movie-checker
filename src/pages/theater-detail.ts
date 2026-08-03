@@ -55,8 +55,8 @@ export async function runTheaterDetailPage(): Promise<void> {
     const links = element("div", { className: "external-links" });
     append(
       links,
-      createExternalLink("公式サイト", theater.officialUrl),
-      createExternalLink("チケット予約", theater.ticketUrl),
+      createExternalLink("公式サイト", theater.officialUrl, data.dataMode === "sample"),
+      createExternalLink("チケット予約", theater.ticketUrl, data.dataMode === "sample"),
     );
     append(hero, titleGroup, links);
     main.append(hero);
@@ -126,7 +126,12 @@ export async function runTheaterDetailPage(): Promise<void> {
         });
         const meta = element("p", {
           className: "movie-card__meta",
-          text: `${formatMinutes(movie.durationMinutes)} / ${movie.genres.join("・")}`,
+          text: [
+            movie.durationMinutes ? formatMinutes(movie.durationMinutes) : undefined,
+            movie.genres.length > 0 ? movie.genres.join("・") : undefined,
+          ]
+            .filter((value): value is string => value !== undefined)
+            .join(" / "),
         });
         const screenings = getScreeningsForMovieAtTheater(data, movie.id, theater.id, state.date);
         append(content, titleLink, meta, createScreeningList(screenings, now, theater.ticketUrl));

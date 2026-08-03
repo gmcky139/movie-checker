@@ -43,7 +43,7 @@ describe("sample data", () => {
     const urls = [
       ...data.theaters.flatMap((theater) => [theater.officialUrl, theater.ticketUrl]),
       ...data.screenings.map((screening) => screening.ticketUrl ?? ""),
-    ];
+    ].filter((value): value is string => value !== undefined);
     expect(urls.every((value) => new URL(value).pathname === "/")).toBe(true);
   });
 

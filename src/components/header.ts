@@ -66,7 +66,7 @@ export function createHeader({ data, selectedDate, query = "" }: HeaderOptions):
 
   const updated = element("p", {
     className: "site-header__updated",
-    text: `データ更新: ${formatUpdatedAt(data.generatedAt)} JST`,
+    text: `${data.dataMode === "real" ? "最終取得" : "データ更新"}: ${formatUpdatedAt(data.generatedAt)} JST`,
   });
   append(inner, identity, form, updated);
   header.append(inner);

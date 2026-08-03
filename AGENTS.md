@@ -11,13 +11,28 @@ The application must:
 - show movies and theaters for today and the next three days;
 - support title search, date switching, movie details, theater details, screening times, and external reservation links;
 - use generated sample data in the prototype;
-- remain structured so that a real data provider can replace the sample generator later.
+- optionally build local or manual-validation artifacts from the explicitly allowed real
+  schedule sources while keeping published GitHub Pages builds in sample mode.
 
 The specification is the source of truth. Read it completely before editing code.
 
 ## Non-negotiable constraints
 
-- Do not add scraping or an external movie API in the prototype.
+- Do not add an external movie API. HTTP schedule retrieval is permitted only for
+  109 Cinemas Nagoya, Midland Square Cinema, and Aeon Cinema Tokoname, using the official
+  hosts listed below. Do not access any other theater, search engine, or aggregation site.
+- Allowed retrieval hosts are `cinema.109cinemas.net`, `109cinemas.net`,
+  `ticket.midlandcinema.jp`, `www.midland-sq-cinema.jp`, `midland-sq-cinema.jp`,
+  `theater.aeoncinema.com`, `www.aeoncinema.com`, and `aeoncinema.com`.
+- Do not bypass login, authentication, CAPTCHA, access controls, HTTP 403, or HTTP 429.
+  A 403 or 429 response must fail without retry or circumvention.
+- Do not use Selenium, Playwright, browser automation, `eval`, or `Function` for schedule
+  retrieval or parsing.
+- Retrieve only factual schedule fields needed by this app. Do not copy official posters,
+  images, logos, synopsis, cast, or other copyrighted editorial content.
+- Record each source URL, retrieval timestamp, theater, and success or failure status.
+- Keep GitHub Pages push and scheduled deployments in sample mode until the applicable
+  site terms have been reviewed and the user explicitly authorizes real-data publishing.
 - Do not add a backend server, database, authentication, or payment flow.
 - Do not use copyrighted real movie posters without explicit permission.
 - Use local placeholder posters and clearly label all screening and reservation data as demo data.
@@ -91,6 +106,12 @@ Do not jump directly to visual polish before the domain logic and automated chec
 
 - Generate at least 8 movies and 4 theaters.
 - Generate screenings for today and the following 3 days in `Asia/Tokyo`.
+- Support `sample` and `real` data modes; `sample` is always the default.
+- A real-data update may replace the generated JSON only after all three sources were
+  fetched, parsed, and validated successfully. Use a temporary file and atomic rename.
+- Limit HTTP retrieval to HTTPS, an explicit host allowlist, two concurrent requests,
+  approximately 15-second timeouts, at most two retries for network errors and 5xx only,
+  redirect validation, and bounded response sizes. Do not send cookies or credentials.
 - Do not commit permanently stale fixed dates as the active dataset.
 - Validate required fields, unique IDs, references, dates, times, duplicates, and poster existence.
 - Keep current-time-dependent logic testable by accepting `now` as a parameter.
@@ -152,6 +173,9 @@ The workflow must:
 3. run lint, formatting checks, tests, and build;
 4. upload `dist` as the Pages artifact;
 5. deploy through the official GitHub Pages actions.
+
+Push and scheduled Pages workflows must use `sample` mode. Real-data validation must be a
+separate manual-only workflow that uploads an artifact and never deploys Pages.
 
 Use minimum required permissions and deployment concurrency. Do not use Actions as a persistent server.
 

@@ -31,7 +31,10 @@ export async function runHomePage(): Promise<void> {
     });
     const demoBadge = element("p", {
       className: "demo-notice",
-      text: "デモデータ — 実際の上映・予約情報ではありません",
+      text:
+        data.dataMode === "real"
+          ? `実上映情報 — 情報元: ${data.sources.map((source) => source.theaterName).join("、")}。予定は変更される場合があります。購入前に公式サイトで再確認してください。`
+          : "デモデータ — 実際の上映・予約情報ではありません",
     });
     append(intro, eyebrow, heading, description, demoBadge);
 

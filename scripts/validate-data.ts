@@ -2,7 +2,7 @@ import { access, readFile } from "node:fs/promises";
 import { resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
 import { createDateRange, isValidDateString } from "../src/domain/date";
-import type { Movie, Screening, Theater } from "../src/domain/types";
+import type { DataMode, DataSourceStatus, Movie, Screening, Theater } from "../src/domain/types";
 
 type ValidationOptions = {
   now?: Date;
@@ -12,6 +12,22 @@ type ValidationOptions = {
 
 const ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const TIME_PATTERN = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
+const REAL_PROVIDER_IDS = new Set(["cinema109-nagoya", "midland-square", "aeon-tokoname"]);
+const REAL_THEATER_IDS = new Set([
+  "cinema109-nagoya",
+  "midland-square-cinema",
+  "aeon-cinema-tokoname",
+]);
+const REAL_HOSTS = new Set([
+  "cinema.109cinemas.net",
+  "109cinemas.net",
+  "ticket.midlandcinema.jp",
+  "www.midland-sq-cinema.jp",
+  "midland-sq-cinema.jp",
+  "theater.aeoncinema.com",
+  "www.aeoncinema.com",
+  "aeoncinema.com",
+]);
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -30,7 +46,18 @@ function isHttpsUrl(value: unknown): value is string {
   }
 }
 
-function validateMovie(value: unknown, index: number, errors: string[]): value is Movie {
+function isAllowedRealUrl(value: unknown): value is string {
+  if (!isHttpsUrl(value)) return false;
+  const url = new URL(value);
+  return REAL_HOSTS.has(url.hostname) && (url.port === "" || url.port === "443");
+}
+
+function validateMovie(
+  value: unknown,
+  index: number,
+  mode: DataMode,
+  errors: string[],
+): value is Movie {
   const label = `movies[${index}]`;
   if (!isRecord(value)) {
     errors.push(`${label} must be an object`);
@@ -45,21 +72,32 @@ function validateMovie(value: unknown, index: number, errors: string[]): value i
     errors.push(`${label}.title is required`);
     valid = false;
   }
-  if (!isNonEmptyString(value.synopsis)) {
-    errors.push(`${label}.synopsis is required`);
+  if (
+    (mode === "sample" && !isNonEmptyString(value.synopsis)) ||
+    (value.synopsis !== undefined && !isNonEmptyString(value.synopsis))
+  ) {
+    errors.push(`${label}.synopsis is invalid`);
     valid = false;
   }
-  if (!Number.isInteger(value.durationMinutes) || Number(value.durationMinutes) < 1) {
+  if (
+    (mode === "sample" && !Number.isInteger(value.durationMinutes)) ||
+    (value.durationMinutes !== undefined &&
+      (!Number.isInteger(value.durationMinutes) || Number(value.durationMinutes) < 1))
+  ) {
     errors.push(`${label}.durationMinutes must be a positive integer`);
     valid = false;
   }
-  if (!isNonEmptyString(value.releaseDate) || !isValidDateString(value.releaseDate)) {
+  if (
+    (mode === "sample" && !isNonEmptyString(value.releaseDate)) ||
+    (value.releaseDate !== undefined &&
+      (!isNonEmptyString(value.releaseDate) || !isValidDateString(value.releaseDate)))
+  ) {
     errors.push(`${label}.releaseDate is invalid`);
     valid = false;
   }
   if (
     !Array.isArray(value.genres) ||
-    value.genres.length === 0 ||
+    (mode === "sample" && value.genres.length === 0) ||
     !value.genres.every(isNonEmptyString)
   ) {
     errors.push(`${label}.genres must contain values`);
@@ -71,6 +109,10 @@ function validateMovie(value: unknown, index: number, errors: string[]): value i
   }
   if (value.originalTitle !== undefined && !isNonEmptyString(value.originalTitle)) {
     errors.push(`${label}.originalTitle must not be empty`);
+    valid = false;
+  }
+  if (value.officialUrl !== undefined && !isHttpsUrl(value.officialUrl)) {
+    errors.push(`${label}.officialUrl must be an HTTPS URL`);
     valid = false;
   }
   return valid;
@@ -93,11 +135,13 @@ function validateTheater(value: unknown, index: number, errors: string[]): value
       valid = false;
     }
   }
-  for (const field of ["officialUrl", "ticketUrl"] as const) {
-    if (!isHttpsUrl(value[field])) {
-      errors.push(`${label}.${field} must be an HTTPS URL`);
-      valid = false;
-    }
+  if (!isHttpsUrl(value.officialUrl)) {
+    errors.push(`${label}.officialUrl must be an HTTPS URL`);
+    valid = false;
+  }
+  if (value.ticketUrl !== undefined && !isHttpsUrl(value.ticketUrl)) {
+    errors.push(`${label}.ticketUrl must be an HTTPS URL`);
+    valid = false;
   }
   return valid;
 }
@@ -131,14 +175,73 @@ function validateScreening(value: unknown, index: number, errors: string[]): val
     typeof value.startTime === "string" &&
     typeof value.endTime === "string" &&
     TIME_PATTERN.test(value.startTime) &&
-    TIME_PATTERN.test(value.endTime) &&
-    value.endTime <= value.startTime
+    TIME_PATTERN.test(value.endTime)
   ) {
-    errors.push(`${label}.endTime must be after startTime`);
-    valid = false;
+    const toMinutes = (time: string): number => {
+      const [hour = 0, minute = 0] = time.split(":").map(Number);
+      return hour * 60 + minute;
+    };
+    const startMinutes = (value.startsNextDay === true ? 1440 : 0) + toMinutes(value.startTime);
+    const endMinutes = (value.endsNextDay === true ? 1440 : 0) + toMinutes(value.endTime);
+    if (endMinutes <= startMinutes) {
+      errors.push(`${label}.endTime must be after startTime`);
+      valid = false;
+    }
   }
   if (value.ticketUrl !== undefined && !isHttpsUrl(value.ticketUrl)) {
     errors.push(`${label}.ticketUrl must be an HTTPS URL`);
+    valid = false;
+  }
+  for (const field of ["startsNextDay", "endsNextDay"] as const) {
+    if (value[field] !== undefined && typeof value[field] !== "boolean") {
+      errors.push(`${label}.${field} must be a boolean`);
+      valid = false;
+    }
+  }
+  for (const field of ["formatLabel", "screenName", "salesStatus"] as const) {
+    if (value[field] !== undefined && !isNonEmptyString(value[field])) {
+      errors.push(`${label}.${field} must not be empty`);
+      valid = false;
+    }
+  }
+  if (value.sourceUrl !== undefined && !isHttpsUrl(value.sourceUrl)) {
+    errors.push(`${label}.sourceUrl must be an HTTPS URL`);
+    valid = false;
+  }
+  return valid;
+}
+
+function validateSource(
+  value: unknown,
+  index: number,
+  errors: string[],
+): value is DataSourceStatus {
+  const label = `sources[${index}]`;
+  if (!isRecord(value)) {
+    errors.push(`${label} must be an object`);
+    return false;
+  }
+  let valid = true;
+  for (const field of ["providerId", "theaterId"] as const) {
+    if (!isNonEmptyString(value[field]) || !ID_PATTERN.test(value[field])) {
+      errors.push(`${label}.${field} is invalid`);
+      valid = false;
+    }
+  }
+  if (!isNonEmptyString(value.theaterName)) {
+    errors.push(`${label}.theaterName is required`);
+    valid = false;
+  }
+  if (!isHttpsUrl(value.sourceUrl)) {
+    errors.push(`${label}.sourceUrl must be an HTTPS URL`);
+    valid = false;
+  }
+  if (!isNonEmptyString(value.fetchedAt) || Number.isNaN(Date.parse(value.fetchedAt))) {
+    errors.push(`${label}.fetchedAt must be an ISO date`);
+    valid = false;
+  }
+  if (value.status !== "success" && value.status !== "failed") {
+    errors.push(`${label}.status is invalid`);
     valid = false;
   }
   return valid;
@@ -186,18 +289,21 @@ export async function validateAppData(
     errors.push("generatedAt must be an ISO date");
   }
   if (input.timezone !== "Asia/Tokyo") errors.push("timezone must be Asia/Tokyo");
-  if (input.sourceMode !== "sample" && input.sourceMode !== "live") {
-    errors.push("sourceMode must be sample or live");
+  const dataMode: DataMode = input.dataMode === "real" ? "real" : "sample";
+  if (input.dataMode !== "sample" && input.dataMode !== "real") {
+    errors.push("dataMode must be sample or real");
   }
 
   const dates = Array.isArray(input.dates) ? input.dates : [];
   const movieValues = Array.isArray(input.movies) ? input.movies : [];
   const theaterValues = Array.isArray(input.theaters) ? input.theaters : [];
   const screeningValues = Array.isArray(input.screenings) ? input.screenings : [];
+  const sourceValues = Array.isArray(input.sources) ? input.sources : [];
   if (!Array.isArray(input.dates)) errors.push("dates must be an array");
   if (!Array.isArray(input.movies)) errors.push("movies must be an array");
   if (!Array.isArray(input.theaters)) errors.push("theaters must be an array");
   if (!Array.isArray(input.screenings)) errors.push("screenings must be an array");
+  if (!Array.isArray(input.sources)) errors.push("sources must be an array");
 
   const validDates = dates.filter(
     (date): date is string => typeof date === "string" && isValidDateString(date),
@@ -209,7 +315,7 @@ export async function validateAppData(
   }
 
   const movies = movieValues.filter((movie, index): movie is Movie =>
-    validateMovie(movie, index, errors),
+    validateMovie(movie, index, dataMode, errors),
   );
   const theaters = theaterValues.filter((theater, index): theater is Theater =>
     validateTheater(theater, index, errors),
@@ -217,9 +323,51 @@ export async function validateAppData(
   const screenings = screeningValues.filter((screening, index): screening is Screening =>
     validateScreening(screening, index, errors),
   );
+  const sources = sourceValues.filter((source, index): source is DataSourceStatus =>
+    validateSource(source, index, errors),
+  );
 
-  if (movies.length < 8) errors.push("At least 8 movies are required");
-  if (theaters.length < 4) errors.push("At least 4 theaters are required");
+  if (dataMode === "sample") {
+    if (movies.length < 8) errors.push("At least 8 movies are required in sample mode");
+    if (theaters.length < 4) errors.push("At least 4 theaters are required in sample mode");
+    if (sources.length === 0) errors.push("At least one source is required in sample mode");
+  } else {
+    if (movies.length === 0) errors.push("At least one movie is required in real mode");
+    if (theaters.length !== 3) errors.push("Exactly three theaters are required in real mode");
+    if (
+      theaters.some((theater) => !REAL_THEATER_IDS.has(theater.id)) ||
+      REAL_THEATER_IDS.size !== theaters.length
+    ) {
+      errors.push("Real mode contains an unexpected theater");
+    }
+    const successfulProviderIds = new Set(
+      sources.filter((source) => source.status === "success").map((source) => source.providerId),
+    );
+    if (
+      sources.length !== 3 ||
+      [...REAL_PROVIDER_IDS].some((providerId) => !successfulProviderIds.has(providerId))
+    ) {
+      errors.push("All three real-data sources must be successful");
+    }
+    for (const source of sources) {
+      if (!isAllowedRealUrl(source.sourceUrl)) {
+        errors.push(`Real source URL is not allowed: ${source.sourceUrl}`);
+      }
+    }
+    for (const theater of theaters) {
+      if (
+        !isAllowedRealUrl(theater.officialUrl) ||
+        (theater.ticketUrl !== undefined && !isAllowedRealUrl(theater.ticketUrl))
+      ) {
+        errors.push(`Real theater URL is not allowed: ${theater.id}`);
+      }
+    }
+    for (const movie of movies) {
+      if (movie.officialUrl !== undefined && !isAllowedRealUrl(movie.officialUrl)) {
+        errors.push(`Real movie URL is not allowed: ${movie.id}`);
+      }
+    }
+  }
   for (const [label, ids] of [
     ["movie", movies.map((movie) => movie.id)],
     ["theater", theaters.map((theater) => theater.id)],
@@ -244,8 +392,25 @@ export async function validateAppData(
       errors.push(`Screening date is not available: ${screening.date}`);
     }
     scheduleKeys.push(
-      [screening.movieId, screening.theaterId, screening.date, screening.startTime].join("|"),
+      [
+        screening.movieId,
+        screening.theaterId,
+        screening.date,
+        screening.startTime,
+        dataMode === "real" ? (screening.screenName ?? "") : "",
+        dataMode === "real" ? (screening.formatLabel ?? "") : "",
+      ].join("|"),
     );
+    if (dataMode === "real") {
+      if (!isAllowedRealUrl(screening.sourceUrl)) {
+        errors.push(
+          `Real screening source URL is not allowed: ${screening.sourceUrl ?? "missing"}`,
+        );
+      }
+      if (screening.ticketUrl !== undefined && !isAllowedRealUrl(screening.ticketUrl)) {
+        errors.push(`Real ticket URL is not allowed: ${screening.ticketUrl}`);
+      }
+    }
   }
   const duplicateSchedules = duplicateValues(scheduleKeys);
   if (duplicateSchedules.length > 0) {
@@ -258,6 +423,13 @@ export async function validateAppData(
     }
   }
   for (const theater of theaters) {
+    if (
+      dataMode === "real" &&
+      !screenings.some((screening) => screening.theaterId === theater.id)
+    ) {
+      errors.push(`Real theater has no screenings: ${theater.id}`);
+    }
+    if (dataMode !== "sample") continue;
     for (const date of validDates) {
       const daily = screenings.filter(
         (screening) => screening.theaterId === theater.id && screening.date === date,

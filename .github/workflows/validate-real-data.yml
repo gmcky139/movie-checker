@@ -1,0 +1,52 @@
+name: Validate real screening data
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch real screening data
+        env:
+          DATA_MODE: real
+        run: npm run generate:data
+
+      - name: Validate real screening data
+        run: npm run validate:real-data
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Run tests
+        run: npm run test:run
+
+      - name: Build without refetching
+        run: npm run build
+
+      - name: Upload validation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: real-screening-data-${{ github.run_id }}
+          path: |
+            src/data/generated.json
+            dist
+          retention-days: 7

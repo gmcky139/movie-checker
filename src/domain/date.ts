@@ -104,11 +104,13 @@ export function formatMinutes(minutes: number): string {
 }
 
 export function screeningStart(screening: Screening): Date {
-  return new Date(`${screening.date}T${screening.startTime}:00+09:00`);
+  const date = screening.startsNextDay ? addDays(screening.date, 1) : screening.date;
+  return new Date(`${date}T${screening.startTime}:00+09:00`);
 }
 
 export function screeningEnd(screening: Screening): Date {
-  return new Date(`${screening.date}T${screening.endTime}:00+09:00`);
+  const date = screening.endsNextDay ? addDays(screening.date, 1) : screening.date;
+  return new Date(`${date}T${screening.endTime}:00+09:00`);
 }
 
 export function isScreeningFinished(screening: Screening, now: Date): boolean {

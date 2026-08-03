@@ -1,23 +1,36 @@
 export type AppData = {
   schemaVersion: 1;
+  dataMode: DataMode;
   generatedAt: string;
   timezone: "Asia/Tokyo";
-  sourceMode: "sample" | "live";
+  sources: DataSourceStatus[];
   dates: string[];
   movies: Movie[];
   theaters: Theater[];
   screenings: Screening[];
 };
 
+export type DataMode = "sample" | "real";
+
+export type DataSourceStatus = {
+  providerId: string;
+  theaterId: string;
+  theaterName: string;
+  sourceUrl: string;
+  fetchedAt: string;
+  status: "success" | "failed";
+};
+
 export type Movie = {
   id: string;
   title: string;
   originalTitle?: string;
-  synopsis: string;
-  durationMinutes: number;
-  releaseDate: string;
+  synopsis?: string;
+  durationMinutes?: number;
+  releaseDate?: string;
   genres: string[];
   posterPath: string;
+  officialUrl?: string;
 };
 
 export type Theater = {
@@ -26,7 +39,7 @@ export type Theater = {
   area: string;
   description: string;
   officialUrl: string;
-  ticketUrl: string;
+  ticketUrl?: string;
 };
 
 export type Screening = {
@@ -36,6 +49,12 @@ export type Screening = {
   date: string;
   startTime: string;
   endTime: string;
+  startsNextDay?: boolean;
+  endsNextDay?: boolean;
+  formatLabel?: string;
+  screenName?: string;
+  salesStatus?: string;
+  sourceUrl?: string;
   ticketUrl?: string;
 };
 

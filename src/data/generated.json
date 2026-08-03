@@ -1,8 +1,18 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T06:19:48.933Z",
+  "dataMode": "sample",
+  "generatedAt": "2026-08-03T07:43:40.100Z",
   "timezone": "Asia/Tokyo",
-  "sourceMode": "sample",
+  "sources": [
+    {
+      "providerId": "sample-generator",
+      "theaterId": "sample-data",
+      "theaterName": "生成デモデータ",
+      "sourceUrl": "https://github.com/gmcky139/movie-checker",
+      "fetchedAt": "2026-08-03T07:43:40.100Z",
+      "status": "success"
+    }
+  ],
   "dates": [
     "2026-08-03",
     "2026-08-04",

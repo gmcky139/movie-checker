@@ -6,6 +6,7 @@ import {
   getTokyoDate,
   isScreeningFinished,
   isValidDateString,
+  screeningStart,
 } from "../src/domain/date";
 import type { Screening } from "../src/domain/types";
 
@@ -55,5 +56,33 @@ describe("date utilities", () => {
     };
     expect(isScreeningFinished(screening, new Date("2026-07-31T03:00:00.000Z"))).toBe(true);
     expect(isScreeningFinished(screening, new Date("2026-07-31T02:59:00.000Z"))).toBe(false);
+  });
+
+  it("handles an end time on the following Tokyo day", () => {
+    const screening: Screening = {
+      id: "screening-overnight",
+      movieId: "movie-1",
+      theaterId: "theater-1",
+      date: "2026-07-31",
+      startTime: "23:30",
+      endTime: "01:30",
+      endsNextDay: true,
+    };
+    expect(isScreeningFinished(screening, new Date("2026-07-31T16:29:00.000Z"))).toBe(false);
+    expect(isScreeningFinished(screening, new Date("2026-07-31T16:30:00.000Z"))).toBe(true);
+  });
+
+  it("handles provider clocks after 24:00 as the following Tokyo day", () => {
+    const screening: Screening = {
+      id: "screening-after-midnight",
+      movieId: "movie-1",
+      theaterId: "theater-1",
+      date: "2026-07-31",
+      startTime: "00:30",
+      endTime: "02:30",
+      startsNextDay: true,
+      endsNextDay: true,
+    };
+    expect(screeningStart(screening).toISOString()).toBe("2026-07-31T15:30:00.000Z");
   });
 });

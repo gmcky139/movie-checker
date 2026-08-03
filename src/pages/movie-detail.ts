@@ -1,6 +1,7 @@
 import { createDateTabs } from "../components/date-tabs";
 import { append, element } from "../components/dom";
 import { createEmptyState } from "../components/empty-state";
+import { createExternalLink } from "../components/external-link";
 import { createPoster } from "../components/poster";
 import { createMain, getAppRoot, renderFatalError, renderPage } from "../components/page-shell";
 import { createScreeningList } from "../components/screening-list";
@@ -54,17 +55,25 @@ export async function runMovieDetailPage(): Promise<void> {
     if (movie.originalTitle) {
       body.append(element("p", { className: "original-title", text: movie.originalTitle }));
     }
-    body.append(element("p", { className: "synopsis", text: movie.synopsis }));
+    if (movie.synopsis) {
+      body.append(element("p", { className: "synopsis", text: movie.synopsis }));
+    }
     const metadata = element("dl", { className: "metadata" });
-    const metadataRows: Array<[string, string]> = [
-      ["上映時間", formatMinutes(movie.durationMinutes)],
-      ["公開日", formatLongDate(movie.releaseDate)],
-      ["ジャンル", movie.genres.join("・")],
-    ];
+    const metadataRows: Array<[string, string]> = [];
+    if (movie.durationMinutes) {
+      metadataRows.push(["上映時間", formatMinutes(movie.durationMinutes)]);
+    }
+    if (movie.releaseDate) metadataRows.push(["公開日", formatLongDate(movie.releaseDate)]);
+    if (movie.genres.length > 0) metadataRows.push(["ジャンル", movie.genres.join("・")]);
     for (const [term, value] of metadataRows) {
       append(metadata, element("dt", { text: term }), element("dd", { text: value }));
     }
-    body.append(metadata);
+    if (metadataRows.length > 0) body.append(metadata);
+    if (movie.officialUrl) {
+      const links = element("div", { className: "external-links" });
+      links.append(createExternalLink("作品詳細", movie.officialUrl, data.dataMode === "sample"));
+      body.append(links);
+    }
     append(details, posterFrame, body);
     main.append(details);
 

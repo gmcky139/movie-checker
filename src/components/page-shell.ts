@@ -22,7 +22,7 @@ export function renderPage(
   main: HTMLElement,
   query = "",
 ): void {
-  root.replaceChildren(createHeader({ data, selectedDate, query }), main, createFooter());
+  root.replaceChildren(createHeader({ data, selectedDate, query }), main, createFooter(data));
 }
 
 export function renderFatalError(root: HTMLElement): void {

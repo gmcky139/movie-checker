@@ -28,9 +28,13 @@ export function createMovieCard(
     className: "movie-card__genres",
     text: movie.genres.join("・"),
   });
+  const metadata = [
+    movie.durationMinutes ? formatMinutes(movie.durationMinutes) : undefined,
+    `${getTheatersForMovie(data, movie.id, date).length}館で上映`,
+  ].filter((value): value is string => value !== undefined);
   const meta = element("p", {
     className: "movie-card__meta",
-    text: `${formatMinutes(movie.durationMinutes)} / ${getTheatersForMovie(data, movie.id, date).length}館で上映`,
+    text: metadata.join(" / "),
   });
   const screenings = getScreeningsForMovie(data, movie.id, date);
   const next = getNextScreening(screenings, now);
@@ -43,7 +47,9 @@ export function createMovieCard(
         ? "本日の上映終了"
         : `最初の上映 ${screenings[0]?.startTime ?? "時刻未定"}`,
   });
-  append(body, title, genres, meta, schedule);
+  append(body, title);
+  if (movie.genres.length > 0) body.append(genres);
+  append(body, meta, schedule);
   append(card, posterFrame, body);
   return card;
 }
