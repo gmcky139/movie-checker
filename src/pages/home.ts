@@ -34,10 +34,11 @@ export async function runHomePage(): Promise<void> {
       text: "デモデータ — 実際の上映・予約情報ではありません",
     });
     append(intro, eyebrow, heading, description, demoBadge);
-    main.append(intro);
 
     if (data.dates.length === 0 || !state.date) {
-      main.append(
+      append(
+        main,
+        intro,
         createEmptyState(
           "上映データがありません",
           "現在表示できる日付がありません。データ更新後にもう一度お試しください。",
@@ -47,13 +48,16 @@ export async function runHomePage(): Promise<void> {
       return;
     }
 
-    main.append(
+    description.textContent = `${formatLongDate(state.date)}の上映予定を、映画と映画館の両方から探せます。`;
+    append(
+      main,
       createDateTabs({
         dates: data.dates,
         selectedDate: state.date,
         today: getTokyoDate(now),
         makeUrl: (date) => homeUrl({ date, query: state.query }),
       }),
+      intro,
     );
 
     const scheduleHeader = element("div", { className: "section-heading" });

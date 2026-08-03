@@ -34,6 +34,7 @@ export async function runMovieDetailPage(): Promise<void> {
           "指定された映画が見つかりません",
           "URLをご確認いただくか、映画一覧から作品を選び直してください。",
           { label: "トップページへ", href: homeUrl({ date: state.date }) },
+          "h1",
         ),
       );
       renderPage(root, data, state.date, main);

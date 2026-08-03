@@ -108,32 +108,32 @@ const theaters: Theater[] = [
     name: "シネマ渋谷セントラル",
     area: "渋谷",
     description: "駅から徒歩5分。幅広いジャンルを上映するデモ映画館です。",
-    officialUrl: "https://example.com/theaters/shibuya",
-    ticketUrl: "https://example.com/tickets/shibuya",
+    officialUrl: "https://example.com/?theater=shibuya&type=official",
+    ticketUrl: "https://example.com/?theater=shibuya&type=ticket",
   },
   {
     id: "theater-shinjuku",
     name: "新宿ムーンライトシネマ",
     area: "新宿",
     description: "ゆったりした座席と夜の上映が特徴のデモ映画館です。",
-    officialUrl: "https://example.com/theaters/shinjuku",
-    ticketUrl: "https://example.com/tickets/shinjuku",
+    officialUrl: "https://example.com/?theater=shinjuku&type=official",
+    ticketUrl: "https://example.com/?theater=shinjuku&type=ticket",
   },
   {
     id: "theater-kichijoji",
     name: "吉祥寺フォレストシアター",
     area: "吉祥寺",
     description: "商店街の先にある、地域密着型のデモ映画館です。",
-    officialUrl: "https://example.com/theaters/kichijoji",
-    ticketUrl: "https://example.com/tickets/kichijoji",
+    officialUrl: "https://example.com/?theater=kichijoji&type=official",
+    ticketUrl: "https://example.com/?theater=kichijoji&type=ticket",
   },
   {
     id: "theater-odaiba",
     name: "お台場ベイシネマ",
     area: "お台場",
     description: "海辺の景色と大きなスクリーンを楽しめるデモ映画館です。",
-    officialUrl: "https://example.com/theaters/odaiba",
-    ticketUrl: "https://example.com/tickets/odaiba",
+    officialUrl: "https://example.com/?theater=odaiba&type=official",
+    ticketUrl: "https://example.com/?theater=odaiba&type=ticket",
   },
 ];
 
@@ -145,6 +145,19 @@ function addMinutes(time: string, minutes: number): string {
 
 function compactDate(date: string): string {
   return date.replaceAll("-", "");
+}
+
+function createTicketUrl(
+  theater: Theater,
+  movieId: string,
+  date: string,
+  startTime: string,
+): string {
+  const url = new URL(theater.ticketUrl);
+  url.searchParams.set("movie", movieId);
+  url.searchParams.set("date", date);
+  url.searchParams.set("time", startTime);
+  return url.toString();
 }
 
 export function createSampleData(now: Date = new Date()): AppData {
@@ -172,7 +185,7 @@ export function createSampleData(now: Date = new Date()): AppData {
             date,
             startTime,
             endTime: addMinutes(startTime, movie.durationMinutes + 15),
-            ticketUrl: `${theater.ticketUrl}?movie=${encodeURIComponent(movie.id)}&date=${date}&time=${startTime}`,
+            ticketUrl: createTicketUrl(theater, movie.id, date, startTime),
           });
         }
       }

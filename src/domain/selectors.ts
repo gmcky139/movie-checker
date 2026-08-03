@@ -97,9 +97,10 @@ export function sortMoviesForSchedule(
 
     if (leftNext && !rightNext) return -1;
     if (!leftNext && rightNext) return 1;
+    if (!leftNext && !rightNext) return left.title.localeCompare(right.title, "ja");
 
-    const leftTime = leftNext?.startTime ?? leftScreenings[0]?.startTime ?? "99:99";
-    const rightTime = rightNext?.startTime ?? rightScreenings[0]?.startTime ?? "99:99";
+    const leftTime = leftNext?.startTime ?? "99:99";
+    const rightTime = rightNext?.startTime ?? "99:99";
     return leftTime.localeCompare(rightTime) || left.title.localeCompare(right.title, "ja");
   });
 }

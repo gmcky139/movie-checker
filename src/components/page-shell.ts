@@ -33,6 +33,7 @@ export function renderFatalError(root: HTMLElement): void {
       "上映情報を読み込めませんでした",
       "時間をおいてページを再読み込みしてください。",
       { label: "トップページへ", href: homeUrl() },
+      "h1",
     ),
   );
   root.replaceChildren(main);

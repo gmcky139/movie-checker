@@ -7,8 +7,9 @@ import {
   getScreeningsForTheater,
   getTheatersForMovie,
   searchMovies,
+  sortMoviesForSchedule,
 } from "../src/domain/selectors";
-import type { Movie, Screening } from "../src/domain/types";
+import type { AppData, Movie, Screening } from "../src/domain/types";
 
 const now = new Date("2026-07-31T00:00:00.000Z");
 const data = createSampleData(now);
@@ -116,5 +117,46 @@ describe("screening selectors", () => {
     ];
     expect(getNextScreening(screenings, new Date("2026-07-31T03:00:00.000Z"))?.id).toBe("next");
     expect(getNextScreening(screenings, new Date("2026-07-31T12:00:00.000Z"))).toBeNull();
+  });
+
+  it("sorts movies with no remaining screenings by title", () => {
+    const candidates = data.movies.slice(0, 2);
+    const titleSorted = [...candidates].sort((left, right) =>
+      left.title.localeCompare(right.title, "ja"),
+    );
+    const earlierMovie = titleSorted[1];
+    const laterMovie = titleSorted[0];
+    expect(earlierMovie).toBeDefined();
+    expect(laterMovie).toBeDefined();
+    if (!earlierMovie || !laterMovie) return;
+
+    const endedData: AppData = {
+      ...data,
+      movies: candidates,
+      screenings: [
+        {
+          id: "ended-earlier",
+          movieId: earlierMovie.id,
+          theaterId: data.theaters[0]?.id ?? "theater-a",
+          date,
+          startTime: "09:00",
+          endTime: "11:00",
+        },
+        {
+          id: "ended-later",
+          movieId: laterMovie.id,
+          theaterId: data.theaters[0]?.id ?? "theater-a",
+          date,
+          startTime: "10:00",
+          endTime: "12:00",
+        },
+      ],
+    };
+
+    expect(
+      sortMoviesForSchedule(endedData, candidates, date, new Date("2026-07-31T13:00:00.000Z")).map(
+        (movie) => movie.id,
+      ),
+    ).toEqual(titleSorted.map((movie) => movie.id));
   });
 });

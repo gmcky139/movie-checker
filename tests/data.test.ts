@@ -38,6 +38,15 @@ describe("sample data", () => {
     );
   });
 
+  it("uses reachable example.com root paths for demo external links", () => {
+    const data = createSampleData(now);
+    const urls = [
+      ...data.theaters.flatMap((theater) => [theater.officialUrl, theater.ticketUrl]),
+      ...data.screenings.map((screening) => screening.ticketUrl ?? ""),
+    ];
+    expect(urls.every((value) => new URL(value).pathname === "/")).toBe(true);
+  });
+
   it("reports broken references", async () => {
     const data = createSampleData(now);
     const first = data.screenings[0];

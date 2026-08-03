@@ -53,13 +53,12 @@
 .date-tabs {
   max-width: 100%;
   margin-bottom: 3rem;
-  overflow-x: auto;
-  scrollbar-width: thin;
 }
 
 .date-tabs__list {
   display: grid;
-  min-width: 560px;
+  width: 100%;
+  min-width: 0;
   grid-template-columns: repeat(4, 1fr);
   gap: 0.5rem;
   padding: 0.35rem;
@@ -68,6 +67,7 @@
 }
 
 .date-tab {
+  min-width: 0;
   min-height: 52px;
   padding: 0.9rem 0.75rem;
   color: var(--muted);
@@ -167,7 +167,10 @@
 }
 
 .theater-card {
+  display: block;
   padding: clamp(1.25rem, 3vw, 2rem);
+  color: inherit;
+  text-decoration: none;
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 0.9rem;
@@ -358,9 +361,10 @@ a.screening-time:hover {
 }
 
 @media (max-width: 680px) {
-  .date-tabs {
-    margin-inline: -0.625rem;
-    padding-inline: 0.625rem;
+  .date-tab {
+    padding: 0.75rem 0.2rem;
+    font-size: 0.76rem;
+    white-space: nowrap;
   }
 
   .movie-card__body {
@@ -396,9 +400,5 @@ a.screening-time:hover {
 
   .movie-card__title {
     min-height: auto;
-  }
-
-  .date-tabs__list {
-    min-width: 520px;
   }
 }
