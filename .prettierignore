@@ -5,3 +5,5 @@ src/data/generated.json
 package-lock.json
 AGENTS.md
 docs/
+.env
+.env.*
