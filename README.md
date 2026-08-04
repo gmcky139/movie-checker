@@ -1,171 +1,120 @@
 # Movie Schedule Viewer
 
-複数の映画館について、今日から3日分の上映作品と上映時刻をまとめて確認できる静的Webアプリです。映画タイトル検索、日付切り替え、映画・映画館それぞれの詳細表示、外部予約リンクへの遷移に対応しています。生成データを使う`sample`と、許可した3館の公式上映予定を取得する`real`の2モードがあります。
+109シネマズ名古屋、ミッドランドスクエアシネマ、イオンシネマ常滑の上映予定を横断して確認できる静的Webアプリです。Asia/Tokyo基準の今日・明日・明後日を対象に、作品名検索、日付切り替え、映画・映画館の詳細、公式予約ページへの安全なリンクを提供します。
 
-> **重要:** GitHub Pagesは`real`モードで3館の公式上映予定を取得して公開します。情報の正確性は保証せず、予定は変更される場合があります。画面の最終取得日時を確認し、購入前に必ず各映画館の公式サイトで再確認してください。
+> GitHub Pagesでは3館の公式情報を取得した`real`モードを公開しています。上映予定は変更される場合があります。画面の最終取得日時を確認し、購入前に必ず各映画館の公式サイトで再確認してください。
 
 ## 公開URL
 
-- GitHub Pages: <https://gmcky139.github.io/movie-checker/>
-- ローカルDocker: <http://localhost:8080>
+- アプリ: <https://gmcky139.github.io/movie-checker/>
 - リポジトリ: <https://github.com/gmcky139/movie-checker>
 
-公開URLまたはリポジトリURLが変わる場合は、`src/config.ts`の設定を更新してください。
+## 動作画面
+
+### トップページ — 3日間の日付切り替え
+
+![今日・明日・明後日の日付タブと上映作品一覧を表示したトップページ](<docs/screenshots/スクリーンショット 2026-08-04 145109.png>)
+
+### 上映中の映画 — ポスター一覧
+
+![ポスター、作品名、上映館数、次回上映時刻を並べた映画一覧](<docs/screenshots/スクリーンショット 2026-08-04 145114.png>)
+
+### 対象映画館 — 3館の一覧
+
+![109シネマズ名古屋、ミッドランドスクエアシネマ、イオンシネマ常滑の映画館一覧](<docs/screenshots/スクリーンショット 2026-08-04 145133.png>)
 
 ## 主な機能
 
-- 日本時間を基準にした今日・明日・明後日の上映表示
-- 映画タイトルの大文字小文字を区別しない部分一致検索
-- URLクエリによる検索語と選択日の保持
+- Asia/Tokyo基準の今日・明日・明後日の上映予定を表示
+- 大文字・小文字を区別しない映画タイトルの部分一致検索
+- URLクエリに検索語と選択日を保持
 - ポスター、上映時間、ジャンル、上映館数、次回上映時刻を含む映画一覧
 - 選択日の上映作品数を含む映画館一覧
-- 映画ごとの上映館、上映時刻、安全に取得できた公式予約リンク
-- 映画館ごとの上映作品、上映時刻、公式サイト・予約リンク
+- 映画・映画館ごとの上映時刻と、安全に取得できた公式予約リンク
 - 不正なID・日付、空データ、検索結果なし、画像読込失敗時の日本語案内
 - PC、タブレット、スマートフォンに対応したレスポンシブ表示
-- 109シネマズ名古屋、ミッドランドスクエアシネマ、イオンシネマ常滑の限定実データ取得
-- 作品名の規則ベース正規化、字幕・吹替・特殊上映、スクリーン、深夜上映の保持
-- 取得元、取得日時、取得成否を含むデータ検証と、全3館成功時だけの原子的更新
-- TMDBとの保守的な完全一致・明示エイリアス照合によるポスター表示
-- 未一致時の作品名付きfallback、70%取得率検証、TMDB帰属表示
+- 3館の公式情報を対象にした実データ取得と、全館成功時だけの原子的更新
+- 作品名の規則ベース正規化と、字幕・吹替・特殊上映、スクリーン、深夜上映の保持
+- TMDBとの保守的な照合によるポスター表示、作品名付きfallback、取得率検証、帰属表示
 
-## スクリーンショット
+## Dockerによるクイックスタート
 
-スクリーンショットは`docs/screenshots/`へ配置する想定です。トップ、映画詳細、映画館詳細をそれぞれデスクトップ幅とスマートフォン幅で保存すると、主要な受け入れ項目を確認しやすくなります。
+Docker EngineとDocker Compose v2以降が必要です。WSLホストへNode.jsやnpmをインストールする必要はありません。
 
-## 技術構成
-
-- Vite + TypeScript + HTML + CSS
-- Vitest
-- ESLint + Prettier
-- ビルド前に生成するJSON
-- マルチステージDocker build + Nginx
-- Docker Compose
-- GitHub Actions + GitHub Pages
-
-ブラウザ側にバックエンド、データベース、認証、外部API認証、取得処理はありません。許可した公式上映予定の取得とTMDBポスター照合はビルド時だけに行い、Viteの`dist`をGitHub PagesとNginxの双方へそのまま配信します。`base: "./"`と相対内部URLにより、GitHub Pagesのプロジェクトサイト配下でも動作します。
-
-## ディレクトリ構成
-
-```text
-.
-├── index.html / movie.html / theater.html
-├── src/
-│   ├── components/       # 安全なDOM生成による表示部品
-│   ├── data/             # 生成JSONとSampleDataProvider
-│   ├── domain/           # 型、日付、セレクタ、URL処理
-│   ├── pages/            # 各ページの表示制御
-│   └── styles/           # 共通・レイアウト・部品CSS
-├── public/               # favicon、ローカルfallback、承認済みTMDBロゴ
-├── scripts/              # 取得、正規化、TMDB照合、データ検証
-├── tests/                # Vitest単体テストと人工的な取得フィクスチャ
-├── .github/workflows/    # Pagesの検証・ビルド・デプロイ
-├── Dockerfile
-├── compose.yaml
-└── nginx.conf
-```
-
-## データモード
-
-- `sample`: オフライン開発、決定的なテスト、デモ向けのローカル生成データです。ローカルDockerの既定モードです。
-- `real`: 次の公式上映予定から、今日を含む3日分をビルド時に取得します。GitHub Pagesの公開ビルドはこのモードです。3館すべての取得・解析・検証が成功しなければビルドを失敗させ、既存JSONを空データで置換しません。
-
-対応する情報源:
-
-- [109シネマズ名古屋](https://109cinemas.net/nagoya/)
-- [ミッドランドスクエアシネマ](https://ticket.midlandcinema.jp/schedule/ticket/0201/index.html)
-- [イオンシネマ常滑](https://theater.aeoncinema.com/theaters/tokoname/)
-
-これらは公式APIではなく、公開されているHTMLまたはJSONの限定的な取得です。ログイン、認証、Cookie、ブラウザ自動操作は使用しません。
-
-## Dockerで起動
-
-Docker EngineとDocker Compose v2以降が必要です。
-
-サンプルモード:
+設定ファイルを作成します。初期値は、外部通信やトークンを必要としない`sample`モードです。
 
 ```bash
-DATA_MODE=sample docker compose build --no-cache
-DATA_MODE=sample docker compose up -d
-```
-
-実データモードでは、`TMDB_API_READ_TOKEN`をシェル環境へ安全に設定してからBuildKit secretとして渡します。値をコマンドライン、Docker build arg、`.env`、リポジトリへ記載しないでください。
-
-```bash
-DATA_MODE=real docker compose build --no-cache
-DATA_MODE=real docker compose up -d
-```
-
-起動後、<http://localhost:8080>を開きます。状態確認と停止は次のとおりです。
-
-```bash
+cp .env.example .env
+docker compose up --build -d
 docker compose ps
+```
+
+起動後に<http://localhost:8080>を開きます。終了時はコンテナを停止します。
+
+```bash
 docker compose down
 ```
 
 Dockerfileのbuildステージでは、依存関係のインストール、選択モードのデータ生成または取得、データ検証、Lint、整形確認、テスト、本番ビルドを実行します。runtimeステージにはNginxと`dist`だけを含めます。
 
-## ローカル開発と検証
+## サンプルモードと実データモード
 
-WSLホストへNode.js、npm、Viteなどをインストールせず、上記のDockerビルドで検証してください。リポジトリ直下へ`node_modules`を作る一時コンテナも使用しません。
+| モード | 内容 | TMDBトークン |
+| --- | --- | --- |
+| `sample` | オフライン確認と決定的なテスト用のデモデータ。ローカルDockerの既定値 | 不要 |
+| `real` | 3館の公式上映予定をビルド時に取得。GitHub Pagesの公開モード | 必要 |
 
-Docker外での開発が許可された別環境ではNode.js 24とnpmを使用できます。
+ローカルで実データモードを使う場合は、Git管理対象外の`.env`を次のように編集します。
 
-```bash
-npm ci
-npm run dev
+```dotenv
+# .env
+DATA_MODE=real
+TMDB_API_READ_TOKEN=YOUR_TMDB_API_READ_ACCESS_TOKEN
 ```
 
-Viteが表示するローカルURLをブラウザで開いてください。`npm run dev`は起動前に日本時間を基準としたサンプルデータを再生成します。
-
-利用できるコマンド:
+その後、同じ起動コマンドを実行します。
 
 ```bash
-npm run generate:data  # DATA_MODEに従って生成または取得
-npm run fetch:real-data # 3館から実データを取得
-npm run validate:data  # スキーマ、参照、件数、画像などを検証
-npm run validate:real-data # 生成JSONが検証済みrealデータか確認
-npm run lint           # ESLint
-npm run format         # Prettierで整形
-npm run format:check   # 整形状態を確認
-npm run test           # Vitest watch mode
-npm run test:run       # Vitestを一度実行
-npm run test:providers # 人工フィクスチャによる取得処理テスト
-npm run build          # 型チェック・本番ビルド（再取得はしない）
-npm run preview        # distをローカルプレビュー
+docker compose up --build -d
+docker compose ps
 ```
 
-## GitHub PagesとGitHub Actions
+`.env`はGitの追跡対象およびDocker build contextから除外されています。ComposeはトークンをBuildKit secretとして実データ生成処理にだけ渡します。トークンはブラウザ、生成JSON、Dockerの実行用イメージ、Gitリポジトリには保存されません。
 
-`.github/workflows/deploy-pages.yml`は次の場合に実行されます。
+`real`モードは、3館すべての取得・解析・検証が成功しなければビルドを失敗させます。サンプルや部分データへ切り替えず、最後に検証されたデータを空データで置換しません。
 
-- `main`ブランチへのpush
-- Actions画面からの手動実行
-- 6時間ごとの定期実行
+## 技術構成
 
-ワークフローは`DATA_MODE=real`で、`npm ci`、3館の実データ取得、TMDBポスター照合、取得率を含む実データ検証、Lint、整形確認、非watchテスト、型チェックとビルドを順に行います。すべて成功した場合だけ`dist`をPages artifactとしてアップロードしてデプロイします。定期実行では生成データをリポジトリへcommitせず、その回の公開成果物だけを更新します。
+- Vite + TypeScript + HTML + CSS
+- Vitest、ESLint、Prettier
+- ビルド前に生成する静的JSON
+- マルチステージDocker build + Nginx
+- Docker Compose
+- GitHub Actions + GitHub Pages
 
-1館でも取得・解析・検証に失敗した場合、またはLint・テスト・ビルドが失敗した場合は、artifactのアップロードとデプロイを行いません。サンプルや部分データへ切り替えず、直前に成功したPagesを維持します。
+ブラウザ側にバックエンド、データベース、認証、外部API認証、取得処理はありません。公式上映予定の取得とTMDBポスター照合はビルド時だけに行い、Viteの`dist`をGitHub PagesとNginxの双方へ配信します。`base: "./"`と相対内部URLにより、GitHub Pagesのプロジェクトサイト配下でも動作します。
 
-`.github/workflows/validate-real-data.yml`は手動実行専用です。実データ取得と全検証を行い、JSONと`dist`を短期間のartifactとして保存しますが、GitHub Pagesへはデプロイしません。
+## GitHub Pagesと定期更新
 
-初回公開時は、リポジトリ管理者がGitHubで次を設定してください。
+`.github/workflows/deploy-pages.yml`は、`main`へのpush、手動実行、6時間ごとの定期実行で起動します。`DATA_MODE=real`で3館の取得、TMDBポスター照合、データ検証、Lint、整形確認、テスト、型チェック、本番ビルドを順に実行し、すべて成功した場合だけ`dist`をGitHub Pagesへデプロイします。失敗時はサンプルや部分データを公開せず、直前に成功したPagesを維持します。
 
-1. **Settings → Pages → Build and deployment → Source**で**GitHub Actions**を選択する。
-2. **Actions**がリポジトリで有効であることを確認する。
-3. **Settings → Secrets and variables → Actions**にRepository Secret `TMDB_API_READ_TOKEN`を登録する。値はTMDBのAPI Read Access Tokenとし、コードやログへ保存しない。
-4. `Test, build, and deploy GitHub Pages`ワークフローを手動実行するか、`main`への次回pushを待つ。
-5. workflowの`deploy`ジョブと`github-pages` environmentが成功したことを確認する。
+GitHub Actionsでは、**Settings → Secrets and variables → Actions**にRepository Secret `TMDB_API_READ_TOKEN`を登録します。値はTMDBのAPI Read Access Tokenです。Pagesの公開元には**GitHub Actions**を指定してください。手動検証用の`.github/workflows/validate-real-data.yml`は成果物を確認できますが、Pagesへはデプロイしません。
 
-公開後は、Pages URLでCSS、JavaScript、ポスター、詳細ページ遷移と詳細ページの再読み込みを確認してください。
+## データ取得元と安全策
 
-## データ取得と安全策
+対象は次の公式情報だけです。
 
-`scripts/generate-data.ts`がモードを選び、`src/data/generated.json`を原子的に更新します。`real`では取得元ごとのアダプターを共通中間型へ変換し、Unicode NFKC、空白・括弧の統一、確実に識別できる上映形式の分離、明示エイリアスによって作品をまとめます。曖昧な文字列類似度による統合は行いません。
+- [109シネマズ名古屋](https://109cinemas.net/nagoya/)
+- [ミッドランドスクエアシネマ](https://ticket.midlandcinema.jp/schedule/ticket/0201/index.html)
+- [イオンシネマ常滑](https://theater.aeoncinema.com/theaters/tokoname/)
 
-HTTPは用途別のHTTPS・公式ホストallowlistに限定し、リダイレクト先も検証します。タイムアウト、レスポンスサイズ、最大2同時接続を設定し、401・403・404・429はリトライしません。映画館サイトから画像、あらすじ、キャストは取得しません。正規化後の代表作品名をTMDBの日本向け映画検索へ問い合わせ、候補タイトルの完全一致、管理された別名、公開年、必要な明示overrideだけで保守的に照合します。検索結果の先頭、人気度、曖昧一致では採用しません。
+公開されているHTMLまたはJSONから上映に必要な事実情報だけを取得し、ログイン、認証、Cookie、ブラウザ自動操作は使用しません。HTTPアクセスはHTTPSと用途別の公式ホストallowlistに限定し、リダイレクト先も検証します。タイムアウト、レスポンスサイズ、最大2同時接続を設定し、401・403・404・429はリトライしません。映画館サイトから画像、あらすじ、キャストは取得しません。
 
-照合できた作品はTMDB IDと検証済み`image.tmdb.org`のポスターURLだけを生成JSONへ保存します。ライブ中継など明示した対象外を除く通常映画の取得率が70%未満なら公開ビルドを失敗させます。未一致作品は誤った画像を採用せず、作品名を表示するローカルfallbackになります。実データ画面のフッターにはTMDBの承認済みロゴ、TMDBへのリンクと指定の帰属文を表示します。This product uses the TMDB API but is not endorsed or certified by TMDB.
+作品名はUnicode NFKC、空白・括弧の統一、確実に識別できる上映形式の分離、明示エイリアスによって正規化します。TMDBとの照合は候補タイトルの完全一致、管理された別名、公開年、必要な明示overrideに限定し、検索結果の先頭、人気度、曖昧一致だけでは採用しません。照合できた作品はTMDB IDと検証済み`image.tmdb.org`のポスターURLだけを生成JSONへ保存します。通常映画の取得率が70%未満なら公開ビルドを失敗させ、未一致作品には誤った画像ではなく作品名付きのローカルfallbackを表示します。
+
+実データ画面にはTMDBの承認済みロゴ、TMDBへのリンク、次の帰属文を表示します。
+
+> This product uses the TMDB API but is not endorsed or certified by TMDB.
 
 イオンシネマの上映回には、安全に確認できる公式予約URLがないため推測せず、時刻を非リンクで表示します。
 
@@ -180,7 +129,6 @@ HTTPは用途別のHTTPS・公式ホストallowlistに限定し、リダイレ�
 - GitHub Pagesのpush・手動・定期公開は実データモードです。取得を拒否する応答や構造変更が発生した場合は、回避せず公開更新を停止します。
 - 座席状況、アプリ内決済、アカウント、お気に入り同期、位置情報には対応しません。
 - JavaScriptを無効にした状態での完全動作には対応しません。
-- GitHub Pagesの公開には、上記のリポジトリ設定とworkflowの実行が必要です。
 
 ## ライセンス
 
