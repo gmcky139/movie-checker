@@ -126,6 +126,7 @@ export function parseAeonScheduleJson(
 export function createAeonTokonameProvider(client: SafeHttpClient): ScheduleProvider {
   return {
     providerId: PROVIDER_ID,
+    theater,
     theaterName: THEATER_NAME,
     sourceUrl: SCHEDULE_URL,
     async fetch(dates, fetchedAt) {

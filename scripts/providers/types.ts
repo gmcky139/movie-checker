@@ -28,6 +28,7 @@ export type ProviderResult = {
 
 export type ScheduleProvider = {
   providerId: string;
+  theater: Theater;
   theaterName: string;
   sourceUrl: string;
   fetch: (dates: string[], fetchedAt: string) => Promise<ProviderResult>;

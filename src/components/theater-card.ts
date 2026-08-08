@@ -1,4 +1,5 @@
 import { getMoviesForTheater } from "../domain/selectors";
+import { theaterScheduleSummary } from "../domain/presentation";
 import type { AppData, Theater } from "../domain/types";
 import { theaterUrl } from "../domain/urls";
 import { append, element } from "./dom";
@@ -17,7 +18,7 @@ export function createTheaterCard(data: AppData, theater: Theater, date: string)
   const count = getMoviesForTheater(data, theater.id, date).length;
   const meta = element("p", {
     className: "theater-card__meta",
-    text: `${count}作品を上映`,
+    text: theaterScheduleSummary(data, theater.id, count),
   });
   const link = element("span", {
     className: "text-link",

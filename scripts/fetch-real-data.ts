@@ -35,33 +35,41 @@ export async function aggregateProviderData(
     providers.map((provider) => provider.fetch(dates, generatedAt)),
   );
   const successful = [];
-  let failed = false;
+  const sources: AppData["sources"] = [];
 
   for (const [index, result] of settled.entries()) {
     const provider = providers[index];
     if (!provider) continue;
     if (result.status === "fulfilled") {
       successful.push(result.value);
+      sources.push(result.value.source);
       console.log(
         `[real-data] ${provider.theaterName}: ${result.value.screenings.length} screenings`,
       );
       continue;
     }
-    failed = true;
+    sources.push({
+      providerId: provider.providerId,
+      theaterId: provider.theater.id,
+      theaterName: provider.theaterName,
+      sourceUrl: provider.sourceUrl,
+      fetchedAt: generatedAt,
+      status: "failed",
+    });
     console.error(
       `[real-data] theater=${provider.theaterName} url=${provider.sourceUrl} stage=${failureStage(result.reason)} error=${safeErrorMessage(result.reason)}`,
     );
   }
 
-  if (failed || successful.length !== providers.length) {
-    throw new Error("Real-data update failed; the existing generated JSON was not replaced");
+  if (successful.length === 0) {
+    throw new Error("All real-data providers failed; the existing generated JSON was not replaced");
   }
   return normalizeRealData(
     successful.flatMap((result) => result.screenings),
-    successful.map((result) => result.theater),
+    providers.map((provider) => provider.theater),
     dates,
     generatedAt,
-    successful.map((result) => result.source),
+    sources,
   );
 }
 

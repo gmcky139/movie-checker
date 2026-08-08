@@ -7,7 +7,11 @@ import { createPoster } from "../components/poster";
 import { createScreeningList } from "../components/screening-list";
 import { SampleDataProvider } from "../data/sample-data-provider";
 import { formatLongDate, formatMinutes, getTokyoDate } from "../domain/date";
-import { scheduleLinkNotice } from "../domain/presentation";
+import {
+  isTheaterScheduleUnavailable,
+  scheduleLinkNotice,
+  THEATER_SCHEDULE_UNAVAILABLE,
+} from "../domain/presentation";
 import { getMoviesForTheater, getScreeningsForMovieAtTheater } from "../domain/selectors";
 import { homeUrl, movieUrl, readId, readSearchState, theaterUrl } from "../domain/urls";
 
@@ -61,6 +65,14 @@ export async function runTheaterDetailPage(): Promise<void> {
     );
     append(hero, titleGroup, links);
     main.append(hero);
+
+    if (isTheaterScheduleUnavailable(data, theater.id)) {
+      main.append(
+        createEmptyState(THEATER_SCHEDULE_UNAVAILABLE, "上映予定は公式サイトでご確認ください。"),
+      );
+      renderPage(root, data, state.date, main);
+      return;
+    }
 
     if (!state.date || data.dates.length === 0) {
       main.append(createEmptyState("上映データがありません", "現在表示できる上映日がありません。"));

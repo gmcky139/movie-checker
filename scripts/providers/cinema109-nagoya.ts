@@ -100,6 +100,7 @@ export function parseCinema109Html(html: string, date: string, sourceUrl: string
 export function createCinema109Provider(client: SafeHttpClient): ScheduleProvider {
   return {
     providerId: PROVIDER_ID,
+    theater,
     theaterName: THEATER_NAME,
     sourceUrl: ENTRY_URL,
     async fetch(dates, fetchedAt) {

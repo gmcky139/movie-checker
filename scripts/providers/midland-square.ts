@@ -105,6 +105,7 @@ export function parseMidlandScheduleHtml(
 export function createMidlandProvider(client: SafeHttpClient): ScheduleProvider {
   return {
     providerId: PROVIDER_ID,
+    theater,
     theaterName: THEATER_NAME,
     sourceUrl: LIST_URL,
     async fetch(dates, fetchedAt) {

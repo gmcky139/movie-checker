@@ -12,7 +12,12 @@ type ValidationOptions = {
 
 const ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const TIME_PATTERN = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
-const REAL_PROVIDER_IDS = new Set(["cinema109-nagoya", "midland-square", "aeon-tokoname"]);
+const REAL_PROVIDER_THEATER_IDS = new Map([
+  ["cinema109-nagoya", "cinema109-nagoya"],
+  ["midland-square", "midland-square-cinema"],
+  ["aeon-tokoname", "aeon-cinema-tokoname"],
+]);
+const REAL_PROVIDER_IDS = new Set(REAL_PROVIDER_THEATER_IDS.keys());
 const REAL_THEATER_IDS = new Set([
   "cinema109-nagoya",
   "midland-square-cinema",
@@ -401,18 +406,24 @@ export async function validateAppData(
     ) {
       errors.push("Real mode contains an unexpected theater");
     }
-    const successfulProviderIds = new Set(
-      sources.filter((source) => source.status === "success").map((source) => source.providerId),
-    );
+    const sourceProviderIds = new Set(sources.map((source) => source.providerId));
     if (
       sources.length !== 3 ||
-      [...REAL_PROVIDER_IDS].some((providerId) => !successfulProviderIds.has(providerId))
+      sourceProviderIds.size !== 3 ||
+      [...REAL_PROVIDER_IDS].some((providerId) => !sourceProviderIds.has(providerId))
     ) {
-      errors.push("All three real-data sources must be successful");
+      errors.push("All three real-data sources must be represented");
+    }
+    if (!sources.some((source) => source.status === "success")) {
+      errors.push("At least one real-data source must be successful");
     }
     for (const source of sources) {
       if (!isAllowedRealUrl(source.sourceUrl)) {
         errors.push(`Real source URL is not allowed: ${source.sourceUrl}`);
+      }
+      const expectedTheaterId = REAL_PROVIDER_THEATER_IDS.get(source.providerId);
+      if (expectedTheaterId !== source.theaterId) {
+        errors.push(`Real source theater does not match its provider: ${source.providerId}`);
       }
     }
     for (const theater of theaters) {
@@ -516,11 +527,15 @@ export async function validateAppData(
     }
   }
   for (const theater of theaters) {
-    if (
-      dataMode === "real" &&
-      !screenings.some((screening) => screening.theaterId === theater.id)
-    ) {
-      errors.push(`Real theater has no screenings: ${theater.id}`);
+    if (dataMode === "real") {
+      const source = sources.find((item) => item.theaterId === theater.id);
+      const hasScreenings = screenings.some((screening) => screening.theaterId === theater.id);
+      if (source?.status === "failed" && hasScreenings) {
+        errors.push(`Failed real-data source has screenings: ${theater.id}`);
+      }
+      if (source?.status === "success" && !hasScreenings) {
+        errors.push(`Successful real-data source has no screenings: ${theater.id}`);
+      }
     }
     if (dataMode !== "sample") continue;
     for (const date of validDates) {

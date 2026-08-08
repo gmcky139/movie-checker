@@ -3,10 +3,13 @@ import {
   posterAlt,
   reservationLinkAriaLabel,
   scheduleLinkNotice,
+  THEATER_SCHEDULE_UNAVAILABLE,
   TMDB_ATTRIBUTION_NOTICE,
   TMDB_ATTRIBUTION_URL,
   TMDB_LOGO_PATH,
   usesLocalPosterFallback,
+  isTheaterScheduleUnavailable,
+  theaterScheduleSummary,
 } from "../src/domain/presentation";
 
 describe("data-mode presentation wording", () => {
@@ -37,6 +40,27 @@ describe("data-mode presentation wording", () => {
     );
     expect(TMDB_ATTRIBUTION_URL).toBe("https://www.themoviedb.org/");
     expect(TMDB_LOGO_PATH).toBe("images/tmdb-logo.svg");
+  });
+
+  it("shows an unavailable message instead of zero movies for a failed theater", () => {
+    const data = {
+      dataMode: "real" as const,
+      sources: [
+        {
+          providerId: "aeon-tokoname",
+          theaterId: "aeon-cinema-tokoname",
+          theaterName: "イオンシネマ常滑",
+          sourceUrl: "https://theater.aeoncinema.com/theaters/tokoname/",
+          fetchedAt: "2026-08-08T00:00:00.000Z",
+          status: "failed" as const,
+        },
+      ],
+    };
+    expect(isTheaterScheduleUnavailable(data, "aeon-cinema-tokoname")).toBe(true);
+    expect(theaterScheduleSummary(data, "aeon-cinema-tokoname", 0)).toBe(
+      THEATER_SCHEDULE_UNAVAILABLE,
+    );
+    expect(theaterScheduleSummary(data, "aeon-cinema-tokoname", 0)).not.toMatch(/0作品/u);
   });
 
   it("distinguishes a matched TMDB poster from a title-bearing local fallback", () => {

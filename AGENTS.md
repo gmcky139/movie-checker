@@ -143,9 +143,11 @@ Pages builds use `real` mode.
 The UI must read the generated data mode instead of assuming either mode. Shared
 components must not contain unconditional demo wording.
 
-Real-data replacement is all-or-nothing. Do not replace the last valid generated
-dataset unless all three providers were fetched, parsed, normalized, and validated
-successfully.
+Real-data provider retrieval supports partial success. Keep all three theaters and
+sources in the generated dataset, mark failed sources as `failed`, and publish
+screenings only from successful providers. Do not use sample data to fill failures.
+Fail without replacing the last valid dataset only when all three providers fail or
+when normalization, TMDB enrichment, validation, testing, or building fails.
 
 ## 8. Package commands
 
@@ -186,9 +188,11 @@ For each deployment it must:
 7. upload `dist` only after every preceding step succeeds;
 8. deploy through the official GitHub Pages actions.
 
-If any provider, validation, test, or build step fails, the workflow must fail before
-the Pages artifact is deployed. Never silently deploy sample or partial data as a
-fallback. The previous successful Pages deployment should therefore remain online.
+An individual provider failure must be recorded and may be deployed with the other
+providers' valid data. If all providers fail, or validation, TMDB enrichment, tests,
+or builds fail, the workflow must fail before the Pages artifact is deployed. Never
+silently deploy sample data as a fallback. The previous successful Pages deployment
+should therefore remain online after a whole-build failure.
 
 A separate manual real-data validation workflow may generate an artifact for
 diagnostics, but it must not deploy Pages.
@@ -262,7 +266,7 @@ Tests must cover at least:
 - empty, missing, malformed, and changed structures;
 - title normalization, format-prefix separation, aliases, deterministic IDs, and
   duplicate removal;
-- all-three-provider aggregation and all-or-nothing failure;
+- three-provider aggregation with partial success and all-provider failure;
 - generated-data schema and references;
 - sample/real conditional UI wording;
 - Pages-compatible relative URLs.
@@ -301,8 +305,9 @@ http://localhost:8080/theater.html
 ```
 
 Inspect the generated site sufficiently to confirm that it is in real mode, contains
-all three theaters, has a current retrieval timestamp, displays correctly matched
-posters without broken images or hardcoded demo wording, and includes TMDB
+all three theaters and source statuses, has a current retrieval timestamp, displays
+available providers' correctly matched posters without broken images or hardcoded
+demo wording, shows an unavailable message for failed providers, and includes TMDB
 attribution. Stop the containers afterward:
 
 ```bash
