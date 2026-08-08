@@ -3,6 +3,7 @@ import type { TmdbApi } from "./tmdb-client";
 import {
   TMDB_MATCH_RULES,
   TMDB_OVERRIDES,
+  tmdbSearchTitle,
   type TmdbMatchRule,
   type TmdbOverride,
 } from "./tmdb-overrides";
@@ -171,9 +172,11 @@ export async function enrichMoviesWithTmdb(
         const overridden = parseMovie(await options.api.movie(override));
         candidate = overridden?.id === override ? overridden : undefined;
       } else {
-        const rule = rules[movie.title];
-        const results = searchResults(await options.api.searchMovie(rule?.query ?? movie.title));
-        candidate = selectCandidate(movie, results, rule);
+        const explicitRule = rules[movie.title];
+        const query = explicitRule?.query ?? tmdbSearchTitle(movie.title);
+        const selectionRule = explicitRule ?? (query === movie.title ? undefined : { query });
+        const results = searchResults(await options.api.searchMovie(query));
+        candidate = selectCandidate(movie, results, selectionRule);
       }
       if (!candidate?.posterPath || candidate.adult) return unmatched(movie, "unmatched");
       return {

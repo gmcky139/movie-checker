@@ -1,5 +1,6 @@
 import type { AppData, Movie } from "../src/domain/types";
 import type { TmdbApi } from "../scripts/tmdb-client";
+import { TMDB_MATCH_RULES, TMDB_OVERRIDES, tmdbSearchTitle } from "../scripts/tmdb-overrides";
 import {
   buildPosterUrl,
   choosePosterSize,
@@ -139,6 +140,70 @@ describe("conservative TMDB poster matching", () => {
       coveragePercent: 100,
       unmatchedTitles: [],
     });
+  });
+
+  it("removes reviewed screening decorations without expanding truncated titles", () => {
+    expect(tmdbSearchTitle("『だぁれかさんとアソぼ?』絶叫上映")).toBe("だぁれかさんとアソぼ?");
+    expect(tmdbSearchTitle("パプリカ 4Kリマスター版")).toBe("パプリカ");
+    expect(tmdbSearchTitle("怪談(午前十時の映画祭16)")).toBe("怪談");
+    expect(tmdbSearchTitle("月イチ35mmフィルム上映 『魔性の夏 四谷怪談より』")).toBe(
+      "魔性の夏 四谷怪談より",
+    );
+    expect(tmdbSearchTitle("スパイダーマン...[SCREENX・吹替][グリーティング付]")).toBe(
+      "スパイダーマン...",
+    );
+  });
+
+  it("matches the reviewed movie IDs and excludes only a confirmed non-movie event", async () => {
+    const api = new FakeApi(
+      {
+        パプリカ: [candidate(4977, "パプリカ", "2006-10-21")],
+        "パウ・パトロール ザ・ダイノ・ムービー": [
+          candidate(1185806, "パウ・パトロール ザ・ダイノ・ムービー", "2026-07-31"),
+        ],
+        "クレヨンしんちゃん 奇々怪々": [
+          candidate(1598766, "クレヨンしんちゃん 奇々怪々!オラの妖怪バケ~ション", "2026-07-31"),
+        ],
+        怪談: [candidate(30959, "怪談", "1965-01-06"), candidate(73043, "怪談", "2007-08-04")],
+        "魔性の夏 四谷怪談より": [candidate(299802, "魔性の夏 四谷怪談より", "1981-05-23")],
+      },
+      { 277834: candidate(277834, "モアナと伝説の海", "2016-11-23", "Moana") },
+    );
+    const result = await enrichMoviesWithTmdb(
+      data([
+        movie("パプリカ 4Kリマスター版"),
+        movie("モアナと伝説の海"),
+        movie("パウ・パトロール ザ・ダイノ・ムービー <ファミリーシアター>"),
+        movie("映画クレヨンしんちゃん 奇々怪々!オラの妖怪バケーション"),
+        movie("怪談(午前十時の映画祭16)"),
+        movie("月イチ35mmフィルム上映 『魔性の夏 四谷怪談より』"),
+        movie("NMIXX 1ST WORLD TOUR IN JAPAN LIVE VIEWING"),
+      ]),
+      { api, minimumCoverage: 100 },
+    );
+    expect(result.movies.map((item) => item.tmdbId)).toEqual([
+      4977,
+      277834,
+      1185806,
+      1598766,
+      30959,
+      299802,
+      undefined,
+    ]);
+    expect(result.movies.at(-1)?.posterMatchStatus).toBe("not-applicable");
+    expect(result.posterCoverage).toMatchObject({
+      eligibleCount: 6,
+      matchedCount: 6,
+      notApplicableCount: 1,
+      coveragePercent: 100,
+    });
+    expect(TMDB_OVERRIDES["モアナと伝説の海"]).toBe(277834);
+    expect(TMDB_OVERRIDES["NMIXX 1ST WORLD TOUR IN JAPAN LIVE VIEWING"]).toBeNull();
+    expect(
+      TMDB_MATCH_RULES[
+        "映画『仮面ライダーゼッツ さよならのミッション』/映画『超宇宙刑事ギャバン インフィニティ 太陽が泣いた日』"
+      ],
+    ).toBeUndefined();
   });
 
   it("reports unmatched titles and fails below 70% without choosing a wrong poster", async () => {
