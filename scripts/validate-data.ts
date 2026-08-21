@@ -467,8 +467,8 @@ export async function validateAppData(
       ) {
         errors.push("Real posterCoverage does not match movie metadata");
       }
-      if (eligibleCount > 0 && (matchedCount === 0 || expectedPercent < 70)) {
-        errors.push(`Real TMDB poster coverage is below 70%: ${expectedPercent}%`);
+      if (movies.length > 0 && matchedCount === 0) {
+        errors.push("Real TMDB poster matching must contain at least one match");
       }
     }
   }

@@ -9,6 +9,7 @@
     "fetch:real-data": "DATA_MODE=real tsx scripts/generate-data.ts",
     "validate:data": "tsx scripts/validate-data.ts",
     "validate:real-data": "tsx scripts/validate-real-data.ts",
+    "summary:posters": "tsx scripts/write-poster-summary.ts",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

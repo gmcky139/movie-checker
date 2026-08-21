@@ -72,6 +72,19 @@ describe("Aeon Cinema adapter", () => {
     expect(() =>
       parseAeonScheduleJson(
         {
+          "20260701": {
+            movieA: [
+              event("old", "旧上映", "2026-07-01T01:00:00.000Z", "2026-07-01T03:00:00.000Z"),
+            ],
+          },
+        },
+        ["2026-07-31"],
+        sourceUrl,
+      ),
+    ).toThrow(/no requested dates.*20260701/u);
+    expect(() =>
+      parseAeonScheduleJson(
+        {
           "20260731": {
             broken: [{ name: { ja: "作品A" } }],
           },

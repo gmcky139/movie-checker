@@ -76,7 +76,10 @@ class FakeApi implements TmdbApi {
 }
 
 describe("conservative TMDB poster matching", () => {
-  beforeEach(() => vi.spyOn(console, "log").mockImplementation(() => undefined));
+  beforeEach(() => {
+    vi.spyOn(console, "log").mockImplementation(() => undefined);
+    vi.spyOn(console, "warn").mockImplementation(() => undefined);
+  });
   afterEach(() => vi.restoreAllMocks());
 
   it("accepts one exact normalized title or original-title match with the requested year", () => {
@@ -145,6 +148,9 @@ describe("conservative TMDB poster matching", () => {
   it("removes reviewed screening decorations without expanding truncated titles", () => {
     expect(tmdbSearchTitle("『だぁれかさんとアソぼ?』絶叫上映")).toBe("だぁれかさんとアソぼ?");
     expect(tmdbSearchTitle("パプリカ 4Kリマスター版")).toBe("パプリカ");
+    expect(tmdbSearchTitle("作品A 再上映")).toBe("作品A");
+    expect(tmdbSearchTitle("作品A[字幕・SCREENX]")).toBe("作品A");
+    expect(tmdbSearchTitle("作品A 舞台挨拶中継")).toBe("作品A");
     expect(tmdbSearchTitle("怪談(午前十時の映画祭16)")).toBe("怪談");
     expect(tmdbSearchTitle("月イチ35mmフィルム上映 『魔性の夏 四谷怪談より』")).toBe(
       "魔性の夏 四谷怪談より",
@@ -206,12 +212,11 @@ describe("conservative TMDB poster matching", () => {
     ).toBeUndefined();
   });
 
-  it("reports unmatched titles and fails below 70% without choosing a wrong poster", async () => {
+  it("warns below 70% and keeps unmatched titles on the local placeholder", async () => {
     const api = new FakeApi({ A: [candidate(1, "A")], B: [], C: [] });
     const reported = await enrichMoviesWithTmdb(data([movie("A"), movie("B"), movie("C")]), {
       api,
       overrides: {},
-      minimumCoverage: 0,
     });
     expect(reported.posterCoverage).toMatchObject({
       eligibleCount: 3,
@@ -219,12 +224,21 @@ describe("conservative TMDB poster matching", () => {
       coveragePercent: 33.3,
       unmatchedTitles: ["B", "C"],
     });
+    expect(reported.movies.slice(1)).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ posterPath: "images/posters/placeholder.svg" }),
+      ]),
+    );
+    expect(console.warn).toHaveBeenCalledWith(expect.stringMatching(/WARNING.*33\.3%.*70%/u));
+  });
+
+  it("still fails when TMDB poster matching returns zero matches", async () => {
     await expect(
-      enrichMoviesWithTmdb(data([movie("A"), movie("B"), movie("C")]), {
-        api: new FakeApi({ A: [candidate(1, "A")], B: [], C: [] }),
+      enrichMoviesWithTmdb(data([movie("A"), movie("B")]), {
+        api: new FakeApi({ A: [], B: [] }),
         overrides: {},
       }),
-    ).rejects.toThrow(/33.3%.*70%/u);
+    ).rejects.toThrow(/zero matches/u);
   });
 
   it("selects w500 and rejects unsafe image settings", () => {

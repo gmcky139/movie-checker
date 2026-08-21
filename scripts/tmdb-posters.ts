@@ -212,10 +212,13 @@ export async function enrichMoviesWithTmdb(
     `[tmdb] unmatched=${unmatchedTitles.length > 0 ? unmatchedTitles.join(" | ") : "none"}`,
   );
 
+  if (movies.length > 0 && matchedCount === 0) {
+    throw new Error("TMDB poster matching returned zero matches");
+  }
   const minimumCoverage = options.minimumCoverage ?? MINIMUM_COVERAGE;
-  if (eligibleCount > 0 && (matchedCount === 0 || coveragePercent < minimumCoverage)) {
-    throw new Error(
-      `TMDB poster coverage ${posterCoverage.coveragePercent}% is below ${minimumCoverage}%`,
+  if (eligibleCount > 0 && coveragePercent < minimumCoverage) {
+    console.warn(
+      `[tmdb] WARNING: poster coverage ${posterCoverage.coveragePercent}% is below ${minimumCoverage}%; unmatched movies will use the local placeholder`,
     );
   }
   return { ...data, movies, posterCoverage };

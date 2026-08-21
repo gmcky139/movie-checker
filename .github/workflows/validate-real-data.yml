@@ -31,6 +31,9 @@ jobs:
       - name: Validate real screening data
         run: npm run validate:real-data
 
+      - name: Add poster coverage summary
+        run: npm run summary:posters
+
       - name: Run lint
         run: npm run lint
 

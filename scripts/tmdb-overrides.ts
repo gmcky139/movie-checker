@@ -18,11 +18,11 @@ export const TMDB_OVERRIDES: Readonly<Record<string, TmdbOverride>> = Object.fre
 const TMDB_DECORATION_PATTERNS: readonly RegExp[] = [
   /^月イチ35mmフィルム上映\s*/u,
   /\s*絶叫上映\s*$/u,
-  /\s*4Kリマスター版\s*$/iu,
+  /\s*(?:4K(?:リマスター)?(?:版)?|再上映)\s*$/iu,
   /\s*[（(]午前十時の映画祭\d+[）)]\s*$/u,
   /\s*[<＜]ファミリーシアター[>＞]\s*$/u,
-  /\s*[[【(（][^\]】)）]*(?:SCREENX|字幕|吹替|グリーティング付|おこさまシネマ)[^\]】)）]*[\]】)）]\s*/giu,
-  /\s*トークイベント上映\s*$/u,
+  /\s*[[【(（][^\]】)）]*(?:SCREENX|字幕|吹替|グリーティング付|おこさまシネマ|舞台挨拶)[^\]】)）]*[\]】)）]\s*/giu,
+  /\s*(?:舞台挨拶(?:全国同時生中継|中継|付き)?|トークイベント上映)\s*$/u,
 ];
 
 function stripOuterTitleQuotes(value: string): string {

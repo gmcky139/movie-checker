@@ -68,6 +68,16 @@ export function parseAeonScheduleJson(
 ): RawScreening[] {
   if (!isRecord(input)) throw new Error("Aeon schedule root is not an object");
   const results: RawScreening[] = [];
+  const requestedDateKeys = new Set(dates.map((date) => date.replaceAll("-", "")));
+  const publishedDateKeys = Object.keys(input).filter((key) => /^\d{8}$/u.test(key));
+  if (
+    publishedDateKeys.length > 0 &&
+    !publishedDateKeys.some((key) => requestedDateKeys.has(key))
+  ) {
+    throw new Error(
+      `Aeon schedule contains no requested dates; published dates: ${publishedDateKeys.join(", ")}`,
+    );
+  }
 
   for (const date of dates) {
     const compactDate = date.replaceAll("-", "");
