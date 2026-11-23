@@ -8,8 +8,18 @@ export const TITLE_ALIASES: Readonly<Record<string, string>> = Object.freeze({
   "MICHAEL マイケル": "Michael マイケル",
   "SPIDER-MAN: BRAND NEW DAY": "Spider-Man: Brand New Day",
   "Spider-Man/Brand New Day": "Spider-Man: Brand New Day",
-  "映画クレヨンしんちゃん 奇々怪々!オラの妖怪...":
-    "映画クレヨンしんちゃん 奇々怪々!オラの妖怪バケーション",
+  "スパイダーマン ブランド・ニュー・デイ": "スパイダーマン: ブランド・ニュー・デイ",
+  // Both theaters' entries for each of these titles matched the same TMDB movie.
+  "GROTESQQQUE -グロテスク": "GROTESQQQUE グロテスク",
+  "ヴェリティ 真実": "ヴェリティ/真実",
+  "クリスマス・キャロル 3人のゴーストたち": "クリスマス・キャロル/3人のゴーストたち",
+  "バッド・ルーテナント トウキョウ": "バッド・ルーテナント: トウキョウ",
+  "劇場先行版「風を継ぐもの -はじまり-」": "劇場先行版『風を継ぐもの -はじまり-』",
+  "4アウト ─もう一度、プレイボール─": "4アウト もう一度、プレイボール",
+  // Official movie listings confirm the same release, including the restoration and part number.
+  "『ブリジット・ジョーンズの日記』4Kレストア": "ブリジット・ジョーンズの日記 4Kレストア",
+  "劇場アニメーション「魔法使いの夜」": "魔法使いの夜",
+  "装甲騎兵ボトムズ 灰色の魔女": "装甲騎兵ボトムズ 灰色の魔女(ヘクセ)第1作",
   "映画クレヨンしんちゃん 奇々怪々!オラの妖怪バケ~ション":
     "映画クレヨンしんちゃん 奇々怪々!オラの妖怪バケーション",
   "スター・ウォーズ マンダロリアン・アンド・グローグー":
@@ -18,12 +28,24 @@ export const TITLE_ALIASES: Readonly<Record<string, string>> = Object.freeze({
     "スター・ウォーズ/マンダロリアン・アンド・グローグー",
   "スター・ウォーズ/マンダロリアン・アンド・グローグー":
     "スター・ウォーズ/マンダロリアン・アンド・グローグー",
-  "スター・ウォーズ/マンダロリアン...": "スター・ウォーズ/マンダロリアン・アンド・グローグー",
   "映画 仮面ライダーゼッツ&超宇宙刑事ギャバン インフィニティ":
     "映画『仮面ライダーゼッツ さよならのミッション』/映画『超宇宙刑事ギャバン インフィニティ 太陽が泣いた日』",
   "仮面ライダーゼッツ/超宇宙刑事ギャバン":
     "映画『仮面ライダーゼッツ さよならのミッション』/映画『超宇宙刑事ギャバン インフィニティ 太陽が泣いた日』",
 });
+
+// Known cutoffs from theater listings. Resolve against the full titles in the batch as well.
+const TRUNCATED_TITLE_ALIASES: Readonly<Record<string, string>> = Object.freeze({
+  "映画クレヨンしんちゃん 奇々怪々!オラの妖怪...":
+    "映画クレヨンしんちゃん 奇々怪々!オラの妖怪バケーション",
+  "スター・ウォーズ/マンダロリアン...": "スター・ウォーズ/マンダロリアン・アンド・グローグー",
+  "ママがもうこの世界にいなくても...": "ママがもうこの世界にいなくても 私の命の日記",
+  "劇場シリーズ【第一部】メイドインアビス...":
+    "劇場シリーズ【第一部】メイドインアビス 目覚める神秘",
+  "サッカー日本代表 FIFAワールドカップ2026...[ODS]":
+    "サッカー日本代表 FIFAワールドカップ2026 「最高の景色」への挑戦 ONE CREATURE 2nd Leg",
+});
+const TRUNCATED_TITLE_END = /\.\.\.(?:\[ODS\])?$/u;
 
 const FORMAT_PATTERNS: Array<[RegExp, string]> = [
   [/日本語字幕(?:付き)?/giu, "日本語字幕"],
@@ -193,6 +215,22 @@ function selectDuration(values: Array<number | undefined>): number | undefined {
   )[0]?.[0];
 }
 
+function resolveTruncatedTitles(titles: ReadonlySet<string>): Map<string, string> {
+  const resolved = new Map<string, string>();
+  const fullTitles = [...titles].filter((title) => !TRUNCATED_TITLE_END.test(title));
+  for (const title of titles) {
+    if (!TRUNCATED_TITLE_END.test(title)) continue;
+    const expected = TRUNCATED_TITLE_ALIASES[title];
+    const prefix = title.replace(TRUNCATED_TITLE_END, "").trimEnd();
+    if (expected && !fullTitles.some((other) => other !== expected && other.startsWith(prefix))) {
+      resolved.set(title, expected);
+    } else {
+      console.warn(`[real-data] kept unresolved truncated movie title: ${title}`);
+    }
+  }
+  return resolved;
+}
+
 export function normalizeRealData(
   rawScreenings: RawScreening[],
   theaters: Theater[],
@@ -200,11 +238,13 @@ export function normalizeRealData(
   generatedAt: string,
   sources: AppData["sources"],
 ): AppData {
-  const normalized = rawScreenings
-    .map((raw) => ({
-      raw,
-      ...normalizeMovieTitle(raw.rawTitle, raw.formatLabel),
-    }))
+  const parsed = rawScreenings.map((raw) => ({
+    raw,
+    ...normalizeMovieTitle(raw.rawTitle, raw.formatLabel),
+  }));
+  const truncatedTitles = resolveTruncatedTitles(new Set(parsed.map((item) => item.title)));
+  const normalized = parsed
+    .map((item) => ({ ...item, title: truncatedTitles.get(item.title) ?? item.title }))
     .sort(
       (left, right) =>
         left.title.localeCompare(right.title, "ja") ||
