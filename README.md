@@ -112,6 +112,8 @@ GitHub Actionsでは、**Settings → Secrets and variables → Actions**にRepo
 
 作品名はUnicode NFKC、空白・括弧の統一、確実に識別できる上映形式の分離、明示エイリアスによって正規化します。TMDBとの照合は候補タイトルの完全一致、管理された別名、公開年、必要な明示overrideに限定し、検索結果の先頭、人気度、曖昧一致だけでは採用しません。照合できた作品はTMDB IDと検証済み`image.tmdb.org`のポスターURLだけを生成JSONへ保存します。通常映画の取得率が70%未満ならwarningを記録して公開を継続し、未一致作品には誤った画像ではなく作品名付きのローカルfallbackを表示します。TMDB一致が0件の場合や認証・データ検証の異常はビルドを失敗させます。
 
+同じ作品と確認済みの表記は1枚のカードにまとめ、各映画館の上映時刻と上映形式を表示します。切り詰められた作品名は確認済みの対応を使い、同じ先頭部分を持つ別の候補がある場合は個別に表示します。
+
 実データ画面にはTMDBの承認済みロゴ、TMDBへのリンク、次の帰属文を表示します。
 
 > This product uses the TMDB API but is not endorsed or certified by TMDB.

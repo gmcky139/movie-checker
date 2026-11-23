@@ -67,6 +67,40 @@ describe("Aeon Cinema adapter", () => {
     expect(screenings.every((screening) => screening.reservationUrl === undefined)).toBe(true);
   });
 
+  it("extracts only the requested three Tokyo dates", () => {
+    const data = {
+      "20260730": {
+        previous: [
+          event("previous", "前日の作品", "2026-07-30T01:00:00.000Z", "2026-07-30T03:00:00.000Z"),
+        ],
+      },
+      "20260731": {
+        first: [
+          event("first", "初日の作品", "2026-07-31T01:00:00.000Z", "2026-07-31T03:00:00.000Z"),
+        ],
+      },
+      "20260801": {
+        second: [
+          event("second", "2日目の作品", "2026-08-01T01:00:00.000Z", "2026-08-01T03:00:00.000Z"),
+        ],
+      },
+      "20260802": {
+        third: [
+          event("third", "3日目の作品", "2026-08-02T01:00:00.000Z", "2026-08-02T03:00:00.000Z"),
+        ],
+      },
+      "20260803": {
+        following: [
+          event("following", "翌日の作品", "2026-08-03T01:00:00.000Z", "2026-08-03T03:00:00.000Z"),
+        ],
+      },
+    };
+    const requestedDates = ["2026-07-31", "2026-08-01", "2026-08-02"];
+    const screenings = parseAeonScheduleJson(data, requestedDates, sourceUrl);
+    expect(screenings).toHaveLength(3);
+    expect(screenings.map((screening) => screening.date)).toEqual(requestedDates);
+  });
+
   it("detects missing dates and required fields", () => {
     expect(() => parseAeonScheduleJson({}, ["2026-07-31"], sourceUrl)).toThrow(/no parseable/u);
     expect(() =>
@@ -81,7 +115,7 @@ describe("Aeon Cinema adapter", () => {
         ["2026-07-31"],
         sourceUrl,
       ),
-    ).toThrow(/no requested dates.*20260701/u);
+    ).toThrow(/requested dates: 20260731.*available date keys: 20260701/u);
     expect(() =>
       parseAeonScheduleJson(
         {

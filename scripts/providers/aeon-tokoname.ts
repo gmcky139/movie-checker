@@ -75,7 +75,7 @@ export function parseAeonScheduleJson(
     !publishedDateKeys.some((key) => requestedDateKeys.has(key))
   ) {
     throw new Error(
-      `Aeon schedule contains no requested dates; published dates: ${publishedDateKeys.join(", ")}`,
+      `Aeon schedule contains no requested dates; requested dates: ${[...requestedDateKeys].join(", ")}; available date keys: ${publishedDateKeys.join(", ")}`,
     );
   }
 
