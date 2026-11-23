@@ -25,12 +25,6 @@
   padding-block: 0.8rem;
 }
 
-.site-identity {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-}
-
 .site-identity__brand {
   display: inline-flex;
   width: fit-content;
@@ -40,11 +34,6 @@
   font-size: 1.2rem;
   font-weight: 800;
   text-decoration: none;
-}
-
-.site-identity__tagline {
-  color: var(--muted);
-  font-size: 0.75rem;
 }
 
 .site-header__updated {
@@ -219,10 +208,6 @@
 
   .search-form {
     grid-row: 3;
-  }
-
-  .site-identity__tagline {
-    display: none;
   }
 
   .hero {

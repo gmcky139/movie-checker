@@ -21,17 +21,11 @@ function formatUpdatedAt(value: string): string {
 export function createHeader({ data, selectedDate, query = "" }: HeaderOptions): HTMLElement {
   const header = element("header", { className: "site-header" });
   const inner = element("div", { className: "site-header__inner container" });
-  const identity = element("div", { className: "site-identity" });
   const brand = element("a", {
     className: "site-identity__brand",
     text: "Movie Schedule Viewer",
     attributes: { href: homeUrl({ date: selectedDate }) },
   });
-  const tagline = element("span", {
-    className: "site-identity__tagline",
-    text: "映画館をまたいで、今日の一本を。",
-  });
-  append(identity, brand, tagline);
 
   const form = element("form", {
     className: "search-form",
@@ -68,7 +62,7 @@ export function createHeader({ data, selectedDate, query = "" }: HeaderOptions):
     className: "site-header__updated",
     text: `${data.dataMode === "real" ? "最終取得" : "データ更新"}: ${formatUpdatedAt(data.generatedAt)} JST`,
   });
-  append(inner, identity, form, updated);
+  append(inner, brand, form, updated);
   header.append(inner);
   return header;
 }

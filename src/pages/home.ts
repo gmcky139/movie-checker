@@ -27,7 +27,7 @@ export async function runHomePage(): Promise<void> {
       text: homeScheduleLabel(data.dataMode),
     });
     const heading = element("h1", {
-      text: "観たい映画と、行ける映画館をひとつの場所で。",
+      text: "観たい映画、行ける映画館、まとめて決まる。",
     });
     const description = element("p", {
       className: "hero__lead",
