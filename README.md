@@ -114,6 +114,8 @@ GitHub Actionsでは、**Settings → Secrets and variables → Actions**にRepo
 
 同じ作品と確認済みの表記は1枚のカードにまとめ、各映画館の上映時刻と上映形式を表示します。切り詰められた作品名は確認済みの対応を使い、同じ先頭部分を持つ別の候補がある場合は個別に表示します。
 
+ポスター検索では、4Kレストアや映画祭名などの上映用表記を検索語から外します。短縮名や同名作品は、確認済みの正式名・公開年を使い、一部の照合ルールは映画館の公式作品詳細リンクが一致する場合にだけ適用します。
+
 実データ画面にはTMDBの承認済みロゴ、TMDBへのリンク、次の帰属文を表示します。
 
 > This product uses the TMDB API but is not endorsed or certified by TMDB.

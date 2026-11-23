@@ -173,6 +173,9 @@ export async function enrichMoviesWithTmdb(
         candidate = overridden?.id === override ? overridden : undefined;
       } else {
         const explicitRule = rules[movie.title];
+        if (explicitRule?.officialUrl && explicitRule.officialUrl !== movie.officialUrl) {
+          return unmatched(movie, "unmatched");
+        }
         const query = explicitRule?.query ?? tmdbSearchTitle(movie.title);
         const selectionRule = explicitRule ?? (query === movie.title ? undefined : { query });
         const results = searchResults(await options.api.searchMovie(query));

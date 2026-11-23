@@ -4,6 +4,7 @@ export type TmdbMatchRule = {
   query: string;
   acceptedTitles?: readonly string[];
   releaseYear?: number;
+  officialUrl?: string;
 };
 
 // These are broadcasts rather than TMDB movie releases. Keep the exclusions explicit and reviewable.
@@ -13,16 +14,19 @@ export const TMDB_OVERRIDES: Readonly<Record<string, TmdbOverride>> = Object.fre
   "NMIXX 1ST WORLD TOUR IN JAPAN LIVE VIEWING": null,
   // Confirmed animated 2016 release. Avoid the same Japanese title used by the 2026 remake.
   モアナと伝説の海: 277834,
+  // Two 2026 results share the title. The Japanese release opened on October 16.
+  mentor: 1575872,
 });
 
 const TMDB_DECORATION_PATTERNS: readonly RegExp[] = [
   /^月イチ35mmフィルム上映\s*/u,
   /\s*絶叫上映\s*$/u,
-  /\s*(?:4K(?:リマスター)?(?:版)?|再上映)\s*$/iu,
   /\s*[（(]午前十時の映画祭\d+[）)]\s*$/u,
   /\s*[<＜]ファミリーシアター[>＞]\s*$/u,
   /\s*[[【(（][^\]】)）]*(?:SCREENX|字幕|吹替|グリーティング付|おこさまシネマ|舞台挨拶)[^\]】)）]*[\]】)）]\s*/giu,
+  /\s*\[ODS\]\s*$/iu,
   /\s*(?:舞台挨拶(?:全国同時生中継|中継|付き)?|トークイベント上映)\s*$/u,
+  /\s*(?:4K(?:\s*(?:デジタル)?(?:リマスター|レストア))?(?:版)?|再上映)\s*$/iu,
 ];
 
 function stripOuterTitleQuotes(value: string): string {
@@ -39,10 +43,20 @@ export function tmdbSearchTitle(title: string): string {
 
 // Only controlled title variants are queried. Candidate titles must still pass exact normalized matching.
 export const TMDB_MATCH_RULES: Readonly<Record<string, TmdbMatchRule>> = Object.freeze({
+  "1971、ハイジャック事件": {
+    query: "하이재킹",
+    // Region JP reports the Japanese theatrical release year for this 2024 Korean film.
+    releaseYear: 2026,
+  },
   "A.I(午前十時の映画祭16)": {
     query: "A.I.",
     acceptedTitles: ["A.I. Artificial Intelligence"],
     releaseYear: 2001,
+  },
+  "Vシネクスト「仮面ライダーカブト20th 天を...[ODS]": {
+    query: "仮面ライダーカブト20th 天を継ぐもの",
+    releaseYear: 2026,
+    officialUrl: "https://109cinemas.net/movies/5754.html",
   },
   "『だぁれかさんとアソぼ?』絶叫上映": {
     query: "だぁれかさんとアソぼ?",
@@ -86,6 +100,16 @@ export const TMDB_MATCH_RULES: Readonly<Record<string, TmdbMatchRule>> = Object.
     acceptedTitles: ["Spider-Man: Brand New Day"],
     releaseYear: 2026,
   },
+  "ザ・ファーザー・ミスアドベンチャー...": {
+    query: "ザ・ファーザー・ミスアドベンチャー・オブ・クリフ・ブース",
+    releaseYear: 2026,
+    officialUrl: "https://109cinemas.net/movies/5905.html",
+  },
+  バイオハザード: {
+    query: "バイオハザード",
+    releaseYear: 2026,
+    officialUrl: "https://109cinemas.net/movies/5682.html",
+  },
   "パウ・パトロール ザ・ダイノ・ムービー <ファミリーシアター>": {
     query: "パウ・パトロール ザ・ダイノ・ムービー",
     releaseYear: 2026,
@@ -99,6 +123,10 @@ export const TMDB_MATCH_RULES: Readonly<Record<string, TmdbMatchRule>> = Object.
     query: "パプリカ",
     releaseYear: 2006,
   },
+  "ブリジット・ジョーンズの日記 4Kレストア": {
+    query: "ブリジット・ジョーンズの日記",
+    releaseYear: 2001,
+  },
   "映画クレヨンしんちゃん 奇々怪々!オラの妖怪バケーション": {
     query: "クレヨンしんちゃん 奇々怪々",
     acceptedTitles: ["クレヨンしんちゃん 奇々怪々!オラの妖怪バケ~ション"],
@@ -109,9 +137,25 @@ export const TMDB_MATCH_RULES: Readonly<Record<string, TmdbMatchRule>> = Object.
     acceptedTitles: ["パウ・パトロール ザ・ダイノ・ムービー"],
     releaseYear: 2026,
   },
+  "劇場シリーズ【第一部】メイドインアビス 目覚める神秘": {
+    query: "メイドインアビス 目覚める神秘",
+    releaseYear: 2026,
+  },
+  "劇場版 『遊☆戯☆王 THE DARK SIDE OF DIMENSIONS リバイバル』上映": {
+    query: "遊☆戯☆王 THE DARK SIDE OF DIMENSIONS",
+    releaseYear: 2016,
+  },
   "怪談(午前十時の映画祭16)": {
     query: "怪談",
     releaseYear: 1965,
+  },
+  "装甲騎兵ボトムズ 灰色の魔女(ヘクセ)第1作": {
+    query: "装甲騎兵ボトムズ 灰色の魔女 第1作",
+    releaseYear: 2026,
+  },
+  男ともだち: {
+    query: "男ともだち",
+    releaseYear: 2026,
   },
   "月イチ35mmフィルム上映 『魔性の夏 四谷怪談より』": {
     query: "魔性の夏 四谷怪談より",

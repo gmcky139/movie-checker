@@ -148,6 +148,13 @@ describe("conservative TMDB poster matching", () => {
   it("removes reviewed screening decorations without expanding truncated titles", () => {
     expect(tmdbSearchTitle("『だぁれかさんとアソぼ?』絶叫上映")).toBe("だぁれかさんとアソぼ?");
     expect(tmdbSearchTitle("パプリカ 4Kリマスター版")).toBe("パプリカ");
+    expect(tmdbSearchTitle("『ブリジット・ジョーンズの日記』4Kレストア")).toBe(
+      "ブリジット・ジョーンズの日記",
+    );
+    expect(tmdbSearchTitle("ラブ・アクチュアリー 4K(午前十時の映画祭16)")).toBe(
+      "ラブ・アクチュアリー",
+    );
+    expect(tmdbSearchTitle("超かぐや姫![SCREENX][ODS]")).toBe("超かぐや姫!");
     expect(tmdbSearchTitle("作品A 再上映")).toBe("作品A");
     expect(tmdbSearchTitle("作品A[字幕・SCREENX]")).toBe("作品A");
     expect(tmdbSearchTitle("作品A 舞台挨拶中継")).toBe("作品A");
@@ -158,6 +165,65 @@ describe("conservative TMDB poster matching", () => {
     expect(tmdbSearchTitle("スパイダーマン...[SCREENX・吹替][グリーティング付]")).toBe(
       "スパイダーマン...",
     );
+  });
+
+  it("matches current restorations, abbreviated official titles, and reviewed alternate names", async () => {
+    const api = new FakeApi(
+      {
+        "ブリジット・ジョーンズの日記": [
+          candidate(1272149, "ブリジット・ジョーンズの日記 サイテー最高な私の今", "2025-02-14"),
+          candidate(634, "ブリジット・ジョーンズの日記", "2001-09-22"),
+        ],
+        "ラブ・アクチュアリー": [candidate(508, "ラブ・アクチュアリー", "2004-02-07")],
+        "超かぐや姫!": [candidate(1575337, "超かぐや姫！")],
+        "仮面ライダーカブト20th 天を継ぐもの": [
+          candidate(1567149, "仮面ライダーカブト20th 天を継ぐもの"),
+        ],
+        하이재킹: [candidate(1147710, "하이재킹", "2026-10-23")],
+      },
+      { 1575872: candidate(1575872, "Mentor", "2026-10-16") },
+    );
+    const result = await enrichMoviesWithTmdb(
+      data([
+        movie("ブリジット・ジョーンズの日記 4Kレストア"),
+        movie("ラブ・アクチュアリー 4K(午前十時の映画祭16)"),
+        movie("超かぐや姫![SCREENX][ODS]"),
+        {
+          ...movie("Vシネクスト「仮面ライダーカブト20th 天を...[ODS]"),
+          officialUrl: "https://109cinemas.net/movies/5754.html",
+        },
+        movie("1971、ハイジャック事件"),
+        movie("mentor"),
+      ]),
+      { api },
+    );
+    expect(result.movies.map((item) => item.tmdbId)).toEqual([
+      634, 508, 1575337, 1567149, 1147710, 1575872,
+    ]);
+  });
+
+  it("requires the verified official work link before assigning the 2026 Resident Evil poster", async () => {
+    const source = movie("バイオハザード");
+    const result = await enrichMoviesWithTmdb(
+      data([
+        { ...source, officialUrl: "https://109cinemas.net/movies/5682.html" },
+        { ...source, officialUrl: "https://109cinemas.net/movies/1234.html" },
+        source,
+      ]),
+      {
+        api: new FakeApi({
+          バイオハザード: [
+            candidate(1576, "バイオハザード", "2002-08-31", "Resident Evil"),
+            candidate(1423191, "バイオハザード", "2026-10-09", "Resident Evil"),
+          ],
+        }),
+      },
+    );
+    expect(result.movies.map((item) => item.tmdbId)).toEqual([1423191, undefined, undefined]);
+    expect(result.movies.slice(1).map((item) => item.posterMatchStatus)).toEqual([
+      "unmatched",
+      "unmatched",
+    ]);
   });
 
   it("matches the reviewed movie IDs and excludes only a confirmed non-movie event", async () => {
