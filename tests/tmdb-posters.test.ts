@@ -61,6 +61,7 @@ class FakeApi implements TmdbApi {
   constructor(
     private readonly results: Record<string, unknown[]> = {},
     private readonly details: Record<number, unknown> = {},
+    private readonly translations: Record<number, unknown[]> = {},
   ) {}
 
   async configuration(): Promise<unknown> {
@@ -73,6 +74,10 @@ class FakeApi implements TmdbApi {
 
   async movie(id: number): Promise<unknown> {
     return this.details[id] ?? {};
+  }
+
+  async movieTranslations(id: number): Promise<unknown> {
+    return { id, translations: this.translations[id] ?? [] };
   }
 }
 
@@ -196,6 +201,50 @@ describe("conservative TMDB poster matching", () => {
       posterMatchStatus: "unmatched",
       posterSource: "local",
     });
+  });
+
+  it("publishes nonempty Japanese overviews only for confirmed TMDB IDs", async () => {
+    const api = new FakeApi(
+      { A: [{ ...candidate(1, "A"), overview: "検索結果の本文" }], B: [candidate(2, "B")] },
+      { 3: candidate(3, "C") },
+      {
+        1: [
+          { iso_639_1: "en", iso_3166_1: "US", data: { overview: "English summary" } },
+          { iso_639_1: "ja", iso_3166_1: "US", data: { overview: "日本語の別地域版" } },
+          { iso_639_1: "ja", iso_3166_1: "JP", data: { overview: "  日本向けのあらすじ。  " } },
+        ],
+        2: [
+          { iso_639_1: "en", iso_3166_1: "US", data: { overview: "English only" } },
+          { iso_639_1: "ja", iso_3166_1: "JP", data: { overview: "  " } },
+        ],
+        3: [{ iso_639_1: "ja", iso_3166_1: "US", data: { overview: "日本語のあらすじ。" } }],
+      },
+    );
+    const translations = vi.spyOn(api, "movieTranslations");
+    const result = await enrichMoviesWithTmdb(
+      data([movie("A"), movie("B"), movie("C"), movie("D")]),
+      {
+        api,
+        overrides: { C: 3 },
+      },
+    );
+
+    expect(result.movies.map((item) => item.synopsis)).toEqual([
+      "日本向けのあらすじ。",
+      undefined,
+      "日本語のあらすじ。",
+      undefined,
+    ]);
+    expect(result.movies[1]?.posterMatchStatus).toBe("matched");
+    expect(translations.mock.calls.map(([id]) => id).sort()).toEqual([1, 2, 3]);
+  });
+
+  it("rejects translation responses for a different movie ID", async () => {
+    const api = new FakeApi({ A: [candidate(1, "A")] });
+    vi.spyOn(api, "movieTranslations").mockResolvedValue({ id: 2, translations: [] });
+    await expect(enrichMoviesWithTmdb(data([movie("A")]), { api })).rejects.toThrow(
+      /Invalid TMDB movie translations for ID 1/u,
+    );
   });
 
   it("uses managed aliases, numeric overrides, null exclusions, and local fallback", async () => {

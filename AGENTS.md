@@ -47,11 +47,11 @@ precedence. Report the exact conflict and ask only when it materially blocks wor
 
 The user authorizes publication of factual screening schedule data on GitHub Pages
 for the three theaters listed in Section 1 and non-commercial use of the TMDB
-Developer API for movie identification and poster images, subject to the
-restrictions and attribution requirements in `docs/real_data_spec.md`.
+Developer API for movie identification, poster images, and Japanese synopses for
+matched movies within the restrictions and attribution rules in `docs/real_data_spec.md`.
 
 This authorization does not extend to any other theater, aggregation site, paid
-API, non-TMDB movie metadata source, synopsis or cast copying, authentication bypass,
+API, non-TMDB movie metadata source, cast copying, authentication bypass,
 or access-control circumvention. The approved TMDB attribution logo is allowed only
 for the attribution required by TMDB.
 
@@ -59,7 +59,7 @@ for the attribution required by TMDB.
 
 - Do not add a paid service. TMDB is the only permitted external movie-information
   API and may be used only for conservative movie matching, TMDB IDs, poster paths,
-  and the attribution needed for those posters.
+  Japanese synopses for matched movies, and the required attribution.
 - Retrieve schedules only from the official sources and allowlisted hosts specified
   in `docs/real_data_spec.md`.
 - Do not access search engines, aggregation sites, or additional theaters from the
@@ -68,10 +68,10 @@ for the attribution required by TMDB.
   or HTTP 429.
 - Do not use Selenium, Playwright, browser automation, `eval`, or `Function` for
   schedule retrieval or parsing.
-- Retrieve only factual fields needed to display schedules.
+- Retrieve only factual fields needed to display schedules from theater sites.
 - Do not copy or hotlink posters from theater sites or other unapproved sources.
   TMDB poster CDN URLs are permitted under the non-commercial developer terms and
-  required attribution. Do not import synopsis, cast, ratings, reviews, videos, or
+  required attribution. Do not import cast, ratings, reviews, videos, or
   unrelated TMDB metadata.
 - Do not guess missing metadata or construct reservation URLs that were not safely
   obtained from an official response or explicitly configured official page.
@@ -183,7 +183,7 @@ For each deployment it must:
 3. fetch real theater data with `DATA_MODE=real`;
 4. enrich conservatively matched movies through TMDB using
    `TMDB_API_READ_TOKEN: ${{ secrets.TMDB_API_READ_TOKEN }}`;
-5. validate schedules, poster URLs, match metadata, and poster coverage;
+5. validate schedules, poster URLs, match metadata, synopses, and poster coverage;
 6. run lint, formatting checks, tests, and TypeScript/build checks;
 7. upload `dist` only after every preceding step succeeds;
 8. deploy through the official GitHub Pages actions.
@@ -213,6 +213,7 @@ In `real` mode, display:
 - a concise notice that schedules can change and should be confirmed on the
   official site before purchase.
 - a correctly matched TMDB poster for normal movie releases whenever available;
+- a Japanese TMDB synopsis with a source label on the movie detail page when available;
 - the required TMDB logo and attribution notice in a Credits/About-equivalent area.
 
 In `sample` mode, clearly display that the content and links are demonstrations.

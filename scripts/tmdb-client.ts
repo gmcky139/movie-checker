@@ -40,6 +40,12 @@ export interface TmdbApi {
   configuration(): Promise<unknown>;
   searchMovie(query: string): Promise<unknown>;
   movie(movieId: number): Promise<unknown>;
+  movieTranslations(movieId: number): Promise<unknown>;
+}
+
+function movieApiUrl(movieId: number): URL {
+  if (!Number.isSafeInteger(movieId) || movieId < 1) throw new Error("Invalid TMDB movie ID");
+  return new URL(`https://${API_HOST}/3/movie/${movieId}`);
 }
 
 function validateApiUrl(value: string): URL {
@@ -120,9 +126,14 @@ export class TmdbClient implements TmdbApi {
   }
 
   movie(movieId: number): Promise<unknown> {
-    if (!Number.isSafeInteger(movieId) || movieId < 1) throw new Error("Invalid TMDB movie ID");
-    const url = new URL(`https://api.themoviedb.org/3/movie/${movieId}`);
+    const url = movieApiUrl(movieId);
     url.searchParams.set("language", "ja-JP");
+    return this.getJson(url.toString());
+  }
+
+  movieTranslations(movieId: number): Promise<unknown> {
+    const url = movieApiUrl(movieId);
+    url.pathname += "/translations";
     return this.getJson(url.toString());
   }
 

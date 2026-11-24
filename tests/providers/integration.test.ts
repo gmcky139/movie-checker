@@ -138,12 +138,21 @@ describe("three-provider aggregation and atomic generation", () => {
         async movie() {
           throw new Error("not used");
         },
+        async movieTranslations(id) {
+          return {
+            id,
+            translations: [
+              { iso_639_1: "ja", iso_3166_1: "JP", data: { overview: "架空のあらすじ。" } },
+            ],
+          };
+        },
       },
     });
     expect(data.dataMode).toBe("real");
     expect(data.theaters).toHaveLength(3);
     expect(data.sources).toHaveLength(3);
     expect(data.movies).toHaveLength(1);
+    expect(data.movies[0]?.synopsis).toBe("架空のあらすじ。");
     await expect(
       validateAppData(data, {
         now: new Date(generatedAt),

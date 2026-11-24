@@ -69,6 +69,24 @@ function searchResults(value: unknown): TmdbMovie[] {
     : [];
 }
 
+function japaneseSynopsis(value: unknown, movieId: number): string | undefined {
+  const response = record(value);
+  if (response?.id !== movieId || !Array.isArray(response.translations)) {
+    throw new Error(`Invalid TMDB movie translations for ID ${movieId}`);
+  }
+  let japanese: string | undefined;
+  for (const item of response.translations) {
+    const translation = record(item);
+    if (translation?.iso_639_1 !== "ja") continue;
+    const overview = record(translation.data)?.overview;
+    const synopsis = typeof overview === "string" ? overview.trim() : "";
+    if (!synopsis) continue;
+    if (translation.iso_3166_1 === "JP") return synopsis;
+    japanese ??= synopsis;
+  }
+  return japanese;
+}
+
 function posterSizes(value: unknown): { baseUrl: string; sizes: string[] } {
   const images = record(record(value)?.images);
   const baseUrl = images?.secure_base_url;
@@ -233,10 +251,16 @@ export async function enrichMoviesWithTmdb(
         }
       }
       if (!candidate?.posterPath || candidate.adult) return unmatched(movie, "unmatched");
+      const posterPath = buildPosterUrl(configuration.baseUrl, size, candidate.posterPath);
+      const synopsis = japaneseSynopsis(
+        await options.api.movieTranslations(candidate.id),
+        candidate.id,
+      );
       return {
         ...movie,
         tmdbId: candidate.id,
-        posterPath: buildPosterUrl(configuration.baseUrl, size, candidate.posterPath),
+        posterPath,
+        ...(synopsis ? { synopsis } : {}),
         posterSource: "tmdb",
         posterMatchStatus: "matched",
       };

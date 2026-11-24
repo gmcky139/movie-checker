@@ -265,6 +265,21 @@
   font-size: 1.02rem;
 }
 
+.synopsis h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.synopsis > p {
+  white-space: pre-line;
+}
+
+.synopsis__source {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
 .metadata {
   display: grid;
   grid-template-columns: max-content 1fr;

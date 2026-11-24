@@ -152,6 +152,13 @@ function validateMovie(
     valid = false;
   }
   if (mode === "real" && checkPosterMetadata) {
+    if (
+      value.synopsis !== undefined &&
+      (value.posterSource !== "tmdb" || value.posterMatchStatus !== "matched")
+    ) {
+      errors.push(`${label}.synopsis requires a matched TMDB movie`);
+      valid = false;
+    }
     if (value.posterSource === "tmdb" && value.posterMatchStatus === "matched") {
       if (!Number.isSafeInteger(value.tmdbId) || !isAllowedTmdbImageUrl(value.posterPath)) {
         errors.push(`${label} has invalid matched TMDB poster metadata`);

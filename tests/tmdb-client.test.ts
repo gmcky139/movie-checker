@@ -44,6 +44,20 @@ describe("TMDB API client", () => {
     expect(String(error)).not.toContain(token);
   });
 
+  it("caches translations by movie ID and sends authentication only in the header", async () => {
+    const fetcher = vi.fn<typeof fetch>(async () => jsonResponse({ id: 123, translations: [] }));
+    const client = new TmdbClient("synthetic-translation-token", { fetch: fetcher });
+    await Promise.all([client.movieTranslations(123), client.movieTranslations(123)]);
+
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    const [url, init] = fetcher.mock.calls[0] ?? [];
+    expect(url?.toString()).toBe("https://api.themoviedb.org/3/movie/123/translations");
+    expect(new Headers(init?.headers).get("authorization")).toBe(
+      "Bearer synthetic-translation-token",
+    );
+    expect(() => client.movieTranslations(0)).toThrow(/Invalid TMDB movie ID/u);
+  });
+
   it("retries 5xx twice but does not retry 429", async () => {
     const unavailable = vi.fn(async () => jsonResponse({}, { status: 503 }));
     await expect(

@@ -57,7 +57,14 @@ export async function runMovieDetailPage(): Promise<void> {
       body.append(element("p", { className: "original-title", text: movie.originalTitle }));
     }
     if (movie.synopsis) {
-      body.append(element("p", { className: "synopsis", text: movie.synopsis }));
+      const synopsis = element("section", { className: "synopsis" });
+      append(synopsis, element("h2", { text: "あらすじ" }), element("p", { text: movie.synopsis }));
+      if (data.dataMode === "real") {
+        synopsis.append(
+          element("p", { className: "synopsis__source", text: "あらすじ提供：TMDB" }),
+        );
+      }
+      body.append(synopsis);
     }
     const metadata = element("dl", { className: "metadata" });
     const metadataRows: Array<[string, string]> = [];
