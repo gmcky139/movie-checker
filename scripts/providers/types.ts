@@ -6,6 +6,7 @@ export type RawScreening = {
   theaterId: string;
   theaterName: string;
   rawTitle: string;
+  alternateTitle?: string;
   durationMinutes?: number;
   formatLabel?: string;
   date: string;

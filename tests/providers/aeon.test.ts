@@ -36,7 +36,10 @@ describe("Aeon Cinema adapter", () => {
     const data = {
       "20260731": {
         movieA: [
-          event("a1", "作品A(吹替版)", "2026-07-30T15:30:00.000Z", "2026-07-30T17:30:00.000Z"),
+          {
+            ...event("a1", "作品A(吹替版)", "2026-07-30T15:30:00.000Z", "2026-07-30T17:30:00.000Z"),
+            name: { ja: "作品A(吹替版)", en: "JPN Film A" },
+          },
           event("a2", "作品A(吹替版)", "2026-07-31T14:30:00.000Z", "2026-07-31T16:30:00.000Z"),
         ],
         movieB: [
@@ -54,6 +57,7 @@ describe("Aeon Cinema adapter", () => {
     expect(screenings).toHaveLength(3);
     expect(screenings[0]).toMatchObject({
       rawTitle: "作品A(吹替版)",
+      alternateTitle: "JPN Film A",
       startTime: "00:30",
       endTime: "02:30",
       durationMinutes: 120,

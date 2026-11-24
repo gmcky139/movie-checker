@@ -1,6 +1,6 @@
 import { createDateRange } from "../src/domain/date";
 import type { AppData } from "../src/domain/types";
-import { normalizeRealData } from "./normalize-movies";
+import { normalizeRealData, type NormalizedRealData } from "./normalize-movies";
 import { createAeonTokonameProvider } from "./providers/aeon-tokoname";
 import { createCinema109Provider } from "./providers/cinema109-nagoya";
 import { HttpStatusError, SafeHttpClient } from "./providers/http-client";
@@ -29,7 +29,7 @@ export async function aggregateProviderData(
   providers: ScheduleProvider[],
   dates: string[],
   generatedAt: string,
-): Promise<AppData> {
+): Promise<NormalizedRealData> {
   if (providers.length !== 3) throw new Error("Exactly three real-data providers are required");
   const settled = await Promise.allSettled(
     providers.map((provider) => provider.fetch(dates, generatedAt)),

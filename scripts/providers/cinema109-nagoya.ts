@@ -49,6 +49,7 @@ export function parseCinema109Html(html: string, date: string, sourceUrl: string
     const block = $(element);
     const title = block.find(".work_head1 .content_ja .work_name1").first().text().trim();
     if (!title) return;
+    const alternateTitle = block.find(".work_head1 .content_en .work_name1").first().text().trim();
     const durationText = block.find(".com_screening_time1").first().text();
     const duration = Number(/(\d+)\s*分/u.exec(durationText)?.[1]);
     const screenName = block.find(".work_head2 .content_ja").first().text().trim() || undefined;
@@ -71,6 +72,7 @@ export function parseCinema109Html(html: string, date: string, sourceUrl: string
         theaterId: THEATER_ID,
         theaterName: THEATER_NAME,
         rawTitle: title,
+        ...(alternateTitle ? { alternateTitle } : {}),
         durationMinutes: Number.isInteger(duration) && duration > 0 ? duration : undefined,
         date,
         startTime: start.time,

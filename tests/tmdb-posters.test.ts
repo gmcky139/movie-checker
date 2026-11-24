@@ -1,4 +1,5 @@
-import type { AppData, Movie } from "../src/domain/types";
+import type { Movie } from "../src/domain/types";
+import type { NormalizedRealData } from "../scripts/normalize-movies";
 import type { TmdbApi } from "../scripts/tmdb-client";
 import { TMDB_MATCH_RULES, TMDB_OVERRIDES, tmdbSearchTitle } from "../scripts/tmdb-overrides";
 import {
@@ -26,7 +27,7 @@ function movie(title: string): Movie {
   };
 }
 
-function data(movies: Movie[]): AppData {
+function data(movies: NormalizedRealData["movies"]): NormalizedRealData {
   return {
     schemaVersion: 1,
     dataMode: "real",
@@ -107,9 +108,94 @@ describe("conservative TMDB poster matching", () => {
       adult: false,
     };
     expect(selectCandidate(source, [exact, { ...exact, id: 2 }])).toBeUndefined();
+    expect(selectCandidate(source, [exact, { ...exact, id: 2, posterPath: null }])).toBeUndefined();
     expect(selectCandidate(source, [{ ...exact, releaseYear: 2025 }])).toBeUndefined();
     expect(selectCandidate(source, [{ ...exact, posterPath: null }])).toBeUndefined();
     expect(selectCandidate(source, [{ ...exact, title: "作品AB" }])).toBeUndefined();
+  });
+
+  it("uses the shared poster for equivalent records regardless of search result order", async () => {
+    const title = "作品A 第七章";
+    const duplicate = {
+      ...candidate(2, "作品A　第七章", "2026-10-30"),
+      poster_path: "/poster-1.jpg",
+    };
+    const first = candidate(1, title, "2026-10-30");
+    for (const results of [
+      [duplicate, first],
+      [first, duplicate],
+    ]) {
+      const result = await enrichMoviesWithTmdb(data([movie(title)]), {
+        api: new FakeApi({ [title]: results }),
+      });
+      expect(result.movies[0]).toMatchObject({
+        tmdbId: 1,
+        posterPath: "https://image.tmdb.org/t/p/w500/poster-1.jpg",
+        posterMatchStatus: "matched",
+      });
+    }
+  });
+
+  it("keeps matches separate when duplicate evidence is missing or differs", () => {
+    const source = movie("作品A");
+    const exact = {
+      id: 1,
+      title: "作品A",
+      originalTitle: "Work A",
+      posterPath: "/a.jpg",
+      releaseDate: "2026-10-30",
+      releaseYear: 2026,
+      adult: false,
+    };
+    for (const change of [
+      { releaseDate: undefined },
+      { releaseDate: "2026-10-31" },
+      { posterPath: "/b.jpg" },
+      { originalTitle: "Work B" },
+      { title: "作品A!" },
+    ]) {
+      expect(selectCandidate(source, [exact, { ...exact, ...change, id: 2 }])).toBeUndefined();
+    }
+  });
+
+  it("tries a verified alternate query once when the Japanese search fails and corroborates both titles", async () => {
+    const api = new FakeApi({
+      "Wide Sky": [
+        candidate(1, "別の空", "2026-01-01", "Wide Sky"),
+        candidate(2, "大空", "2026-01-01", "Wide Sky"),
+        candidate(3, "大空", "2026-01-01", "Other Sky"),
+      ],
+      別の作品: [candidate(4, "別の作品")],
+    });
+    const search = vi.spyOn(api, "searchMovie");
+    const result = await enrichMoviesWithTmdb(
+      data([
+        { ...movie("大空"), alternateTitle: "Wide Sky" },
+        { ...movie("別の作品"), alternateTitle: "Another Work" },
+      ]),
+      { api },
+    );
+    expect(result.movies.map((item) => item.tmdbId)).toEqual([2, 4]);
+    expect(result.movies[0]).not.toHaveProperty("alternateTitle");
+    expect(search).toHaveBeenCalledTimes(3);
+    expect(search).toHaveBeenCalledWith("大空");
+    expect(search).toHaveBeenCalledWith("Wide Sky");
+    expect(search).not.toHaveBeenCalledWith("Another Work");
+  });
+
+  it("keeps the placeholder when a shortened alternate title only matches a different release", async () => {
+    const api = new FakeApi({
+      "First Story": [candidate(1, "最初の物語", "2026-01-01", "First Story")],
+      別の作品: [candidate(2, "別の作品")],
+    });
+    const result = await enrichMoviesWithTmdb(
+      data([{ ...movie("最初の物語 第2章"), alternateTitle: "First Story" }, movie("別の作品")]),
+      { api },
+    );
+    expect(result.movies[0]).toMatchObject({
+      posterMatchStatus: "unmatched",
+      posterSource: "local",
+    });
   });
 
   it("uses managed aliases, numeric overrides, null exclusions, and local fallback", async () => {
@@ -200,6 +286,24 @@ describe("conservative TMDB poster matching", () => {
     expect(result.movies.map((item) => item.tmdbId)).toEqual([
       634, 508, 1575337, 1567149, 1147710, 1575872,
     ]);
+  });
+
+  it("matches ジャイアント to the 2026 filmed play among similarly named works", async () => {
+    const result = await enrichMoviesWithTmdb(data([movie("ジャイアント")]), {
+      api: new FakeApi({
+        "Giant - The Play": [
+          candidate(1078581, "Giant", "2026-01-09"),
+          candidate(1694097, "Giant - The Play", "2026-11-19"),
+          candidate(1712, "ジャイアンツ", "1956-12-22", "Giant"),
+        ],
+      }),
+    });
+    expect(result.movies[0]).toMatchObject({
+      title: "ジャイアント",
+      tmdbId: 1694097,
+      posterPath: "https://image.tmdb.org/t/p/w500/poster-1694097.jpg",
+      posterMatchStatus: "matched",
+    });
   });
 
   it("requires the verified official work link before assigning the 2026 Resident Evil poster", async () => {

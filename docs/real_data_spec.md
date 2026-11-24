@@ -149,7 +149,7 @@ URLは`URL`として解析し、HTTPS、ホスト名、ポート、リダイレ�
 
 必要に応じて次の事実情報を取得できる。
 
-- 作品名
+- 作品名と、同じ公式上映情報に明記された照合用の別言語名
 - 上映日
 - 開始時刻
 - 終了時刻
@@ -237,6 +237,10 @@ Bearer Tokenは`Authorization`ヘッダーで`https://api.themoviedb.org`だけ�
 得られない場合だけ、管理された別名または原題で追加検索する。無制限な検索語変形や全候補の
 詳細取得は行わない。
 
+作品別の照合設定がないときは、公式上映情報にある別言語名が一意なら、別言語名で1回だけ
+追加検索できる。候補は日本語の作品名と別言語名の両方が完全一致し、一意に残ったものだけを
+採用する。この別言語名は照合時だけ保持し、公開データには含めない。
+
 画像ベースURLと利用可能サイズは`GET /3/configuration`を実行ごとに1回取得して確認する。
 一覧と詳細で共用できる`w500`相当を基本とし、対応サイズがなければ設定レスポンス内の最も
 近い安全なサイズを選ぶ。画像URLを文字列連結だけで信用せず、最終URLがHTTPSかつ
@@ -250,7 +254,9 @@ Bearer Tokenは`Authorization`ヘッダーで`https://api.themoviedb.org`だけ�
 1. 正規化した`title`または`original_title`の完全一致
 2. ソースコード内のレビュー可能な明示エイリアス一致
 3. 公開年が取得できる場合の一致または合理的な近さ
-4. 候補が複数残る場合の明示的なTMDB ID override
+4. 表示名・原題がUnicodeと空白の正規化後に一致し、有効な公開日とポスターパスも同じ候補は
+   重複登録として扱い、最小のTMDB IDで共通の画像を採用
+5. 候補が複数残る場合の明示的なTMDB ID override
 
 編集距離だけの曖昧一致、人気度だけの選択、AIによる推測、最初の結果の自動採用は禁止する。
 判断できない場合は`unmatched`とする。
@@ -331,6 +337,7 @@ type RawScreening = {
   theaterName: string;
   sourceUrl: string;
   rawTitle: string;
+  alternateTitle?: string;
   date: string;
   startTime: string;
   endTime?: string;

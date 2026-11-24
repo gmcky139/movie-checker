@@ -1,4 +1,6 @@
+import { isValidDateString } from "../src/domain/date";
 import type { AppData, Movie, PosterCoverage } from "../src/domain/types";
+import type { NormalizedRealData } from "./normalize-movies";
 import type { TmdbApi } from "./tmdb-client";
 import {
   TMDB_MATCH_RULES,
@@ -16,6 +18,7 @@ export type TmdbMovie = {
   title: string;
   originalTitle: string;
   posterPath: string | null;
+  releaseDate?: string;
   releaseYear?: number;
   adult: boolean;
 };
@@ -45,16 +48,16 @@ function parseMovie(value: unknown): TmdbMovie | undefined {
   if (!item || !Number.isSafeInteger(item.id) || typeof item.title !== "string") return undefined;
   const originalTitle = typeof item.original_title === "string" ? item.original_title : "";
   const posterPath = typeof item.poster_path === "string" ? item.poster_path : null;
-  const releaseYear =
-    typeof item.release_date === "string" && /^\d{4}-/u.test(item.release_date)
-      ? Number(item.release_date.slice(0, 4))
+  const releaseDate =
+    typeof item.release_date === "string" && isValidDateString(item.release_date)
+      ? item.release_date
       : undefined;
   return {
     id: Number(item.id),
     title: item.title,
     originalTitle,
     posterPath,
-    ...(releaseYear ? { releaseYear } : {}),
+    ...(releaseDate ? { releaseDate, releaseYear: Number(releaseDate.slice(0, 4)) } : {}),
     adult: item.adult === true,
   };
 }
@@ -121,6 +124,16 @@ export function buildPosterUrl(baseUrl: string, size: string, path: string): str
   return url.toString();
 }
 
+function matchesTitle(candidate: TmdbMovie, accepted: ReadonlySet<string>): boolean {
+  return [candidate.title, candidate.originalTitle]
+    .filter(Boolean)
+    .some((title) => accepted.has(normalizeTitle(title)));
+}
+
+function normalizeDuplicateTitle(value: string): string {
+  return value.normalize("NFKC").trim().replace(/\s+/gu, " ");
+}
+
 export function selectCandidate(
   movie: Movie,
   candidates: TmdbMovie[],
@@ -133,14 +146,32 @@ export function selectCandidate(
   );
   const year =
     rule?.releaseYear ?? (movie.releaseDate ? Number(movie.releaseDate.slice(0, 4)) : undefined);
-  const matches = candidates.filter((candidate) => {
-    if (candidate.adult || !candidate.posterPath) return false;
-    const titleMatches = [candidate.title, candidate.originalTitle]
-      .filter(Boolean)
-      .some((title) => accepted.has(normalizeTitle(title)));
-    return titleMatches && (year === undefined || candidate.releaseYear === year);
-  });
-  return matches.length === 1 ? matches[0] : undefined;
+  const matches = candidates.filter(
+    (candidate) =>
+      !candidate.adult &&
+      matchesTitle(candidate, accepted) &&
+      (year === undefined || candidate.releaseYear === year),
+  );
+  const [first, ...otherMatches] = matches;
+  if (!first?.posterPath) return undefined;
+  if (otherMatches.length === 0) return first;
+
+  const title = normalizeDuplicateTitle(first.title);
+  const originalTitle = normalizeDuplicateTitle(first.originalTitle);
+  if (!title || !originalTitle || !first.releaseDate) return undefined;
+
+  const sameWork = otherMatches.every(
+    (candidate) =>
+      candidate.releaseDate === first.releaseDate &&
+      candidate.posterPath === first.posterPath &&
+      normalizeDuplicateTitle(candidate.title) === title &&
+      normalizeDuplicateTitle(candidate.originalTitle) === originalTitle,
+  );
+  if (!sameWork) return undefined;
+  return otherMatches.reduce(
+    (chosen, candidate) => (candidate.id < chosen.id ? candidate : chosen),
+    first,
+  );
 }
 
 function unmatched(movie: Movie, status: "unmatched" | "not-applicable"): Movie {
@@ -153,7 +184,7 @@ function unmatched(movie: Movie, status: "unmatched" | "not-applicable"): Movie 
 }
 
 export async function enrichMoviesWithTmdb(
-  data: AppData,
+  data: NormalizedRealData,
   options: EnrichmentOptions,
 ): Promise<AppData> {
   const overrides = options.overrides ?? TMDB_OVERRIDES;
@@ -163,7 +194,7 @@ export async function enrichMoviesWithTmdb(
   if (!size) throw new Error("TMDB configuration has no suitable poster size");
 
   const movies = await Promise.all(
-    data.movies.map(async (movie): Promise<Movie> => {
+    data.movies.map(async ({ alternateTitle, ...movie }): Promise<Movie> => {
       const override = overrides[movie.title];
       if (override === null) return unmatched(movie, "not-applicable");
 
@@ -180,6 +211,26 @@ export async function enrichMoviesWithTmdb(
         const selectionRule = explicitRule ?? (query === movie.title ? undefined : { query });
         const results = searchResults(await options.api.searchMovie(query));
         candidate = selectCandidate(movie, results, selectionRule);
+        const alternateQuery = alternateTitle ? tmdbSearchTitle(alternateTitle) : undefined;
+        const alternateKey = alternateQuery ? normalizeTitle(alternateQuery) : "";
+        if (
+          !candidate &&
+          !explicitRule &&
+          alternateQuery &&
+          alternateKey &&
+          alternateKey !== normalizeTitle(query)
+        ) {
+          const alternateResults = searchResults(await options.api.searchMovie(alternateQuery));
+          const candidates = new Map(
+            [...results, ...alternateResults].map((item) => [item.id, item]),
+          );
+          const acceptedAlternate = new Set([alternateKey]);
+          candidate = selectCandidate(
+            movie,
+            [...candidates.values()].filter((item) => matchesTitle(item, acceptedAlternate)),
+            selectionRule,
+          );
+        }
       }
       if (!candidate?.posterPath || candidate.adult) return unmatched(movie, "unmatched");
       return {

@@ -7,10 +7,11 @@ import type { DataSourceStatus, Theater } from "../../src/domain/types";
 import type { RawScreening } from "../../scripts/providers/types";
 import { validateAppData } from "../../scripts/validate-data";
 
-function normalizeListings(titles: string[], reverse = false) {
+function normalizeListings(titles: string[], reverse = false, alternateTitles: string[] = []) {
   const date = "2026-07-31";
   const screenings = titles.map((rawTitle, index): RawScreening => ({
     rawTitle,
+    alternateTitle: alternateTitles[index],
     providerId: `provider-${index}`,
     theaterId: `theater-${index}`,
     theaterName: `映画館${index + 1}`,
@@ -29,6 +30,17 @@ function normalizeListings(titles: string[], reverse = false) {
 }
 
 describe("real movie normalization", () => {
+  it("uses a consistent official alternate title after removing screening prefixes", () => {
+    const same = ["IMAX]FILM A", "JPN Film A"];
+    const inputs = ["映画A[IMAX]", "吹替 映画A"];
+    const forward = normalizeListings(inputs, false, same);
+    expect(forward.movies[0]?.alternateTitle).toMatch(/^film a$/iu);
+    expect(normalizeListings(inputs, true, same)).toEqual(forward);
+    expect(normalizeListings(inputs, false, ["Film A", "Film B"]).movies[0]).not.toHaveProperty(
+      "alternateTitle",
+    );
+  });
+
   it("normalizes spacing and separates known presentation formats", () => {
     expect(normalizeMovieTitle("【字幕】  モアナと伝説の海 ")).toEqual({
       title: "モアナと伝説の海",

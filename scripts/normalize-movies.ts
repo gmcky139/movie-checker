@@ -2,6 +2,12 @@ import { createHash } from "node:crypto";
 import type { AppData, Movie, Screening, Theater } from "../src/domain/types";
 import type { RawScreening } from "./providers/types";
 
+type MovieForPosterSearch = Movie & { alternateTitle?: string };
+
+export type NormalizedRealData = Omit<AppData, "movies"> & {
+  movies: MovieForPosterSearch[];
+};
+
 // Exact, reviewable aliases only. Do not add similarity-based matches here.
 export const TITLE_ALIASES: Readonly<Record<string, string>> = Object.freeze({
   "Michael/マイケル": "Michael マイケル",
@@ -231,13 +237,29 @@ function resolveTruncatedTitles(titles: ReadonlySet<string>): Map<string, string
   return resolved;
 }
 
+function selectAlternateTitle(screenings: RawScreening[]): string | undefined {
+  const titles = new Map<string, string>();
+  for (const { alternateTitle } of screenings) {
+    if (!alternateTitle) continue;
+    const title = normalizeSpacing(alternateTitle).replace(
+      /^(?:(?:SUB|IMAX)\]\s*|(?:SUB|JPN)\s+)/u,
+      "",
+    );
+    if (title && !TRUNCATED_TITLE_END.test(title)) {
+      const key = title.toLowerCase().replace(/\s+/gu, "");
+      titles.set(key, title);
+    }
+  }
+  return titles.size === 1 ? titles.values().next().value : undefined;
+}
+
 export function normalizeRealData(
   rawScreenings: RawScreening[],
   theaters: Theater[],
   dates: string[],
   generatedAt: string,
   sources: AppData["sources"],
-): AppData {
+): NormalizedRealData {
   const parsed = rawScreenings.map((raw) => ({
     raw,
     ...normalizeMovieTitle(raw.rawTitle, raw.formatLabel),
@@ -262,12 +284,14 @@ export function normalizeRealData(
     groups.set(item.title, group);
   }
 
-  const movies: Movie[] = [...groups.entries()]
+  const movies: MovieForPosterSearch[] = [...groups.entries()]
     .map(([title, items]) => {
       const officialUrl = items.find((item) => item.raw.detailUrl)?.raw.detailUrl;
+      const alternateTitle = selectAlternateTitle(items.map((item) => item.raw));
       return {
         id: deterministicMovieId(title),
         title,
+        ...(alternateTitle ? { alternateTitle } : {}),
         durationMinutes: selectDuration(items.map((item) => item.raw.durationMinutes)),
         genres: [],
         posterPath: "images/posters/placeholder.svg",

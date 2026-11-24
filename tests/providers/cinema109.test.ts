@@ -10,7 +10,7 @@ function fixture(reservationUrl: string): string {
         <h2 class="work_name1">作品A[SCREENX・字幕]</h2>
         <span class="com_screening_time1">115分</span>
         <a class="com_button10" href="https://109cinemas.net/movies/123.html">作品詳細</a>
-      </div></div>
+      </div><div class="content_en"><h2 class="work_name1">SUB]Film A</h2></div></div>
       <div class="work_head2"><h3 class="content_ja">シアター5</h3></div>
       <a class="com_select_screening_time_item1 status1" href="${reservationUrl}">
         <span class="time1">08:50<span>～11:00</span></span>
@@ -32,6 +32,7 @@ describe("109 Cinemas adapter", () => {
     expect(screenings).toHaveLength(2);
     expect(screenings[0]).toMatchObject({
       rawTitle: "作品A[SCREENX・字幕]",
+      alternateTitle: "SUB]Film A",
       durationMinutes: 115,
       screenName: "シアター5",
       startTime: "08:50",

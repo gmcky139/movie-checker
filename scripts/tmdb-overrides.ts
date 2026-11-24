@@ -105,6 +105,11 @@ export const TMDB_MATCH_RULES: Readonly<Record<string, TmdbMatchRule>> = Object.
     releaseYear: 2026,
     officialUrl: "https://109cinemas.net/movies/5905.html",
   },
+  // The filmed stage production opened in November 2026 under this TMDB title.
+  ジャイアント: {
+    query: "Giant - The Play",
+    releaseYear: 2026,
+  },
   バイオハザード: {
     query: "バイオハザード",
     releaseYear: 2026,

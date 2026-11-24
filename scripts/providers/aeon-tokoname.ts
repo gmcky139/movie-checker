@@ -93,6 +93,7 @@ export function parseAeonScheduleJson(
         const workPerformed = readRecord(superEvent, "workPerformed");
         const eventName = readRecord(item, "name") ?? readRecord(superEvent, "name");
         const rawTitle = readLocalizedJapanese(eventName);
+        const alternateTitle = readString(eventName, "en");
         const startValue = readString(item, "startDate");
         const endValue = readString(item, "endDate");
         const location = readRecord(item, "location");
@@ -117,6 +118,7 @@ export function parseAeonScheduleJson(
           theaterId: THEATER_ID,
           theaterName: THEATER_NAME,
           rawTitle,
+          ...(alternateTitle ? { alternateTitle } : {}),
           durationMinutes,
           date,
           startTime: start.time,
